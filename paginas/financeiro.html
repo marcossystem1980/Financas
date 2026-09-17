@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Financeiro | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/financeiro.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BOTÃO HAMBURGER
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <!-- =====================================================
+         OVERLAY
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">⌂</span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content financeiro-page">
+
+
+        <!-- CABEÇALHO -->
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    FINANÇAS
+                </span>
+
+                <h1>
+                    Planejamento Financeiro
+                </h1>
+
+                <p>
+                    Organize a renda do casal e defina como o dinheiro será dividido.
+                </p>
+
+            </div>
+
+            <div class="month-selector">
+
+                <label for="mes">
+                    Mês de referência
+                </label>
+
+                <select id="mes">
+
+                    <option value="2026-09">
+                        Setembro 2026
+                    </option>
+
+                    <option value="2026-10">
+                        Outubro 2026
+                    </option>
+
+                    <option value="2026-11">
+                        Novembro 2026
+                    </option>
+
+                    <option value="2026-12">
+                        Dezembro 2026
+                    </option>
+
+                </select>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="finance-summary">
+
+
+            <article class="finance-summary-card">
+
+                <span>
+                    RENDA TOTAL
+                </span>
+
+                <strong id="rendaTotal">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="finance-summary-card">
+
+                <span>
+                    CUSTO DA CASA
+                </span>
+
+                <strong id="custoCasaResumo">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="finance-summary-card">
+
+                <span>
+                    INVESTIMENTOS
+                </span>
+
+                <strong id="investimentosResumo">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="finance-summary-card highlight">
+
+                <span>
+                    RESTANTE
+                </span>
+
+                <strong id="restanteResumo">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RENDA DO CASAL
+        ================================================== -->
+
+        <section class="finance-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        01
+                    </span>
+
+                    <div>
+
+                        <small>
+                            RENDA
+                        </small>
+
+                        <h2>
+                            Renda do casal
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="people-grid">
+
+
+                <!-- PESSOA 1 -->
+
+                <article class="person-card">
+
+                    <div class="person-header">
+
+                        <div class="person-avatar">
+                            V
+                        </div>
+
+                        <div>
+
+                            <span class="person-label">
+                                PESSOA 1
+                            </span>
+
+                            <h3>
+                                Você
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="salario1">
+                            Salário líquido
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="salario1"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="person-percentage">
+
+                        <span>
+                            Participação na renda
+                        </span>
+
+                        <strong id="percentual1">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- PESSOA 2 -->
+
+                <article class="person-card">
+
+                    <div class="person-header">
+
+                        <div class="person-avatar">
+                            E
+                        </div>
+
+                        <div>
+
+                            <span class="person-label">
+                                PESSOA 2
+                            </span>
+
+                            <h3>
+                                Sua esposa
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="salario2">
+                            Salário líquido
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="salario2"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="person-percentage">
+
+                        <span>
+                            Participação na renda
+                        </span>
+
+                        <strong id="percentual2">
+                            0%
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DIVISÃO DA CASA
+        ================================================== -->
+
+        <section class="finance-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        02
+                    </span>
+
+                    <div>
+
+                        <small>
+                            DESPESAS DO CASAL
+                        </small>
+
+                        <h2>
+                            Divisão dos custos da casa
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="costs-layout">
+
+
+                <!-- CONFIGURAÇÃO -->
+
+                <article class="planning-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <small>
+                                CUSTOS MENSAIS
+                            </small>
+
+                            <h3>
+                                Planejamento da casa
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="custoCasa">
+                            Custo mensal da casa
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="custoCasa"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="investimentos">
+                            Valor mensal para investimentos
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="investimentos"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="verba1">
+                            Verba pessoal — Você
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="verba1"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="verba2">
+                            Verba pessoal — Sua esposa
+                        </label>
+
+                        <div class="money-input">
+
+                            <span>
+                                R$
+                            </span>
+
+                            <input
+                                type="number"
+                                id="verba2"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                placeholder="0,00"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- RESULTADO -->
+
+                <article class="result-card">
+
+                    <div class="card-heading">
+
+                        <div>
+
+                            <small>
+                                APORTE PROPORCIONAL
+                            </small>
+
+                            <h3>
+                                Quanto cada um contribui
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contribution">
+
+                        <div class="contribution-header">
+
+                            <div>
+
+                                <span>
+                                    Você
+                                </span>
+
+                                <small id="aportePercentual1">
+                                    0%
+                                </small>
+
+                            </div>
+
+                            <strong id="aporte1">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+                        <div class="contribution-bar">
+
+                            <span
+                                id="barraAporte1"
+                                style="width: 0%;"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contribution">
+
+                        <div class="contribution-header">
+
+                            <div>
+
+                                <span>
+                                    Sua esposa
+                                </span>
+
+                                <small id="aportePercentual2">
+                                    0%
+                                </small>
+
+                            </div>
+
+                            <strong id="aporte2">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+                        <div class="contribution-bar">
+
+                            <span
+                                id="barraAporte2"
+                                style="width: 0%;"
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-divider"></div>
+
+
+                    <div class="remaining-grid">
+
+                        <div>
+
+                            <span>
+                                Sobra para você
+                            </span>
+
+                            <strong id="sobra1">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Sobra para sua esposa
+                            </span>
+
+                            <strong id="sobra2">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             EXPLICAÇÃO
+        ================================================== -->
+
+        <section class="information-box">
+
+            <div class="information-icon">
+                i
+            </div>
+
+            <div>
+
+                <strong>
+                    Como funciona o aporte proporcional?
+                </strong>
+
+                <p>
+                    O sistema divide o custo da casa de acordo com a participação de cada salário na renda total do casal.
+                    Dessa forma, quem representa uma parcela maior da renda também assume uma parcela proporcionalmente maior das despesas.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/financeiro.js"
+    ></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cartões | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/cartoes.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- =================================================
+             RODAPÉ
+        ================================================== -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content cartoes-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="page-header cards-header">
+
+            <div>
+
+                <span class="page-overline">
+                    FINANÇAS
+                </span>
+
+                <h1>
+                    Cartões
+                </h1>
+
+                <p>
+                    Controle limites, compras parceladas e faturas.
+                </p>
+
+            </div>
+
+
+            <div class="month-selector">
+
+                <label for="mesFiltro">
+                    Fatura de
+                </label>
+
+                <select id="mesFiltro"></select>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="cards-summary">
+
+
+            <article class="cards-summary-card">
+
+                <span>
+                    LIMITE TOTAL
+                </span>
+
+                <strong id="limiteTotal">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="cards-summary-card">
+
+                <span>
+                    FATURA DO MÊS
+                </span>
+
+                <strong id="faturaMes">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="cards-summary-card">
+
+                <span>
+                    PARCELAS FUTURAS
+                </span>
+
+                <strong id="parcelasFuturas">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="cards-summary-card highlight">
+
+                <span>
+                    LIMITE DISPONÍVEL
+                </span>
+
+                <strong id="limiteDisponivel">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MEUS CARTÕES
+        ================================================== -->
+
+        <section class="cards-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        MEUS CARTÕES
+                    </small>
+
+                    <h2>
+                        Cartões cadastrados
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="cards-grid"
+                id="cardsGrid"
+            >
+
+                <div class="empty-card-state">
+                    Nenhum cartão cadastrado.
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             NOVO CARTÃO + NOVA COMPRA
+        ================================================== -->
+
+        <section class="cards-forms-grid">
+
+
+            <!-- =================================================
+                 NOVO CARTÃO
+            ================================================== -->
+
+            <article class="card-panel">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            CADASTRO
+                        </small>
+
+                        <h2>
+                            Adicionar cartão
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="cartaoForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group full">
+
+                            <label for="nomeCartao">
+                                Nome do cartão
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeCartao"
+                                placeholder="Ex.: Nubank"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="banco">
+                                Instituição
+                            </label>
+
+                            <input
+                                type="text"
+                                id="banco"
+                                placeholder="Ex.: Nubank"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="limite">
+                                Limite
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="limite"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="fechamento">
+                                Dia do fechamento
+                            </label>
+
+                            <input
+                                type="number"
+                                id="fechamento"
+                                min="1"
+                                max="31"
+                                placeholder="Ex.: 05"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="vencimento">
+                                Dia do vencimento
+                            </label>
+
+                            <input
+                                type="number"
+                                id="vencimento"
+                                min="1"
+                                max="31"
+                                placeholder="Ex.: 12"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="titular">
+                                Titular
+                            </label>
+
+                            <select id="titular">
+
+                                <option value="Você">
+                                    Você
+                                </option>
+
+                                <option value="Sua esposa">
+                                    Sua esposa
+                                </option>
+
+                                <option value="Casal">
+                                    Casal
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            + Adicionar cartão
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 NOVA COMPRA
+            ================================================== -->
+
+            <article class="card-panel">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVA COMPRA
+                        </small>
+
+                        <h2>
+                            Registrar compra
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="compraForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group full">
+
+                            <label for="descricaoCompra">
+                                Descrição
+                            </label>
+
+                            <input
+                                type="text"
+                                id="descricaoCompra"
+                                placeholder="Ex.: Sofá"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorCompra">
+                                Valor da compra
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorCompra"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="dataCompra">
+                                Data
+                            </label>
+
+                            <input
+                                type="date"
+                                id="dataCompra"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="cartaoCompra">
+                                Cartão
+                            </label>
+
+                            <select
+                                id="cartaoCompra"
+                                required
+                            >
+
+                                <option value="">
+                                    Primeiro cadastre um cartão
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="parcelas">
+                                Parcelas
+                            </label>
+
+                            <select id="parcelas">
+
+                                <option value="1">
+                                    1x
+                                </option>
+
+                                <option value="2">
+                                    2x
+                                </option>
+
+                                <option value="3">
+                                    3x
+                                </option>
+
+                                <option value="4">
+                                    4x
+                                </option>
+
+                                <option value="5">
+                                    5x
+                                </option>
+
+                                <option value="6">
+                                    6x
+                                </option>
+
+                                <option value="8">
+                                    8x
+                                </option>
+
+                                <option value="10">
+                                    10x
+                                </option>
+
+                                <option value="12">
+                                    12x
+                                </option>
+
+                                <option value="18">
+                                    18x
+                                </option>
+
+                                <option value="24">
+                                    24x
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="categoriaCompra">
+                                Categoria
+                            </label>
+
+                            <select
+                                id="categoriaCompra"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Casa">
+                                    Casa
+                                </option>
+
+                                <option value="Mercado">
+                                    Mercado
+                                </option>
+
+                                <option value="Lazer">
+                                    Lazer
+                                </option>
+
+                                <option value="Transporte">
+                                    Transporte
+                                </option>
+
+                                <option value="Saúde">
+                                    Saúde
+                                </option>
+
+                                <option value="Pessoal">
+                                    Pessoal
+                                </option>
+
+                                <option value="Outros">
+                                    Outros
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="responsavelCompra">
+                                Responsável
+                            </label>
+
+                            <select id="responsavelCompra">
+
+                                <option value="Você">
+                                    Você
+                                </option>
+
+                                <option value="Sua esposa">
+                                    Sua esposa
+                                </option>
+
+                                <option value="Casal">
+                                    Casal
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        class="installment-preview"
+                        id="installmentPreview"
+                    >
+                        Selecione os valores para visualizar o parcelamento.
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            + Registrar compra
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FATURA
+        ================================================== -->
+
+        <section class="invoice-panel">
+
+
+            <div class="list-header">
+
+                <div>
+
+                    <small>
+                        FATURA
+                    </small>
+
+                    <h2 id="invoiceTitle">
+                        Fatura do mês
+                    </h2>
+
+                </div>
+
+
+                <strong
+                    class="invoice-total"
+                    id="invoiceTotal"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Compra
+                            </th>
+
+                            <th>
+                                Cartão
+                            </th>
+
+                            <th>
+                                Categoria
+                            </th>
+
+                            <th>
+                                Parcela
+                            </th>
+
+                            <th>
+                                Responsável
+                            </th>
+
+                            <th>
+                                Valor
+                            </th>
+
+                            <th>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="invoiceList">
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="empty-table"
+                    id="emptyInvoice"
+                >
+                    Nenhuma compra na fatura deste mês.
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/cartoes.js"
+    ></script>
+
+
+</body>
+
+</html>

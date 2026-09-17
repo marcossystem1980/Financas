@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Investimentos | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/investimentos.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content investimentos-page">
+
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    PLANEJAMENTO
+                </span>
+
+                <h1>
+                    Investimentos
+                </h1>
+
+                <p>
+                    Acompanhe os aportes e o crescimento dos objetivos financeiros.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="investment-summary">
+
+
+            <article class="investment-summary-card">
+
+                <span>
+                    APORTES NO MÊS
+                </span>
+
+                <strong id="aportesMes">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="investment-summary-card">
+
+                <span>
+                    TOTAL APORTADO
+                </span>
+
+                <strong id="totalAportado">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="investment-summary-card">
+
+                <span>
+                    APORTE MÉDIO
+                </span>
+
+                <strong id="aporteMedio">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="investment-summary-card highlight">
+
+                <span>
+                    APORTES REGISTRADOS
+                </span>
+
+                <strong id="quantidadeAportes">
+                    0
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             META DE INVESTIMENTO
+        ================================================== -->
+
+        <section class="investment-goal-banner">
+
+            <div>
+
+                <small>
+                    META PRINCIPAL
+                </small>
+
+                <h2 id="metaPrincipalNome">
+                    Nenhuma meta de investimento
+                </h2>
+
+                <p id="metaPrincipalDescricao">
+                    Crie uma meta do tipo Investimento em Metas.
+                </p>
+
+            </div>
+
+
+            <div class="investment-goal-number">
+
+                <strong id="metaPrincipalPercentual">
+                    0%
+                </strong>
+
+                <span>
+                    concluído
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
+
+        <section class="investment-layout">
+
+
+            <article class="investment-form-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVO APORTE
+                        </small>
+
+                        <h2>
+                            Registrar investimento
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="investimentoForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group">
+
+                            <label for="valorAporte">
+                                Valor
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorAporte"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="dataAporte">
+                                Data
+                            </label>
+
+                            <input
+                                type="date"
+                                id="dataAporte"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="tipoInvestimento">
+                                Tipo
+                            </label>
+
+                            <select
+                                id="tipoInvestimento"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Reserva de emergência">
+                                    Reserva de emergência
+                                </option>
+
+                                <option value="Renda fixa">
+                                    Renda fixa
+                                </option>
+
+                                <option value="Fundo">
+                                    Fundo
+                                </option>
+
+                                <option value="Ações">
+                                    Ações
+                                </option>
+
+                                <option value="Outro">
+                                    Outro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="responsavelInvestimento">
+                                Responsável
+                            </label>
+
+                            <select
+                                id="responsavelInvestimento"
+                                required
+                            >
+
+                                <option value="Casal">
+                                    Casal
+                                </option>
+
+                                <option value="Você">
+                                    Você
+                                </option>
+
+                                <option value="Sua esposa">
+                                    Sua esposa
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="metaInvestimento">
+                                Vincular à meta
+                            </label>
+
+                            <select
+                                id="metaInvestimento"
+                            >
+
+                                <option value="">
+                                    Sem meta específica
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="observacaoAporte">
+                                Observação
+                            </label>
+
+                            <input
+                                type="text"
+                                id="observacaoAporte"
+                                placeholder="Ex.: Aporte mensal"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            + Registrar aporte
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 ÚLTIMOS APORTES
+            ================================================== -->
+
+            <article class="recent-investments-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            HISTÓRICO
+                        </small>
+
+                        <h2>
+                            Últimos aportes
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="recentInvestments"
+                    class="recent-list"
+                >
+
+                    <div class="empty-investment-state">
+                        Nenhum aporte registrado.
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             TODOS OS APORTES
+        ================================================== -->
+
+        <section class="investment-history-card">
+
+
+            <div class="list-header">
+
+                <div>
+
+                    <small>
+                        MOVIMENTAÇÕES
+                    </small>
+
+                    <h2>
+                        Histórico de investimentos
+                    </h2>
+
+                </div>
+
+                <span
+                    id="historicoCount"
+                    class="history-count"
+                >
+                    0 registros
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Valor
+                            </th>
+
+                            <th>
+                                Tipo
+                            </th>
+
+                            <th>
+                                Responsável
+                            </th>
+
+                            <th>
+                                Meta
+                            </th>
+
+                            <th>
+                                Observação
+                            </th>
+
+                            <th>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="investmentHistory"
+                    >
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="empty-table"
+                    id="emptyHistory"
+                >
+                    Nenhum investimento registrado.
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/investimentos.js"
+    ></script>
+
+
+</body>
+
+</html>

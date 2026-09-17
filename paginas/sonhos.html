@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sonhos | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/sonhos.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RELATÓRIOS -->
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             RODAPÉ
+        ================================================== -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content sonhos-page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    SONHOS
+                </span>
+
+                <h1>
+                    Nossos Sonhos
+                </h1>
+
+                <p>
+                    Planejem juntos o que vocês querem conquistar.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-button header-button"
+                id="scrollNovoSonho"
+            >
+                + Novo sonho
+            </button>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="dream-summary">
+
+
+            <article class="dream-summary-card">
+
+                <span>
+                    SONHOS ATIVOS
+                </span>
+
+                <strong id="sonhosAtivos">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="dream-summary-card">
+
+                <span>
+                    VALOR DOS SONHOS
+                </span>
+
+                <strong id="valorSonhos">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="dream-summary-card">
+
+                <span>
+                    JÁ RESERVADO
+                </span>
+
+                <strong id="valorReservado">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="dream-summary-card highlight">
+
+                <span>
+                    FALTA REALIZAR
+                </span>
+
+                <strong id="valorFaltante">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DESTAQUE
+        ================================================== -->
+
+        <section
+            class="featured-dream"
+            id="featuredDream"
+        >
+
+            <div class="featured-image">
+
+                <span>
+                    ♡
+                </span>
+
+            </div>
+
+
+            <div class="featured-content">
+
+                <small>
+                    NOSSO DESTAQUE
+                </small>
+
+                <h2 id="featuredName">
+                    Ainda não temos um sonho cadastrado
+                </h2>
+
+                <p id="featuredDescription">
+                    Adicione um sonho para começar a acompanhar essa conquista.
+                </p>
+
+
+                <div class="featured-progress">
+
+                    <div class="featured-progress-info">
+
+                        <span>
+                            Progresso
+                        </span>
+
+                        <strong id="featuredPercent">
+                            0%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="featured-progress-bar">
+
+                        <span
+                            id="featuredBar"
+                            style="width: 0%;"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+        <section class="dream-toolbar">
+
+
+            <div class="dream-filters">
+
+                <button
+                    class="dream-filter active"
+                    data-filter="todos"
+                >
+                    Todos
+                </button>
+
+                <button
+                    class="dream-filter"
+                    data-filter="viagem"
+                >
+                    Viagens
+                </button>
+
+                <button
+                    class="dream-filter"
+                    data-filter="casa"
+                >
+                    Casa
+                </button>
+
+                <button
+                    class="dream-filter"
+                    data-filter="experiencia"
+                >
+                    Experiências
+                </button>
+
+                <button
+                    class="dream-filter"
+                    data-filter="outro"
+                >
+                    Outros
+                </button>
+
+            </div>
+
+
+            <select
+                id="ordenacao"
+                class="sort-select"
+            >
+
+                <option value="prioridade">
+                    Prioridade
+                </option>
+
+                <option value="progresso">
+                    Maior progresso
+                </option>
+
+                <option value="menor">
+                    Menor valor
+                </option>
+
+                <option value="maior">
+                    Maior valor
+                </option>
+
+                <option value="nome">
+                    Nome
+                </option>
+
+            </select>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             GRID
+        ================================================== -->
+
+        <section
+            class="dream-grid"
+            id="dreamGrid"
+        >
+
+            <div class="empty-dream-state">
+
+                Nenhum sonho cadastrado ainda.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NOVO SONHO
+        ================================================== -->
+
+        <section
+            class="new-dream-section"
+            id="novoSonho"
+        >
+
+            <article class="dream-form-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVO OBJETIVO
+                        </small>
+
+                        <h2>
+                            Adicionar sonho
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="dreamForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group">
+
+                            <label for="nomeSonho">
+                                Nome
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeSonho"
+                                placeholder="Ex.: Viagem para Recife"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="tipoSonho">
+                                Categoria
+                            </label>
+
+                            <select
+                                id="tipoSonho"
+                                required
+                            >
+
+                                <option value="Viagem">
+                                    Viagem
+                                </option>
+
+                                <option value="Casa">
+                                    Casa
+                                </option>
+
+                                <option value="Experiência">
+                                    Experiência
+                                </option>
+
+                                <option value="Outro">
+                                    Outro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorSonhoInput">
+                                Valor estimado
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorSonhoInput"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorReservadoInput">
+                                Já reservado
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorReservadoInput"
+                                    min="0"
+                                    step="0.01"
+                                    value="0"
+                                    placeholder="0,00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="prioridadeSonho">
+                                Prioridade
+                            </label>
+
+                            <select
+                                id="prioridadeSonho"
+                                required
+                            >
+
+                                <option value="Essencial">
+                                    Essencial
+                                </option>
+
+                                <option value="Desejável">
+                                    Desejável
+                                </option>
+
+                                <option value="Sonho">
+                                    Sonho
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="prazoSonho">
+                                Data desejada
+                            </label>
+
+                            <input
+                                type="date"
+                                id="prazoSonho"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="imagemSonho">
+                                Foto
+                            </label>
+
+                            <input
+                                type="file"
+                                id="imagemSonho"
+                                accept="image/*"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="descricaoSonho">
+                                Descrição
+                            </label>
+
+                            <textarea
+                                id="descricaoSonho"
+                                rows="3"
+                                placeholder="Conte um pouco sobre esse sonho..."
+                            ></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        class="dream-image-preview"
+                        id="dreamImagePreview"
+                    >
+
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Adicionar sonho
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+
+            </article>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/sonhos.js"
+    ></script>
+
+
+</body>
+
+</html>

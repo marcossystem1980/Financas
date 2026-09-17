@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mobília | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/mobilia.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RELATÓRIOS -->
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- RODAPÉ -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content mobilia-page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    SONHOS
+                </span>
+
+                <h1>
+                    Mobília da Casa
+                </h1>
+
+                <p>
+                    Transforme os planos da casa em conquistas.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-button header-button"
+                id="scrollNovoItem"
+            >
+                + Novo item
+            </button>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="furniture-summary">
+
+
+            <article class="furniture-summary-card">
+
+                <span>
+                    ITENS
+                </span>
+
+                <strong id="totalItens">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="furniture-summary-card">
+
+                <span>
+                    VALOR TOTAL
+                </span>
+
+                <strong id="valorTotal">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="furniture-summary-card">
+
+                <span>
+                    JÁ COMPRADO
+                </span>
+
+                <strong id="valorComprado">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="furniture-summary-card highlight">
+
+                <span>
+                    FALTA CONQUISTAR
+                </span>
+
+                <strong id="valorFaltante">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PROGRESSO
+        ================================================== -->
+
+        <section class="furniture-progress-panel">
+
+
+            <div class="progress-header">
+
+                <div>
+
+                    <small>
+                        PROGRESSO DA CASA
+                    </small>
+
+                    <h2>
+                        Quanto já conseguimos mobilizar
+                    </h2>
+
+                </div>
+
+
+                <strong id="percentualCasa">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="big-progress-bar">
+
+                <span
+                    id="barraCasa"
+                    style="width: 0%;"
+                ></span>
+
+            </div>
+
+
+            <div class="progress-values">
+
+                <span id="progressoTexto">
+                    R$ 0,00 de R$ 0,00
+                </span>
+
+                <span>
+                    Valor dos itens comprados
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FILTROS
+        ================================================== -->
+
+        <section class="furniture-toolbar">
+
+
+            <div class="filter-group">
+
+                <button
+                    class="filter-button active"
+                    data-filter="todos"
+                >
+                    Todos
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="essencial"
+                >
+                    Essencial
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="desejavel"
+                >
+                    Desejável
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="luxo"
+                >
+                    Luxo
+                </button>
+
+            </div>
+
+
+            <select
+                class="sort-select"
+                id="ordenacao"
+            >
+
+                <option value="prioridade">
+                    Ordenar por prioridade
+                </option>
+
+                <option value="menor">
+                    Menor valor
+                </option>
+
+                <option value="maior">
+                    Maior valor
+                </option>
+
+                <option value="nome">
+                    Nome
+                </option>
+
+                <option value="status">
+                    Comprados primeiro
+                </option>
+
+            </select>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CARDS
+        ================================================== -->
+
+        <section
+            class="furniture-grid"
+            id="furnitureGrid"
+        >
+
+            <div class="empty-furniture-state">
+
+                Nenhum item cadastrado.
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NOVO ITEM
+        ================================================== -->
+
+        <section
+            class="new-furniture-section"
+            id="novoItem"
+        >
+
+
+            <article class="furniture-form-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVO SONHO
+                        </small>
+
+                        <h2>
+                            Adicionar item para a casa
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="furnitureForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group">
+
+                            <label for="nomeItem">
+                                Nome do item
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeItem"
+                                placeholder="Ex.: Sofá"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="ambiente">
+                                Ambiente
+                            </label>
+
+                            <select id="ambiente">
+
+                                <option value="Sala">
+                                    Sala
+                                </option>
+
+                                <option value="Quarto">
+                                    Quarto
+                                </option>
+
+                                <option value="Cozinha">
+                                    Cozinha
+                                </option>
+
+                                <option value="Banheiro">
+                                    Banheiro
+                                </option>
+
+                                <option value="Escritório">
+                                    Escritório
+                                </option>
+
+                                <option value="Área externa">
+                                    Área externa
+                                </option>
+
+                                <option value="Outro">
+                                    Outro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorItem">
+                                Valor estimado
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorItem"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="prioridade">
+                                Prioridade
+                            </label>
+
+                            <select
+                                id="prioridade"
+                                required
+                            >
+
+                                <option value="Essencial">
+                                    Essencial
+                                </option>
+
+                                <option value="Desejável">
+                                    Desejável
+                                </option>
+
+                                <option value="Luxo">
+                                    Luxo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="linkLoja">
+                                Link da loja
+                            </label>
+
+                            <input
+                                type="url"
+                                id="linkLoja"
+                                placeholder="https://..."
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="imagemItem">
+                                Foto
+                            </label>
+
+                            <input
+                                type="file"
+                                id="imagemItem"
+                                accept="image/*"
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="observacaoItem">
+                                Observação
+                            </label>
+
+                            <textarea
+                                id="observacaoItem"
+                                rows="3"
+                                placeholder="Ex.: Queremos comprar esse modelo em tecido bege."
+                            ></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- PREVIEW -->
+
+                    <div
+                        class="image-preview"
+                        id="imagePreview"
+                    >
+
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Adicionar item
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+
+            </article>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/mobilia.js"
+    ></script>
+
+
+</body>
+
+</html>

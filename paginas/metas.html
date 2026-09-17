@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Metas | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/metas.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">⌂</span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content metas-page">
+
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    PLANEJAMENTO
+                </span>
+
+                <h1>
+                    Metas
+                </h1>
+
+                <p>
+                    Transforme objetivos em planos financeiros.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-button header-button"
+                id="scrollNovaMeta"
+            >
+                + Nova meta
+            </button>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="goals-summary">
+
+
+            <article class="goal-summary-card">
+
+                <span>
+                    METAS ATIVAS
+                </span>
+
+                <strong id="metasAtivas">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="goal-summary-card">
+
+                <span>
+                    TOTAL DOS OBJETIVOS
+                </span>
+
+                <strong id="totalObjetivos">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="goal-summary-card">
+
+                <span>
+                    JÁ CONQUISTADO
+                </span>
+
+                <strong id="totalAtual">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="goal-summary-card highlight">
+
+                <span>
+                    FALTA CONQUISTAR
+                </span>
+
+                <strong id="totalFaltante">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             METAS
+        ================================================== -->
+
+        <section class="goals-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        OBJETIVOS DO CASAL
+                    </small>
+
+                    <h2>
+                        Nossas metas
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="goals-grid"
+                id="goalsGrid"
+            >
+
+                <div class="empty-goal-state">
+
+                    Nenhuma meta cadastrada ainda.
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             NOVA META
+        ================================================== -->
+
+        <section
+            class="new-goal-section"
+            id="novaMeta"
+        >
+
+
+            <div class="form-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVO OBJETIVO
+                        </small>
+
+                        <h2>
+                            Criar meta
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="metaForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group full">
+
+                            <label for="nomeMeta">
+                                Nome da meta
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeMeta"
+                                placeholder="Ex.: Reserva de emergência"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="tipoMeta">
+                                Tipo
+                            </label>
+
+                            <select
+                                id="tipoMeta"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Reserva">
+                                    Reserva
+                                </option>
+
+                                <option value="Investimento">
+                                    Investimento
+                                </option>
+
+                                <option value="Viagem">
+                                    Viagem
+                                </option>
+
+                                <option value="Casa">
+                                    Casa
+                                </option>
+
+                                <option value="Compra">
+                                    Compra
+                                </option>
+
+                                <option value="Outro">
+                                    Outro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="responsavelMeta">
+                                Meta de
+                            </label>
+
+                            <select
+                                id="responsavelMeta"
+                                required
+                            >
+
+                                <option value="Casal">
+                                    Casal
+                                </option>
+
+                                <option value="Você">
+                                    Você
+                                </option>
+
+                                <option value="Sua esposa">
+                                    Sua esposa
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorObjetivo">
+                                Valor do objetivo
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorObjetivo"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valorAtual">
+                                Quanto já temos?
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valorAtual"
+                                    min="0"
+                                    step="0.01"
+                                    value="0"
+                                    placeholder="0,00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="aporteMensal">
+                                Aporte mensal planejado
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="aporteMensal"
+                                    min="0"
+                                    step="0.01"
+                                    value="0"
+                                    placeholder="0,00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="prazoMeta">
+                                Prazo desejado
+                            </label>
+
+                            <input
+                                type="date"
+                                id="prazoMeta"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="descricaoMeta">
+                                Observação
+                            </label>
+
+                            <textarea
+                                id="descricaoMeta"
+                                rows="3"
+                                placeholder="Ex.: Queremos atingir esse valor até o final do próximo ano."
+                            ></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Criar meta
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/metas.js"
+    ></script>
+
+
+</body>
+
+</html>

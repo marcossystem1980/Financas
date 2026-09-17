@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Despesas | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/despesas.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MENU MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">⌂</span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- FINANÇAS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button open"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu open"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item submenu-active"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLANEJAMENTO -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SONHOS -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="main-content despesas-page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header despesas-header">
+
+            <div>
+
+                <span class="page-overline">
+                    FINANÇAS
+                </span>
+
+                <h1>
+                    Despesas
+                </h1>
+
+                <p>
+                    Registre e acompanhe os gastos do casal.
+                </p>
+
+            </div>
+
+
+            <div class="month-selector">
+
+                <label for="mesFiltro">
+                    Mês
+                </label>
+
+                <select id="mesFiltro">
+
+                    <option value="2026-09">
+                        Setembro 2026
+                    </option>
+
+                    <option value="2026-10">
+                        Outubro 2026
+                    </option>
+
+                    <option value="2026-11">
+                        Novembro 2026
+                    </option>
+
+                    <option value="2026-12">
+                        Dezembro 2026
+                    </option>
+
+                </select>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="expense-summary">
+
+
+            <article class="expense-summary-card">
+
+                <span>
+                    TOTAL DO MÊS
+                </span>
+
+                <strong id="totalMes">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="expense-summary-card">
+
+                <span>
+                    FIXAS
+                </span>
+
+                <strong id="totalFixas">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="expense-summary-card">
+
+                <span>
+                    VARIÁVEIS
+                </span>
+
+                <strong id="totalVariaveis">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+            <article class="expense-summary-card highlight">
+
+                <span>
+                    INVESTIMENTOS
+                </span>
+
+                <strong id="totalInvestimentos">
+                    R$ 0,00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             NOVA DESPESA
+        ================================================== -->
+
+        <section class="expense-layout">
+
+
+            <article class="expense-form-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            NOVO REGISTRO
+                        </small>
+
+                        <h2>
+                            Adicionar despesa
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <form id="despesaForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="input-group full">
+
+                            <label for="descricao">
+                                Descrição
+                            </label>
+
+                            <input
+                                type="text"
+                                id="descricao"
+                                placeholder="Ex.: Supermercado"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="valor">
+                                Valor
+                            </label>
+
+                            <div class="money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="valor"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="0,00"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="data">
+                                Data
+                            </label>
+
+                            <input
+                                type="date"
+                                id="data"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="categoria">
+                                Categoria
+                            </label>
+
+                            <select
+                                id="categoria"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Casa">
+                                    Casa
+                                </option>
+
+                                <option value="Mercado">
+                                    Mercado
+                                </option>
+
+                                <option value="Transporte">
+                                    Transporte
+                                </option>
+
+                                <option value="Lazer">
+                                    Lazer
+                                </option>
+
+                                <option value="Saúde">
+                                    Saúde
+                                </option>
+
+                                <option value="Pets">
+                                    Pets
+                                </option>
+
+                                <option value="Pessoal">
+                                    Pessoal
+                                </option>
+
+                                <option value="Outros">
+                                    Outros
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="tipo">
+                                Tipo
+                            </label>
+
+                            <select
+                                id="tipo"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Fixa">
+                                    Fixa
+                                </option>
+
+                                <option value="Variável">
+                                    Variável
+                                </option>
+
+                                <option value="Investimento">
+                                    Investimento
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="pagador">
+                                Quem pagou?
+                            </label>
+
+                            <select
+                                id="pagador"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="Você">
+                                    Você
+                                </option>
+
+                                <option value="Sua esposa">
+                                    Sua esposa
+                                </option>
+
+                                <option value="Casal">
+                                    Casal
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="status">
+                                Status
+                            </label>
+
+                            <select
+                                id="status"
+                                required
+                            >
+
+                                <option value="Pago">
+                                    Pago
+                                </option>
+
+                                <option value="Pendente">
+                                    Pendente
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Limpar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            + Adicionar despesa
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </article>
+
+
+
+            <!-- =================================================
+                 CATEGORIAS
+            ================================================== -->
+
+            <article class="category-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <small>
+                            DISTRIBUIÇÃO
+                        </small>
+
+                        <h2>
+                            Por categoria
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div id="categoriasResumo">
+
+                    <div class="empty-state">
+
+                        <span>
+                            Nenhuma despesa registrada.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             LISTA DE DESPESAS
+        ================================================== -->
+
+        <section class="expense-list-card">
+
+
+            <div class="list-header">
+
+                <div>
+
+                    <small>
+                        MOVIMENTAÇÕES
+                    </small>
+
+                    <h2>
+                        Despesas registradas
+                    </h2>
+
+                </div>
+
+
+                <span
+                    class="expense-count"
+                    id="quantidadeDespesas"
+                >
+                    0 registros
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Descrição
+                            </th>
+
+                            <th>
+                                Categoria
+                            </th>
+
+                            <th>
+                                Tipo
+                            </th>
+
+                            <th>
+                                Pagador
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Valor
+                            </th>
+
+                            <th>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="listaDespesas">
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="empty-table"
+                    id="emptyTable"
+                >
+
+                    Nenhuma despesa registrada neste mês.
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script
+        src="../assets/js/despesas.js"
+    ></script>
+
+
+</body>
+
+</html>

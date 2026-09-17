@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BOTÃO HAMBURGER - MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <!-- =====================================================
+         FUNDO DO MENU MOBILE
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <!-- =============================================
+                 INÍCIO
+            ============================================== -->
+
+            <a
+                href="index.html"
+                class="menu-item active"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- =============================================
+                 FINANÇAS
+            ============================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="paginas/financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="paginas/despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="paginas/contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="paginas/cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 PLANEJAMENTO
+            ============================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="paginas/metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="paginas/investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 SONHOS
+            ============================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="paginas/sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="paginas/mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                    <a
+                        href="paginas/wishlist.html"
+                        class="submenu-item"
+                    >
+                        Wishlist
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 RELATÓRIOS
+            ============================================== -->
+
+            <a
+                href="paginas/relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- =================================================
+             RODAPÉ
+        ================================================== -->
+
+        <div class="sidebar-footer">
+
+
+            <a
+                href="paginas/configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+<!-- =====================================================
+     CONTEÚDO PRINCIPAL
+====================================================== -->
+
+<main class="main-content">
+
+
+    <!-- =================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <header class="page-header">
+
+        <div>
+
+            <span class="page-overline">
+                VISÃO GERAL
+            </span>
+
+            <h1>
+                Meu Financeiro
+            </h1>
+
+            <p>
+                Acompanhe a saúde financeira do casal.
+            </p>
+
+        </div>
+
+        <div class="dashboard-month">
+
+            <span>
+                REFERÊNCIA
+            </span>
+
+            <strong id="dashboardMes">
+                —
+            </strong>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         CARDS PRINCIPAIS
+    ================================================== -->
+
+    <section class="dashboard-cards">
+
+
+        <article class="card">
+
+            <span class="card-label">
+                RENDA DO CASAL
+            </span>
+
+            <strong
+                class="card-value"
+                id="rendaTotalDashboard"
+            >
+                R$ 0,00
+            </strong>
+
+            <span class="card-description">
+                Renda total do mês
+            </span>
+
+        </article>
+
+
+        <article class="card">
+
+            <span class="card-label">
+                DESPESAS
+            </span>
+
+            <strong
+                class="card-value"
+                id="despesasDashboard"
+            >
+                R$ 0,00
+            </strong>
+
+            <span class="card-description">
+                Gastos registrados
+            </span>
+
+        </article>
+
+
+        <article class="card">
+
+            <span class="card-label">
+                INVESTIMENTOS
+            </span>
+
+            <strong
+                class="card-value"
+                id="investimentosDashboard"
+            >
+                R$ 0,00
+            </strong>
+
+            <span class="card-description">
+                Aportes realizados
+            </span>
+
+        </article>
+
+
+        <article class="card">
+
+            <span class="card-label">
+                DISPONÍVEL
+            </span>
+
+            <strong
+                class="card-value"
+                id="disponivelDashboard"
+            >
+                R$ 0,00
+            </strong>
+
+            <span class="card-description">
+                Após gastos e compromissos
+            </span>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         LINHA 2
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- =================================================
+             DESTINO DO DINHEIRO
+        ================================================== -->
+
+        <article class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-overline">
+                        DISTRIBUIÇÃO
+                    </span>
+
+                    <h2>
+                        Destino do dinheiro
+                    </h2>
+
+                </div>
+
+                <a
+                    href="paginas/financeiro.html"
+                    class="panel-action"
+                >
+                    Ver detalhes
+                </a>
+
+            </div>
+
+
+            <div class="salary-total">
+
+                <span>
+                    Renda do casal
+                </span>
+
+                <strong
+                    id="distribuicaoTotal"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <!-- CASA E DESPESAS -->
+
+            <div class="distribution-item">
+
+                <div class="distribution-info">
+
+                    <span>
+                        🏠 Casa e despesas
+                    </span>
+
+                    <strong
+                        id="distCasaPercentual"
+                    >
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="distribution-bar">
+
+                    <span
+                        id="distCasaBar"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <span
+                    class="distribution-value"
+                    id="distCasaValor"
+                >
+                    R$ 0,00
+                </span>
+
+            </div>
+
+
+            <!-- INVESTIMENTOS -->
+
+            <div class="distribution-item">
+
+                <div class="distribution-info">
+
+                    <span>
+                        💰 Investimentos
+                    </span>
+
+                    <strong
+                        id="distInvestimentosPercentual"
+                    >
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="distribution-bar">
+
+                    <span
+                        id="distInvestimentosBar"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <span
+                    class="distribution-value"
+                    id="distInvestimentosValor"
+                >
+                    R$ 0,00
+                </span>
+
+            </div>
+
+
+            <!-- PESSOAL -->
+
+            <div class="distribution-item">
+
+                <div class="distribution-info">
+
+                    <span>
+                        🛍 Gastos pessoais
+                    </span>
+
+                    <strong
+                        id="distPessoalPercentual"
+                    >
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="distribution-bar">
+
+                    <span
+                        id="distPessoalBar"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <span
+                    class="distribution-value"
+                    id="distPessoalValor"
+                >
+                    R$ 0,00
+                </span>
+
+            </div>
+
+
+            <!-- CONTAS -->
+
+            <div class="distribution-item">
+
+                <div class="distribution-info">
+
+                    <span>
+                        📅 Contas pendentes
+                    </span>
+
+                    <strong
+                        id="distContasPercentual"
+                    >
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="distribution-bar">
+
+                    <span
+                        id="distContasBar"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <span
+                    class="distribution-value"
+                    id="distContasValor"
+                >
+                    R$ 0,00
+                </span>
+
+            </div>
+
+
+            <!-- LIVRE -->
+
+            <div class="distribution-item">
+
+                <div class="distribution-info">
+
+                    <span>
+                        💵 Livre
+                    </span>
+
+                    <strong
+                        id="distLivrePercentual"
+                    >
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="distribution-bar">
+
+                    <span
+                        id="distLivreBar"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <span
+                    class="distribution-value"
+                    id="distLivreValor"
+                >
+                    R$ 0,00
+                </span>
+
+            </div>
+
+
+        </article>
+
+
+
+        <!-- =================================================
+             GASTOS POR CATEGORIA
+        ================================================== -->
+
+        <article class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-overline">
+                        ACOMPANHAMENTO
+                    </span>
+
+                    <h2>
+                        Gastos por categoria
+                    </h2>
+
+                </div>
+
+                <a
+                    href="paginas/despesas.html"
+                    class="panel-action"
+                >
+                    Ver despesas
+                </a>
+
+            </div>
+
+
+            <div id="gastosCategorias">
+
+                <div class="empty-state-dashboard">
+
+                    Nenhuma despesa registrada neste mês.
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         LINHA 3
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- =================================================
+             PRÓXIMAS CONTAS
+        ================================================== -->
+
+        <article class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-overline">
+                        COMPROMISSOS
+                    </span>
+
+                    <h2>
+                        Próximas contas
+                    </h2>
+
+                </div>
+
+                <a
+                    href="paginas/contas.html"
+                    class="panel-action"
+                >
+                    Ver todas
+                </a>
+
+            </div>
+
+
+            <div id="dashboardContas">
+
+                <div class="empty-state-dashboard">
+
+                    Nenhuma conta pendente.
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- =================================================
+             METAS
+        ================================================== -->
+
+        <article class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="panel-overline">
+                        OBJETIVOS
+                    </span>
+
+                    <h2>
+                        Metas
+                    </h2>
+
+                </div>
+
+                <a
+                    href="paginas/metas.html"
+                    class="panel-action"
+                >
+                    Ver metas
+                </a>
+
+            </div>
+
+
+            <div id="dashboardMetas">
+
+                <div class="empty-state-dashboard">
+
+                    Nenhuma meta cadastrada.
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+<!-- =================================================
+     LINHA 4 — SONHOS E CASA
+================================================== -->
+
+<section class="dashboard-grid">
+
+
+    <!-- =================================================
+         SONHOS
+    ================================================== -->
+
+    <article class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-overline">
+                    SONHOS
+                </span>
+
+                <h2>
+                    Nossos Sonhos
+                </h2>
+
+            </div>
+
+            <a
+                href="paginas/sonhos.html"
+                class="panel-action"
+            >
+                Ver sonhos
+            </a>
+
+        </div>
+
+
+        <div id="dashboardSonhos">
+
+            <div class="empty-state-dashboard">
+
+                Nenhum sonho cadastrado.
+
+            </div>
+
+        </div>
+
+    </article>
+
+
+
+    <!-- =================================================
+         MOBÍLIA
+    ================================================== -->
+
+    <article class="dashboard-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="panel-overline">
+                    CASA
+                </span>
+
+                <h2>
+                    Mobília
+                </h2>
+
+            </div>
+
+            <a
+                href="paginas/mobilia.html"
+                class="panel-action"
+            >
+                Ver mobília
+            </a>
+
+        </div>
+
+
+        <div class="home-dashboard-progress">
+
+
+            <div class="home-progress-header">
+
+                <span>
+                    Progresso da casa
+                </span>
+
+                <strong id="mobiliaPercentual">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="home-progress-bar">
+
+                <span
+                    id="mobiliaBarra"
+                    style="width: 0%;"
+                ></span>
+
+            </div>
+
+
+            <div class="home-progress-values">
+
+                <span id="mobiliaComprado">
+                    R$ 0,00
+                </span>
+
+                <span id="mobiliaTotal">
+                    de R$ 0,00
+                </span>
+
+            </div>
+
+
+            <div
+                class="home-furniture-count"
+                id="mobiliaResumo"
+            >
+                Nenhum item cadastrado.
+            </div>
+
+
+        </div>
+
+    </article>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT DO MENU
+====================================================== -->
+
+<script
+    src="assets/js/menu.js"
+></script>
+
+
+<!-- =====================================================
+     JAVASCRIPT DO DASHBOARD
+====================================================== -->
+
+<script
+    src="assets/js/app.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,877 @@
+/* =========================================================
+   PÁGINA FINANCEIRO
+========================================================= */
+
+.financeiro-page {
+
+    max-width: 1500px;
+
+}
+
+
+/* =========================================================
+   SELETOR DO MÊS
+========================================================= */
+
+.page-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+}
+
+
+.month-selector {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    min-width: 190px;
+
+}
+
+
+.month-selector label {
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: var(--primary-light);
+
+}
+
+
+.month-selector select {
+
+    height: 40px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--card);
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    outline: none;
+
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.finance-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.finance-summary-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    padding: 21px 22px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+.finance-summary-card span {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-light);
+
+    margin-bottom: 10px;
+
+}
+
+
+.finance-summary-card strong {
+
+    font-size: 22px;
+
+    color: var(--primary);
+
+}
+
+
+.finance-summary-card.highlight {
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a4a38,
+            #805b43
+        );
+
+    border-color: transparent;
+
+}
+
+
+.finance-summary-card.highlight span {
+
+    color: #eadfd6;
+
+}
+
+
+.finance-summary-card.highlight strong {
+
+    color: #ffffff;
+
+}
+
+
+/* =========================================================
+   SEÇÃO
+========================================================= */
+
+.finance-section {
+
+    background: transparent;
+
+    margin-bottom: 22px;
+
+}
+
+
+.section-heading {
+
+    margin-bottom: 14px;
+
+}
+
+
+.section-heading > div {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.section-heading > div > span {
+
+    width: 31px;
+
+    height: 31px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.section-heading small {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+
+}
+
+
+.section-heading h2 {
+
+    font-size: 19px;
+
+    color: var(--text);
+
+}
+
+
+/* =========================================================
+   PESSOAS
+========================================================= */
+
+.people-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.person-card,
+.planning-card,
+.result-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+.person-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 23px;
+
+}
+
+
+.person-avatar {
+
+    width: 43px;
+
+    height: 43px;
+
+    border-radius: 50%;
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+
+.person-label {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.2px;
+
+    color: var(--primary-light);
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+
+}
+
+
+.person-header h3 {
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================================
+   CAMPOS
+========================================================= */
+
+.input-group {
+
+    margin-bottom: 17px;
+
+}
+
+
+.input-group:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color: var(--text);
+
+    margin-bottom: 7px;
+
+}
+
+
+.money-input {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 44px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    overflow: hidden;
+
+}
+
+
+.money-input > span {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0 12px;
+
+    color: var(--primary-light);
+
+    font-size: 12px;
+
+    border-right:
+        1px solid #eee7df;
+
+}
+
+
+.money-input input {
+
+    width: 100%;
+
+    height: 100%;
+
+    padding: 0 12px;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+}
+
+
+.money-input:focus-within {
+
+    border-color: var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(138, 106, 82, 0.08);
+
+}
+
+
+/* =========================================================
+   PERCENTUAL
+========================================================= */
+
+.person-percentage {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-top: 16px;
+
+    margin-top: 3px;
+
+    border-top:
+        1px solid #eee7df;
+
+}
+
+
+.person-percentage span {
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+}
+
+
+.person-percentage strong {
+
+    font-size: 18px;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   CUSTOS
+========================================================= */
+
+.costs-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        0.85fr 1.15fr;
+
+    gap: 18px;
+
+}
+
+
+.card-heading {
+
+    margin-bottom: 21px;
+
+}
+
+
+.card-heading small {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.2px;
+
+    color: var(--primary-light);
+
+    font-weight: 700;
+
+    margin-bottom: 4px;
+
+}
+
+
+.card-heading h3 {
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+.result-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffefa,
+            #f8f1e8
+        );
+
+}
+
+
+.contribution {
+
+    margin-bottom: 21px;
+
+}
+
+
+.contribution:last-of-type {
+
+    margin-bottom: 0;
+
+}
+
+
+.contribution-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+}
+
+
+.contribution-header > div {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.contribution-header span {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.contribution-header small {
+
+    font-size: 10px;
+
+    color: var(--primary-light);
+
+    background: var(--primary-soft);
+
+    border-radius: 20px;
+
+    padding: 3px 7px;
+
+}
+
+
+.contribution-header > strong {
+
+    font-size: 17px;
+
+    color: var(--primary);
+
+}
+
+
+.contribution-bar {
+
+    width: 100%;
+
+    height: 9px;
+
+    background: #e8dfd5;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.contribution-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+    transition:
+        width 0.3s ease;
+
+}
+
+
+.result-divider {
+
+    margin:
+        23px 0;
+
+    border-top:
+        1px solid #e4dbd1;
+
+}
+
+
+.remaining-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+}
+
+
+.remaining-grid div {
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.7
+    );
+
+    border:
+        1px solid #ece3da;
+
+    border-radius: 11px;
+
+    padding: 13px;
+
+}
+
+
+.remaining-grid span {
+
+    display: block;
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+    margin-bottom: 5px;
+
+}
+
+
+.remaining-grid strong {
+
+    font-size: 16px;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   INFORMAÇÃO
+========================================================= */
+
+.information-box {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    background: #f0e8df;
+
+    border:
+        1px solid #e2d5c7;
+
+    border-radius: 14px;
+
+    padding: 18px 19px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.information-icon {
+
+    width: 28px;
+
+    height: 28px;
+
+    min-width: 28px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-weight: 700;
+
+    font-size: 12px;
+
+}
+
+
+.information-box strong {
+
+    display: block;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.information-box p {
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .finance-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .costs-layout {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .page-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+    .month-selector {
+
+        width: 100%;
+
+    }
+
+    .finance-summary {
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+
+    }
+
+    .finance-summary-card {
+
+        padding: 17px;
+
+    }
+
+    .finance-summary-card strong {
+
+        font-size: 18px;
+
+    }
+
+    .people-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .remaining-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .finance-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

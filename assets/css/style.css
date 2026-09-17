@@ -1,0 +1,1527 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
+
+:root {
+
+    --bg: #f6f1e8;
+
+    --sidebar: #fffdf9;
+
+    --card: #ffffff;
+
+    --primary: #5a4032;
+
+    --primary-light: #8a6a52;
+
+    --primary-soft: #eee8e0;
+
+    --border: #ddd3c7;
+
+    --text: #342820;
+
+    --text-light: #756b63;
+
+    --danger: #a34848;
+
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+
+    min-height: 100vh;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 240px;
+
+    background: var(--sidebar);
+
+    border-right:
+        1px solid var(--border);
+
+    display: flex;
+
+    flex-direction: column;
+
+    z-index: 1000;
+
+}
+
+
+/* =========================================================
+   CABEÇALHO DA SIDEBAR
+========================================================= */
+
+.sidebar-header {
+
+    padding:
+        28px 20px 24px;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.logo-area {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+}
+
+
+.logo {
+
+    max-width: 150px;
+
+    max-height: 65px;
+
+    object-fit: contain;
+
+}
+
+
+.system-name h2 {
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    color: var(--primary);
+
+    margin-bottom: 5px;
+
+}
+
+
+.system-name span {
+
+    font-size: 12px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.menu {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 18px 12px;
+
+}
+
+
+.menu-item,
+.menu-group-button {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        12px 12px;
+
+    border: 0;
+
+    background: transparent;
+
+    border-radius: 11px;
+
+    text-decoration: none;
+
+    color: #635850;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.menu-item:hover,
+.menu-group-button:hover {
+
+    background: #f2ece4;
+
+    color: var(--primary);
+
+}
+
+
+.menu-item.active {
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+    font-weight: 600;
+
+}
+
+
+.menu-icon {
+
+    width: 20px;
+
+    min-width: 20px;
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 15px;
+
+}
+
+
+.menu-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.menu-arrow {
+
+    margin-left: auto;
+
+    font-size: 18px;
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+/* =========================================================
+   GRUPOS
+========================================================= */
+
+.menu-group {
+
+    margin-top: 4px;
+
+}
+
+
+.menu-group-button.open {
+
+    background: #f6f0e8;
+
+    color: var(--primary);
+
+}
+
+
+.menu-group-button.open .menu-arrow {
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   SUBMENU
+========================================================= */
+
+.submenu {
+
+    display: none;
+
+    padding:
+        3px 0 5px 44px;
+
+}
+
+
+.submenu.open {
+
+    display: block;
+
+}
+
+
+.submenu-item {
+
+    display: block;
+
+    text-decoration: none;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    padding:
+        9px 10px;
+
+    border-radius: 8px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.submenu-item:hover {
+
+    background: #f3eee7;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   RODAPÉ
+========================================================= */
+
+.sidebar-footer {
+
+    padding: 12px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.logout {
+
+    color: var(--danger);
+
+}
+
+
+/* =========================================================
+   CONTEÚDO PRINCIPAL
+========================================================= */
+
+.main-content {
+
+    margin-left: 240px;
+
+    min-height: 100vh;
+
+    padding:
+        42px 48px;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-header {
+
+    margin-bottom: 30px;
+
+}
+
+
+.page-overline {
+
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.7px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 6px;
+
+}
+
+
+.page-header h1 {
+
+    font-size: 31px;
+
+    line-height: 1.1;
+
+    margin-bottom: 7px;
+
+}
+
+
+.page-header p {
+
+    font-size: 14px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.dashboard-cards {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px rgba(
+            70,
+            55,
+            45,
+            0.05
+        );
+
+}
+
+
+.card-label {
+
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-light);
+
+    margin-bottom: 12px;
+
+}
+
+
+.card-value {
+
+    font-size: 25px;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   BOTÃO HAMBURGER
+========================================================= */
+
+.mobile-menu-button {
+
+    display: none;
+
+    position: fixed;
+
+    top: 15px;
+    left: 15px;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: var(--card);
+
+    color: var(--primary);
+
+    font-size: 21px;
+
+    cursor: pointer;
+
+    z-index: 1200;
+
+}
+
+
+/* =========================================================
+   BOTÃO FECHAR
+========================================================= */
+
+.mobile-close-button {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.sidebar-overlay {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .dashboard-cards {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+
+    /* -----------------------------------------------
+       SIDEBAR
+    ------------------------------------------------ */
+
+    .sidebar {
+
+        left: -280px;
+
+        width: 260px;
+
+        box-shadow:
+            8px 0 30px
+            rgba(40, 30, 20, 0.12);
+
+        transition:
+            left 0.25s ease;
+
+    }
+
+
+    .sidebar.mobile-open {
+
+        left: 0;
+
+    }
+
+
+    /* -----------------------------------------------
+       OVERLAY
+    ------------------------------------------------ */
+
+    .sidebar-overlay {
+
+        position: fixed;
+
+        inset: 0;
+
+        background:
+            rgba(40, 30, 20, 0.35);
+
+        z-index: 900;
+
+    }
+
+
+    .sidebar-overlay.active {
+
+        display: block;
+
+    }
+
+
+    /* -----------------------------------------------
+       HAMBURGER
+    ------------------------------------------------ */
+
+    .mobile-menu-button {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+
+    /* -----------------------------------------------
+       FECHAR MENU
+    ------------------------------------------------ */
+
+    .mobile-close-button {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        position: absolute;
+
+        top: 15px;
+
+        right: 15px;
+
+        width: 34px;
+
+        height: 34px;
+
+        border: 0;
+
+        border-radius: 8px;
+
+        background: var(--primary-soft);
+
+        color: var(--primary);
+
+        font-size: 22px;
+
+        cursor: pointer;
+
+    }
+
+
+    /* -----------------------------------------------
+       CONTEÚDO
+    ------------------------------------------------ */
+
+    .main-content {
+
+        margin-left: 0;
+
+        padding:
+            78px 18px 30px;
+
+    }
+
+
+    /* -----------------------------------------------
+       HEADER
+    ------------------------------------------------ */
+
+    .page-header {
+
+        padding-left: 4px;
+
+        margin-bottom: 24px;
+
+    }
+
+
+    .page-header h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    /* -----------------------------------------------
+       CARDS
+    ------------------------------------------------ */
+
+    .dashboard-cards {
+
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+
+    }
+
+
+    .card {
+
+        padding: 20px;
+
+    }
+
+
+}
+
+/* =========================================================
+   DESCRIÇÃO DOS CARDS
+========================================================= */
+
+.card-description {
+
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   GRID PRINCIPAL DO DASHBOARD
+========================================================= */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 18px;
+
+}
+
+
+/* =========================================================
+   PAINÉIS
+========================================================= */
+
+.dashboard-panel {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px rgba(
+            70,
+            55,
+            45,
+            0.05
+        );
+
+}
+
+
+/* =========================================================
+   CABEÇALHO DOS PAINÉIS
+========================================================= */
+
+.panel-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.panel-overline {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 5px;
+
+}
+
+
+.panel-header h2 {
+
+    font-size: 18px;
+
+    color: var(--text);
+
+}
+
+
+.panel-action {
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--primary-light);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.panel-action:hover {
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   TOTAL DA DIVISÃO
+========================================================= */
+
+.salary-total {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 18px;
+
+    margin-bottom: 18px;
+
+    border-bottom:
+        1px solid #eee7df;
+
+}
+
+
+.salary-total span {
+
+    font-size: 12px;
+
+    color: var(--text-light);
+
+}
+
+
+.salary-total strong {
+
+    font-size: 19px;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   DIVISÃO DO SALÁRIO
+========================================================= */
+
+.distribution-item {
+
+    margin-bottom: 16px;
+
+}
+
+
+.distribution-item:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.distribution-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+
+}
+
+
+.distribution-info span {
+
+    color: var(--text);
+
+}
+
+
+.distribution-info strong {
+
+    color: var(--primary-light);
+
+}
+
+
+.distribution-bar {
+
+    width: 100%;
+
+    height: 7px;
+
+    background: #eee8e0;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.distribution-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary-light);
+
+    border-radius: inherit;
+
+}
+
+
+/* =========================================================
+   CONTROLE DE ORÇAMENTO
+========================================================= */
+
+.budget-status {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--primary-light);
+
+}
+
+
+.budget-item {
+
+    margin-bottom: 19px;
+
+}
+
+
+.budget-item:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.budget-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+
+}
+
+
+.budget-info span {
+
+    color: var(--text);
+
+}
+
+
+.budget-info strong {
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+    font-weight: 500;
+
+}
+
+
+.budget-bar {
+
+    width: 100%;
+
+    height: 7px;
+
+    background: #eee8e0;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.budget-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary-light);
+
+    border-radius: inherit;
+
+}
+
+
+/* =========================================================
+   CONTAS
+========================================================= */
+
+.bill-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid #eee7df;
+
+}
+
+
+.bill-item:first-child {
+
+    padding-top: 0;
+
+}
+
+
+.bill-item:last-child {
+
+    border-bottom: 0;
+
+    padding-bottom: 0;
+
+}
+
+
+.bill-date {
+
+    width: 42px;
+
+    min-width: 42px;
+
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: var(--primary-soft);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.bill-date strong {
+
+    font-size: 15px;
+
+    color: var(--primary);
+
+    line-height: 1;
+
+}
+
+
+.bill-date span {
+
+    font-size: 8px;
+
+    letter-spacing: 0.8px;
+
+    color: var(--primary-light);
+
+    margin-top: 3px;
+
+}
+
+
+.bill-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+
+    gap: 3px;
+
+}
+
+
+.bill-info strong {
+
+    font-size: 13px;
+
+}
+
+
+.bill-info span {
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+.bill-value {
+
+    font-size: 12px;
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   METAS
+========================================================= */
+
+.goal-item {
+
+    margin-bottom: 22px;
+
+}
+
+
+.goal-item:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.goal-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.goal-info > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.goal-info strong {
+
+    font-size: 13px;
+
+}
+
+
+.goal-info span {
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+.goal-info > strong {
+
+    color: var(--primary-light);
+
+    font-size: 12px;
+
+}
+
+
+.goal-bar {
+
+    width: 100%;
+
+    height: 8px;
+
+    background: #eee8e0;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.goal-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .dashboard-cards {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-cards {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+
+        margin-top: 14px;
+
+    }
+
+    .dashboard-panel {
+
+        padding: 20px;
+
+    }
+
+    .card-value {
+
+        font-size: 23px;
+
+    }
+
+}
+
+/* =========================================================
+   DASHBOARD DINÂMICO
+========================================================= */
+
+.dashboard-month {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+}
+
+
+.dashboard-month span {
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--primary-light);
+
+}
+
+
+.dashboard-month strong {
+
+    font-size: 15px;
+
+    color: var(--primary);
+
+}
+
+
+.distribution-value {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+}
+
+
+.empty-state-dashboard {
+
+    min-height: 150px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+}
+
+
+.panel-action {
+
+    text-decoration: none;
+
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-month {
+
+        align-items: flex-start;
+
+        margin-top: 5px;
+
+    }
+
+}
+
+/* =========================================================
+   DASHBOARD — SONHOS E MOBÍLIA
+========================================================= */
+
+.home-dashboard-progress {
+
+    padding-top: 5px;
+
+}
+
+
+.home-progress-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+
+}
+
+
+.home-progress-header span {
+
+    font-size: 12px;
+
+    color: var(--text);
+
+}
+
+
+.home-progress-header strong {
+
+    font-size: 13px;
+
+    color: var(--primary);
+
+}
+
+
+.home-progress-bar {
+
+    width: 100%;
+
+    height: 10px;
+
+    background: #e9e0d6;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.home-progress-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+    transition: width .3s ease;
+
+}
+
+
+.home-progress-values {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+.home-furniture-count {
+
+    margin-top: 17px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid #eee7df;
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+}
+
+
+@media (max-width: 700px) {
+
+    .home-progress-header strong {
+
+        font-size: 12px;
+
+    }
+
+}

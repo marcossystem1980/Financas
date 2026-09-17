@@ -1,0 +1,1175 @@
+/* =========================================================
+   MOBÍLIA
+========================================================= */
+
+.mobilia-page {
+    max-width: 1500px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header-button {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.furniture-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.furniture-summary-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    padding: 21px 22px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+.furniture-summary-card span {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-light);
+
+    margin-bottom: 10px;
+
+}
+
+
+.furniture-summary-card strong {
+
+    font-size: 22px;
+
+    color: var(--primary);
+
+}
+
+
+.furniture-summary-card.highlight {
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a4a38,
+            #805b43
+        );
+
+    border-color: transparent;
+
+}
+
+
+.furniture-summary-card.highlight span {
+    color: #eadfd6;
+}
+
+
+.furniture-summary-card.highlight strong {
+    color: #fff;
+}
+
+
+/* =========================================================
+   PROGRESSO
+========================================================= */
+
+.furniture-progress-panel {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+    margin-bottom: 20px;
+
+}
+
+
+.progress-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.progress-header small {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 4px;
+
+}
+
+
+.progress-header h2 {
+
+    font-size: 18px;
+
+}
+
+
+.progress-header > strong {
+
+    font-size: 29px;
+
+    color: var(--primary);
+
+}
+
+
+.big-progress-bar {
+
+    width: 100%;
+
+    height: 12px;
+
+    background: #e9e0d6;
+
+    border-radius: 30px;
+
+    overflow: hidden;
+
+}
+
+
+.big-progress-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+    transition:
+        width .3s ease;
+
+}
+
+
+.progress-values {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 8px;
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.furniture-toolbar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.filter-group {
+
+    display: flex;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.filter-button {
+
+    border:
+        1px solid var(--border);
+
+    background: transparent;
+
+    color: var(--text-light);
+
+    padding:
+        8px 13px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.filter-button:hover {
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+}
+
+
+.filter-button.active {
+
+    background: var(--primary);
+
+    color: #fff;
+
+    border-color: var(--primary);
+
+}
+
+
+.sort-select {
+
+    height: 37px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: var(--card);
+
+    color: var(--text);
+
+    padding:
+        0 10px;
+
+    font-size: 11px;
+
+    outline: none;
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.furniture-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(260px, 1fr)
+        );
+
+    gap: 18px;
+
+    margin-bottom: 26px;
+
+}
+
+
+/* =========================================================
+   CARD DO ITEM
+========================================================= */
+
+.furniture-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, .05);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.furniture-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(70, 55, 45, .08);
+
+}
+
+
+.furniture-card.purchased {
+
+    opacity: .65;
+
+}
+
+
+.furniture-card.purchased .furniture-title {
+
+    text-decoration:
+        line-through;
+
+}
+
+
+.furniture-image {
+
+    height: 210px;
+
+    background:
+        #ede6dd;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+.furniture-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.image-placeholder {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--text-light);
+
+}
+
+
+.image-placeholder strong {
+
+    font-size: 27px;
+
+    font-weight: 400;
+
+}
+
+
+.image-placeholder span {
+
+    font-size: 10px;
+
+}
+
+
+.furniture-content {
+
+    padding: 18px;
+
+}
+
+
+.furniture-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+}
+
+
+.furniture-title {
+
+    font-size: 17px;
+
+    color: var(--text);
+
+}
+
+
+.furniture-room {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+    margin-top: 3px;
+
+}
+
+
+.priority-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    border-radius: 20px;
+
+    padding:
+        4px 8px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+.priority-essential {
+
+    background: #f2e6dc;
+
+    color: #8b5c3f;
+
+}
+
+
+.priority-desirable {
+
+    background: #eee8df;
+
+    color: #7c6c5d;
+
+}
+
+
+.priority-luxury {
+
+    background: #e9e1d4;
+
+    color: #6d5844;
+
+}
+
+
+.furniture-price {
+
+    margin-top: 18px;
+
+}
+
+
+.furniture-price span {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+    margin-bottom: 3px;
+
+}
+
+
+.furniture-price strong {
+
+    font-size: 21px;
+
+    color: var(--primary);
+
+}
+
+
+.furniture-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr auto;
+
+    gap: 8px;
+
+    margin-top: 16px;
+
+}
+
+
+.purchase-button {
+
+    min-height: 40px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid var(--border);
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.purchase-button:hover {
+
+    background: var(--primary-soft);
+
+}
+
+
+.purchase-button.purchased {
+
+    background: #e9f0e8;
+
+    border-color: #d6e3d4;
+
+    color: #50704d;
+
+}
+
+
+.store-button {
+
+    width: 40px;
+
+    min-height: 40px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    text-decoration: none;
+
+    color: var(--primary);
+
+    background: #fffefa;
+
+}
+
+
+.store-button:hover {
+
+    background: var(--primary-soft);
+
+}
+
+
+.furniture-observation {
+
+    margin-top: 12px;
+
+    padding-top: 12px;
+
+    border-top:
+        1px solid #eee7df;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    color: var(--text-light);
+
+}
+
+
+.delete-furniture {
+
+    margin-top: 12px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #a34848;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    padding: 0;
+
+}
+
+
+.delete-furniture:hover {
+
+    text-decoration: underline;
+
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.empty-furniture-state {
+
+    grid-column: 1 / -1;
+
+    min-height: 180px;
+
+    border:
+        1px dashed
+        var(--border);
+
+    border-radius: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    background:
+        rgba(255,255,255,.45);
+
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.new-furniture-section {
+
+    scroll-margin-top: 30px;
+
+}
+
+
+.furniture-form-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70,55,45,.05);
+
+}
+
+
+.card-heading {
+
+    margin-bottom: 22px;
+
+}
+
+
+.card-heading small {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+
+    font-weight: 700;
+
+    color: var(--primary-light);
+
+    margin-bottom: 4px;
+
+}
+
+
+.card-heading h2 {
+
+    font-size: 19px;
+
+}
+
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap: 16px;
+
+}
+
+
+.input-group.full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+
+}
+
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+
+    width: 100%;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    outline: none;
+
+    font-size: 13px;
+
+}
+
+
+.input-group input,
+.input-group select {
+
+    height: 43px;
+
+    padding: 0 12px;
+
+}
+
+
+.input-group textarea {
+
+    padding: 12px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+
+}
+
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+
+    border-color:
+        var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(138,106,82,.08);
+
+}
+
+
+/* =========================================================
+   DINHEIRO
+========================================================= */
+
+.money-input {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 43px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    overflow: hidden;
+
+}
+
+
+.money-input > span {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+
+    color: var(--primary-light);
+
+    border-right:
+        1px solid #eee7df;
+
+}
+
+
+.money-input input {
+
+    border: 0 !important;
+
+    height: 100%;
+
+    box-shadow: none !important;
+
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.image-preview {
+
+    margin-top: 18px;
+
+    width: 100%;
+
+    min-height: 150px;
+
+    border:
+        1px dashed
+        var(--border);
+
+    border-radius: 12px;
+
+    background:
+        #faf6f0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    color: var(--text-light);
+
+    font-size: 11px;
+
+}
+
+
+.image-preview img {
+
+    display: block;
+
+    max-width: 100%;
+
+    max-height: 260px;
+
+    object-fit: contain;
+
+}
+
+
+/* =========================================================
+   AÇÕES
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+.primary-button,
+.secondary-button {
+
+    height: 42px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.primary-button {
+
+    background: var(--primary);
+
+    border:
+        1px solid var(--primary);
+
+    color: white;
+
+}
+
+
+.secondary-button {
+
+    background: #fffefa;
+
+    border:
+        1px solid var(--border);
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .furniture-summary {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .page-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .header-button {
+
+        width: 100%;
+
+    }
+
+
+    .furniture-summary {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap: 10px;
+
+    }
+
+
+    .furniture-summary-card {
+
+        padding: 17px;
+
+    }
+
+
+    .furniture-summary-card strong {
+
+        font-size: 18px;
+
+    }
+
+
+    .progress-header {
+
+        align-items: flex-start;
+
+    }
+
+
+    .progress-values {
+
+        flex-direction: column;
+
+        gap: 4px;
+
+    }
+
+
+    .furniture-toolbar {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .sort-select {
+
+        width: 100%;
+
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .input-group.full {
+
+        grid-column: auto;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .primary-button,
+    .secondary-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .furniture-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

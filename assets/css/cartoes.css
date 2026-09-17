@@ -1,0 +1,971 @@
+/* =========================================================
+   CARTÕES
+========================================================= */
+
+.cartoes-page {
+    max-width: 1500px;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.cards-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.cards-summary-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    padding: 21px 22px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+.cards-summary-card span {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-light);
+
+    margin-bottom: 10px;
+
+}
+
+
+.cards-summary-card strong {
+
+    font-size: 22px;
+
+    color: var(--primary);
+
+}
+
+
+.cards-summary-card.highlight {
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a4a38,
+            #805b43
+        );
+
+    border-color: transparent;
+
+}
+
+
+.cards-summary-card.highlight span {
+    color: #eadfd6;
+}
+
+
+.cards-summary-card.highlight strong {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SEÇÃO
+========================================================= */
+
+.cards-section {
+
+    margin-bottom: 22px;
+
+}
+
+
+.section-top {
+
+    margin-bottom: 14px;
+
+}
+
+
+.section-top small {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 4px;
+
+}
+
+
+.section-top h2 {
+
+    font-size: 19px;
+
+}
+
+
+/* =========================================================
+   CARTÕES
+========================================================= */
+
+.cards-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(240px, 1fr)
+        );
+
+    gap: 16px;
+
+}
+
+
+.credit-card {
+
+    position: relative;
+
+    min-height: 145px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5a4032,
+            #825d45
+        );
+
+    color: white;
+
+    box-shadow:
+        0 7px 20px
+        rgba(70, 45, 30, 0.14);
+
+    overflow: hidden;
+
+}
+
+
+.credit-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    right: -40px;
+    bottom: -60px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.15);
+
+}
+
+
+.credit-card-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+}
+
+
+.credit-card-name {
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+}
+
+
+.credit-card-bank {
+
+    font-size: 9px;
+
+    opacity: 0.75;
+
+    margin-top: 4px;
+
+}
+
+
+.credit-card-owner {
+
+    font-size: 9px;
+
+    opacity: 0.8;
+
+}
+
+
+.credit-card-limit {
+
+    margin-top: 23px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+}
+
+
+.credit-card-limit > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.credit-card-label {
+
+    font-size: 8px;
+
+    letter-spacing: 0.9px;
+
+    opacity: 0.72;
+
+}
+
+
+.credit-card-value {
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.card-delete {
+
+    position: absolute;
+
+    top: 18px;
+
+    right: 18px;
+
+    border: 0;
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.12
+    );
+
+    color: white;
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+}
+
+
+.card-delete:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+/* =========================================================
+   USO DO LIMITE
+========================================================= */
+
+.credit-card-progress {
+
+    margin-top: 13px;
+
+}
+
+
+.credit-card-progress-bar {
+
+    width: 100%;
+
+    height: 5px;
+
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.credit-card-progress-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: white;
+
+    border-radius: inherit;
+
+}
+
+
+.credit-card-progress-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    opacity: 0.8;
+
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.empty-card-state {
+
+    grid-column: 1 / -1;
+
+    min-height: 140px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px dashed
+        var(--border);
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,0.45);
+
+    font-size: 12px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+.cards-forms-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+
+}
+
+
+.card-panel,
+.invoice-panel {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+.card-heading {
+
+    margin-bottom: 22px;
+
+}
+
+
+.card-heading small,
+.list-header small {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 4px;
+
+}
+
+
+.card-heading h2,
+.list-header h2 {
+
+    font-size: 19px;
+
+}
+
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+}
+
+
+.input-group.full {
+    grid-column: 1 / -1;
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color: var(--text);
+
+    margin-bottom: 7px;
+
+}
+
+
+.input-group input,
+.input-group select {
+
+    width: 100%;
+
+    height: 43px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    padding:
+        0 12px;
+
+    font-size: 13px;
+
+    outline: none;
+
+}
+
+
+.input-group input:focus,
+.input-group select:focus {
+
+    border-color:
+        var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            138,
+            106,
+            82,
+            0.08
+        );
+
+}
+
+
+/* =========================================================
+   DINHEIRO
+========================================================= */
+
+.money-input {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 43px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    overflow: hidden;
+
+}
+
+
+.money-input > span {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 100%;
+
+    padding:
+        0 12px;
+
+    color:
+        var(--primary-light);
+
+    font-size: 12px;
+
+    border-right:
+        1px solid #eee7df;
+
+}
+
+
+.money-input input {
+
+    border: 0 !important;
+
+    height: 100%;
+
+    box-shadow: none !important;
+
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+
+}
+
+
+.primary-button,
+.secondary-button {
+
+    height: 42px;
+
+    border-radius: 10px;
+
+    padding:
+        0 17px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.primary-button {
+
+    border:
+        1px solid var(--primary);
+
+    background:
+        var(--primary);
+
+    color: white;
+
+}
+
+
+.primary-button:hover {
+    background: #493226;
+}
+
+
+.secondary-button {
+
+    border:
+        1px solid var(--border);
+
+    background:
+        #fffefa;
+
+    color:
+        var(--text-light);
+
+}
+
+
+.secondary-button:hover {
+    background: #f6f0e8;
+}
+
+
+/* =========================================================
+   PREVIEW PARCELAS
+========================================================= */
+
+.installment-preview {
+
+    min-height: 45px;
+
+    margin-top: 16px;
+
+    padding: 11px 13px;
+
+    border:
+        1px solid #e7ddd2;
+
+    border-radius: 10px;
+
+    background:
+        #f8f2ea;
+
+    font-size: 11px;
+
+    color:
+        var(--text-light);
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   FATURA
+========================================================= */
+
+.invoice-panel {
+
+    padding-bottom: 12px;
+
+}
+
+
+.list-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.invoice-total {
+
+    color: var(--primary);
+
+    font-size: 20px;
+
+}
+
+
+.table-container {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+
+table {
+
+    width: 100%;
+
+    min-width: 900px;
+
+    border-collapse: collapse;
+
+}
+
+
+thead th {
+
+    text-align: left;
+
+    padding:
+        0 12px 11px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    color: var(--text-light);
+
+}
+
+
+tbody td {
+
+    padding:
+        14px 12px;
+
+    border-bottom:
+        1px solid #eee7df;
+
+    font-size: 12px;
+
+}
+
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+.value-cell {
+
+    font-weight: 700;
+
+    color: var(--primary);
+
+}
+
+
+.installment-badge {
+
+    display: inline-flex;
+
+    padding:
+        4px 8px;
+
+    border-radius: 20px;
+
+    background:
+        var(--primary-soft);
+
+    color:
+        var(--primary-light);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+}
+
+
+.delete-button {
+
+    border: 0;
+
+    background: transparent;
+
+    color: #a34848;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+
+.empty-table {
+
+    display: none;
+
+    padding:
+        35px 15px;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .cards-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .cards-forms-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .cards-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+
+    }
+
+
+    .cards-summary-card {
+
+        padding: 17px;
+
+    }
+
+
+    .cards-summary-card strong {
+
+        font-size: 18px;
+
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .input-group.full {
+
+        grid-column: auto;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .primary-button,
+    .secondary-button {
+
+        width: 100%;
+
+    }
+
+
+    .list-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .cards-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

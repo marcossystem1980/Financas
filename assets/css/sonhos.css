@@ -1,0 +1,1232 @@
+/* =========================================================
+   SONHOS
+========================================================= */
+
+.sonhos-page {
+    max-width: 1500px;
+}
+
+
+.header-button {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.dream-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.dream-summary-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    padding: 21px 22px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70,55,45,.05);
+
+}
+
+
+.dream-summary-card span {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: var(--text-light);
+
+    margin-bottom: 10px;
+
+}
+
+
+.dream-summary-card strong {
+
+    font-size: 22px;
+
+    color: var(--primary);
+
+}
+
+
+.dream-summary-card.highlight {
+
+    background:
+        linear-gradient(
+            135deg,
+            #6a4a38,
+            #805b43
+        );
+
+    border-color: transparent;
+
+}
+
+
+.dream-summary-card.highlight span {
+    color: #eadfd6;
+}
+
+
+.dream-summary-card.highlight strong {
+    color: white;
+}
+
+
+/* =========================================================
+   DESTAQUE
+========================================================= */
+
+.featured-dream {
+
+    display: grid;
+
+    grid-template-columns:
+        280px 1fr;
+
+    min-height: 230px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background: var(--card);
+
+    box-shadow:
+        0 4px 14px
+        rgba(70,55,45,.05);
+
+    margin-bottom: 20px;
+
+}
+
+
+.featured-image {
+
+    min-height: 230px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d8c8b7,
+            #ede4da
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+.featured-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.featured-image span {
+
+    font-size: 42px;
+
+    color: var(--primary);
+
+    opacity: .7;
+
+}
+
+
+.featured-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 30px;
+
+}
+
+
+.featured-content small {
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 7px;
+
+}
+
+
+.featured-content h2 {
+
+    font-size: 25px;
+
+    color: var(--primary);
+
+    margin-bottom: 8px;
+
+}
+
+
+.featured-content p {
+
+    max-width: 620px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    color: var(--text-light);
+
+}
+
+
+.featured-progress {
+
+    max-width: 620px;
+
+    margin-top: 23px;
+
+}
+
+
+.featured-progress-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+}
+
+
+.featured-progress-info strong {
+
+    color: var(--primary);
+
+}
+
+
+.featured-progress-bar {
+
+    width: 100%;
+
+    height: 10px;
+
+    background: #e9e0d6;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.featured-progress-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.dream-toolbar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.dream-filters {
+
+    display: flex;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.dream-filter {
+
+    border:
+        1px solid var(--border);
+
+    background: transparent;
+
+    color: var(--text-light);
+
+    border-radius: 20px;
+
+    padding: 8px 13px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.dream-filter.active {
+
+    background: var(--primary);
+
+    border-color: var(--primary);
+
+    color: white;
+
+}
+
+
+.sort-select {
+
+    height: 37px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: var(--card);
+
+    color: var(--text);
+
+    padding: 0 10px;
+
+    font-size: 11px;
+
+    outline: none;
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.dream-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(270px, 1fr)
+        );
+
+    gap: 18px;
+
+    margin-bottom: 26px;
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.dream-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 17px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70,55,45,.05);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.dream-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(70,55,45,.08);
+
+}
+
+
+.dream-card.completed {
+
+    opacity: .65;
+
+}
+
+
+.dream-card.completed .dream-title {
+
+    text-decoration:
+        line-through;
+
+}
+
+
+.dream-image {
+
+    height: 185px;
+
+    background:
+        #ece4da;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+
+.dream-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.dream-placeholder {
+
+    color: var(--primary);
+
+    font-size: 34px;
+
+    opacity: .65;
+
+}
+
+
+.dream-content {
+
+    padding: 18px;
+
+}
+
+
+.dream-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+}
+
+
+.dream-title {
+
+    font-size: 17px;
+
+    color: var(--text);
+
+}
+
+
+.dream-type {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+    margin-top: 3px;
+
+}
+
+
+.priority-badge {
+
+    display: inline-flex;
+
+    border-radius: 20px;
+
+    padding: 4px 8px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+.priority-essential {
+
+    background: #f2e6dc;
+
+    color: #8b5c3f;
+
+}
+
+
+.priority-desirable {
+
+    background: #eee8df;
+
+    color: #7c6c5d;
+
+}
+
+
+.priority-dream {
+
+    background: #e9e1d4;
+
+    color: #6d5844;
+
+}
+
+
+.dream-price {
+
+    margin-top: 17px;
+
+}
+
+
+.dream-price span {
+
+    display: block;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+    margin-bottom: 3px;
+
+}
+
+
+.dream-price strong {
+
+    font-size: 20px;
+
+    color: var(--primary);
+
+}
+
+
+.dream-progress {
+
+    margin-top: 15px;
+
+}
+
+
+.dream-progress-info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 9px;
+
+    margin-bottom: 6px;
+
+}
+
+
+.dream-progress-info span {
+
+    color: var(--text-light);
+
+}
+
+
+.dream-progress-info strong {
+
+    color: var(--primary-light);
+
+}
+
+
+.dream-progress-bar {
+
+    height: 8px;
+
+    width: 100%;
+
+    background: #e9e0d6;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.dream-progress-bar span {
+
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: inherit;
+
+}
+
+
+.dream-actions {
+
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+}
+
+
+.dream-complete-button {
+
+    min-height: 39px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.dream-complete-button.completed {
+
+    background: #e9f0e8;
+
+    border-color: #d7e3d5;
+
+    color: #50704d;
+
+}
+
+
+.dream-link {
+
+    width: 39px;
+
+    min-height: 39px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: var(--primary);
+
+}
+
+
+.dream-delete {
+
+    display: block;
+
+    margin-top: 11px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #a34848;
+
+    font-size: 9px;
+
+    cursor: pointer;
+
+}
+
+
+.dream-delete:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.dream-date {
+
+    margin-top: 10px;
+
+    font-size: 9px;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+.empty-dream-state {
+
+    grid-column: 1 / -1;
+
+    min-height: 180px;
+
+    border:
+        1px dashed
+        var(--border);
+
+    border-radius: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    background:
+        rgba(255,255,255,.45);
+
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.new-dream-section {
+
+    scroll-margin-top: 30px;
+
+}
+
+
+.dream-form-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70,55,45,.05);
+
+}
+
+
+.card-heading {
+
+    margin-bottom: 22px;
+
+}
+
+
+.card-heading small {
+
+    display: block;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    margin-bottom: 4px;
+
+}
+
+
+.card-heading h2 {
+
+    font-size: 19px;
+
+}
+
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap: 16px;
+
+}
+
+
+.input-group.full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+
+}
+
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+
+    width: 100%;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    outline: none;
+
+    font-size: 13px;
+
+}
+
+
+.input-group input,
+.input-group select {
+
+    height: 43px;
+
+    padding: 0 12px;
+
+}
+
+
+.input-group textarea {
+
+    padding: 12px;
+
+    resize: vertical;
+
+}
+
+
+.money-input {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 43px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    overflow: hidden;
+
+}
+
+
+.money-input > span {
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    color: var(--primary-light);
+
+    font-size: 12px;
+
+    border-right:
+        1px solid #eee7df;
+
+}
+
+
+.money-input input {
+
+    height: 100%;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+}
+
+
+.dream-image-preview {
+
+    margin-top: 18px;
+
+    min-height: 150px;
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px dashed
+        var(--border);
+
+    border-radius: 12px;
+
+    background: #faf6f0;
+
+    color: var(--text-light);
+
+    font-size: 11px;
+
+    overflow: hidden;
+
+}
+
+
+.dream-image-preview img {
+
+    display: block;
+
+    max-width: 100%;
+
+    max-height: 270px;
+
+    object-fit: contain;
+
+}
+
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+}
+
+
+.primary-button,
+.secondary-button {
+
+    height: 42px;
+
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.primary-button {
+
+    border:
+        1px solid var(--primary);
+
+    background:
+        var(--primary);
+
+    color: white;
+
+}
+
+
+.secondary-button {
+
+    border:
+        1px solid var(--border);
+
+    background:
+        #fffefa;
+
+    color:
+        var(--text-light);
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .dream-summary {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .featured-dream {
+
+        grid-template-columns: 220px 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .page-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .header-button {
+
+        width: 100%;
+
+    }
+
+
+    .dream-summary {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap: 10px;
+
+    }
+
+
+    .dream-summary-card {
+
+        padding: 17px;
+
+    }
+
+
+    .dream-summary-card strong {
+
+        font-size: 18px;
+
+    }
+
+
+    .featured-dream {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .featured-image {
+
+        min-height: 180px;
+
+    }
+
+
+    .featured-content {
+
+        padding: 21px;
+
+    }
+
+
+    .dream-toolbar {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .dream-filters {
+
+        width: 100%;
+
+    }
+
+
+    .sort-select {
+
+        width: 100%;
+
+    }
+
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .input-group.full {
+
+        grid-column: auto;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .primary-button,
+    .secondary-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .dream-summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
