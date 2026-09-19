@@ -1,12 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
        CHAVES
     ====================================================== */
-
-    const PERFIL_KEY =
-        "financasCasal_perfil";
 
     const DESPESAS_KEY =
         "financasCasal_despesas";
@@ -60,38 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             return [];
-
-        }
-
-    }
-
-
-    function carregarObjeto(chave) {
-
-        const dados =
-            localStorage.getItem(chave);
-
-
-        if (!dados) {
-
-            return {};
-
-        }
-
-
-        try {
-
-            return JSON.parse(dados);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar:",
-                chave,
-                erro
-            );
-
-            return {};
 
         }
 
@@ -288,7 +253,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        MÊS ATUAL
     ====================================================== */
@@ -326,16 +290,135 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
-       CARREGAR DADOS
+       USUÁRIO AUTENTICADO
     ====================================================== */
 
-    const perfil =
-        carregarObjeto(
-            PERFIL_KEY
+    const {
+        data: {
+            user
+        },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (
+        userError ||
+        !user
+    ) {
+
+        console.error(
+            "❌ Usuário não autenticado:",
+            userError
         );
 
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+
+    console.log(
+        "👤 Usuário autenticado:",
+        user.email
+    );
+
+
+    /* =====================================================
+       LOCALIZAR O CASAL
+    ====================================================== */
+
+    const {
+        data: membro,
+        error: membroError
+    } = await supabaseClient
+        .from("membros")
+        .select("casal_id")
+        .eq("id", user.id)
+        .single();
+
+
+    if (
+        membroError ||
+        !membro
+    ) {
+
+        console.error(
+            "❌ Não foi possível localizar o casal:",
+            membroError
+        );
+
+        return;
+
+    }
+
+
+    const casalId =
+        membro.casal_id;
+
+
+    console.log(
+        "✅ Casal identificado:",
+        casalId
+    );
+
+
+    /* =====================================================
+       CARREGAR PERFIL FINANCEIRO DO SUPABASE
+    ====================================================== */
+
+    const {
+        data: perfil,
+        error: perfilError
+    } = await supabaseClient
+        .from("perfil_financeiro")
+        .select(
+            "salario1, salario2"
+        )
+        .eq(
+            "casal_id",
+            casalId
+        )
+        .single();
+
+
+    if (
+        perfilError ||
+        !perfil
+    ) {
+
+        console.error(
+            "❌ Não foi possível carregar o perfil financeiro:",
+            perfilError
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "✅ Dashboard carregou o perfil do casal."
+    );
+
+
+    console.log(
+        "💰 Salário 1:",
+        perfil.salario1
+    );
+
+
+    console.log(
+        "💰 Salário 2:",
+        perfil.salario2
+    );
+
+
+    /* =====================================================
+       CARREGAR DEMAIS DADOS
+       AINDA LOCALSTORAGE
+    ====================================================== */
 
     const despesas =
         carregar(
@@ -379,9 +462,9 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-
     /* =====================================================
        RENDA
+       AGORA VEM DO SUPABASE
     ====================================================== */
 
     const salario1 =
@@ -399,7 +482,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const rendaTotal =
         salario1 +
         salario2;
-
 
 
     /* =====================================================
@@ -480,7 +562,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-
     /* =====================================================
        INVESTIMENTOS
     ====================================================== */
@@ -517,7 +598,6 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             0
         );
-
 
 
     /* =====================================================
@@ -569,7 +649,6 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             0
         );
-
 
 
     /* =====================================================
@@ -694,7 +773,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-
     /* =====================================================
        DISPONÍVEL
     ====================================================== */
@@ -708,7 +786,6 @@ document.addEventListener("DOMContentLoaded", function () {
             totalContasPendentes -
             faturaCartao
         );
-
 
 
     /* =====================================================
@@ -769,7 +846,6 @@ document.addEventListener("DOMContentLoaded", function () {
             moeda(disponivel);
 
     }
-
 
 
     /* =====================================================
@@ -896,7 +972,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "distLivreBar",
         "distLivreValor"
     );
-
 
 
     /* =====================================================
@@ -1064,7 +1139,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        PRÓXIMAS CONTAS
     ====================================================== */
@@ -1181,7 +1255,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
-
 
 
     /* =====================================================
@@ -1334,7 +1407,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        SONHOS
     ====================================================== */
@@ -1484,7 +1556,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        MOBÍLIA
     ====================================================== */
@@ -1618,7 +1689,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     /* =====================================================
        ATUALIZAÇÃO EM OUTRAS ABAS
     ====================================================== */
@@ -1628,8 +1698,6 @@ document.addEventListener("DOMContentLoaded", function () {
         function (evento) {
 
             const chavesAtualizadas = [
-
-                PERFIL_KEY,
 
                 DESPESAS_KEY,
 

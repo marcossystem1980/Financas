@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | Finanças-Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="assets/css/login.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="login-page">
+
+        <section class="login-card">
+
+            <div class="login-brand">
+
+                <div class="brand-icon">
+                    FC
+                </div>
+
+                <div>
+                    <span class="brand-small">
+                        FINANÇAS
+                    </span>
+
+                    <h1>
+                        Nosso Casal
+                    </h1>
+                </div>
+
+            </div>
+
+            <div class="login-header">
+
+                <span class="eyebrow">
+                    ACESSO
+                </span>
+
+                <h2>
+                    Bem-vindos
+                </h2>
+
+                <p>
+                    Entre para acessar as finanças do casal.
+                </p>
+
+            </div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Digite seu e-mail"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="toggle-password"
+                            aria-label="Mostrar senha"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="loginMessage"
+                    class="login-message"
+                    role="alert"
+                ></div>
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-button"
+                >
+                    Entrar
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+                <span>
+                    Finanças-Casal
+                </span>
+
+                <span>
+                    Controle financeiro a dois
+                </span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="assets/js/supabase.js"></script>
+
+    <script src="assets/js/login.js"></script>
+
+</body>
+
+</html>

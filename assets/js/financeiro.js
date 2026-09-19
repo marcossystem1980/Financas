@@ -1,13 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-
-    /* =====================================================
-       CHAVES DE ARMAZENAMENTO
-    ====================================================== */
-
-    const PERFIL_KEY =
-        "financasCasal_perfil";
-
+document.addEventListener("DOMContentLoaded", async function () {
 
     /* =====================================================
        ELEMENTOS
@@ -81,112 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       PERFIL CENTRAL
+       VARIÁVEIS DO SUPABASE
     ====================================================== */
 
-    function carregarPerfil() {
+    let casalId = null;
 
-        const dados =
-            localStorage.getItem(
-                PERFIL_KEY
-            );
-
-
-        if (!dados) {
-
-            return {
-
-                salario1: 0,
-                salario2: 0
-
-            };
-
-        }
-
-
-        try {
-
-            const perfil =
-                JSON.parse(dados);
-
-
-            return {
-
-                salario1:
-                    Number(
-                        perfil.salario1
-                    ) || 0,
-
-                salario2:
-                    Number(
-                        perfil.salario2
-                    ) || 0
-
-            };
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar perfil:",
-                erro
-            );
-
-
-            return {
-
-                salario1: 0,
-                salario2: 0
-
-            };
-
-        }
-
-    }
-
-
-    function salvarPerfil() {
-
-        const perfil = {
-
-            salario1:
-                Number(
-                    salario1.value
-                ) || 0,
-
-            salario2:
-                Number(
-                    salario2.value
-                ) || 0
-
-        };
-
-
-        localStorage.setItem(
-            PERFIL_KEY,
-            JSON.stringify(perfil)
-        );
-
-    }
-
-
-    /* =====================================================
-       CARREGAR SALÁRIOS SALVOS
-    ====================================================== */
-
-    function carregarSalarios() {
-
-        const perfil =
-            carregarPerfil();
-
-
-        salario1.value =
-            perfil.salario1;
-
-
-        salario2.value =
-            perfil.salario2;
-
-    }
+    let salvamentoTimer = null;
 
 
     /* =====================================================
@@ -229,6 +120,336 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return numero;
+
+    }
+
+
+    /* =====================================================
+       LOCALIZAR O CASAL DO USUÁRIO
+    ====================================================== */
+
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if (userError || !user) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href = "../login.html";
+
+            return false;
+
+        }
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id, nome_exibicao")
+            .eq("id", user.id)
+            .single();
+
+
+        if (membroError || !membro) {
+
+            console.error(
+                "❌ Não foi possível localizar o membro:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId = membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+        console.log(
+            "👤 Usuário:",
+            membro.nome_exibicao
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR PERFIL DO SUPABASE
+    ====================================================== */
+
+    async function carregarPerfil() {
+
+        const {
+            data: perfil,
+            error
+        } = await supabaseClient
+            .from("perfil_financeiro")
+            .select("salario1, salario2")
+            .eq("casal_id", casalId)
+            .single();
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar perfil financeiro:",
+                error
+            );
+
+            return null;
+
+        }
+
+
+        return {
+
+            salario1:
+                Number(
+                    perfil.salario1
+                ) || 0,
+
+            salario2:
+                Number(
+                    perfil.salario2
+                ) || 0
+
+        };
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO ÚNICA DO LOCALSTORAGE
+    ====================================================== */
+
+    async function migrarPerfilLocal() {
+
+        const chave =
+            "financasCasal_perfil";
+
+
+        const dados =
+            localStorage.getItem(chave);
+
+
+        if (!dados) {
+
+            return null;
+
+        }
+
+
+        try {
+
+            const perfilLocal =
+                JSON.parse(dados);
+
+
+            const salarioA =
+                Number(
+                    perfilLocal.salario1
+                ) || 0;
+
+
+            const salarioB =
+                Number(
+                    perfilLocal.salario2
+                ) || 0;
+
+
+            if (
+                salarioA === 0 &&
+                salarioB === 0
+            ) {
+
+                return null;
+
+            }
+
+
+            console.log(
+                "🔄 Perfil local encontrado. Preparando migração..."
+            );
+
+
+            return {
+
+                salario1: salarioA,
+                salario2: salarioB
+
+            };
+
+        } catch (erro) {
+
+            console.error(
+                "❌ Erro ao interpretar perfil local:",
+                erro
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SALVAR SALÁRIOS NO SUPABASE
+    ====================================================== */
+
+    async function salvarPerfil() {
+
+        if (!casalId) {
+
+            return;
+
+        }
+
+
+        const dados = {
+
+            salario1:
+                Number(
+                    salario1.value
+                ) || 0,
+
+            salario2:
+                Number(
+                    salario2.value
+                ) || 0,
+
+            updated_at:
+                new Date().toISOString()
+
+        };
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("perfil_financeiro")
+            .update(dados)
+            .eq("casal_id", casalId);
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao salvar salários:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "✅ Salários salvos no Supabase."
+        );
+
+    }
+
+
+    /* =====================================================
+       SALVAR COM PEQUENO ATRASO
+       evita várias gravações enquanto o usuário digita
+    ====================================================== */
+
+    function programarSalvamento() {
+
+        clearTimeout(
+            salvamentoTimer
+        );
+
+
+        salvamentoTimer =
+            setTimeout(
+                salvarPerfil,
+                700
+            );
+
+    }
+
+
+    /* =====================================================
+       CARREGAR SALÁRIOS
+    ====================================================== */
+
+    async function carregarSalarios() {
+
+        const perfil =
+            await carregarPerfil();
+
+
+        if (!perfil) {
+
+            return;
+
+        }
+
+
+        /*
+           Verifica se ainda existem dados antigos
+           no localStorage para fazer a primeira migração.
+        */
+
+        const perfilLocal =
+            await migrarPerfilLocal();
+
+
+        if (
+            perfil.salario1 === 0 &&
+            perfil.salario2 === 0 &&
+            perfilLocal
+        ) {
+
+            console.log(
+                "📦 Migrando salários do localStorage para o Supabase..."
+            );
+
+
+            salario1.value =
+                perfilLocal.salario1;
+
+
+            salario2.value =
+                perfilLocal.salario2;
+
+
+            await salvarPerfil();
+
+            return;
+
+        }
+
+
+        salario1.value =
+            perfil.salario1;
+
+
+        salario2.value =
+            perfil.salario2;
 
     }
 
@@ -436,10 +657,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* -----------------------------------------------
-           SALVAR DADOS CENTRAIS
+           SALVAR NO SUPABASE
         ------------------------------------------------ */
 
-        salvarPerfil();
+        programarSalvamento();
 
     }
 
@@ -448,15 +669,16 @@ document.addEventListener("DOMContentLoaded", function () {
        EVENTOS
     ====================================================== */
 
-    const campos =
-        [
-            salario1,
-            salario2,
-            custoCasa,
-            investimentos,
-            verba1,
-            verba2
-        ];
+    const campos = [
+
+        salario1,
+        salario2,
+        custoCasa,
+        investimentos,
+        verba1,
+        verba2
+
+    ];
 
 
     campos.forEach(
@@ -475,7 +697,19 @@ document.addEventListener("DOMContentLoaded", function () {
        INICIALIZAÇÃO
     ====================================================== */
 
-    carregarSalarios();
+    const casalCarregado =
+        await carregarCasal();
+
+
+    if (!casalCarregado) {
+
+        return;
+
+    }
+
+
+    await carregarSalarios();
+
 
     atualizarFinanceiro();
 
