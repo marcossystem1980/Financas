@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
@@ -68,60 +68,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       STORAGE
+       CONFIGURAÇÃO
     ====================================================== */
 
     const STORAGE_KEY =
         "financasCasal_contas";
 
-
-    let contas =
-        carregarContas();
-
-
-    /* =====================================================
-       STORAGE
-    ====================================================== */
-
-    function carregarContas() {
-
-        const dados =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+    const MIGRACAO_KEY =
+        "financasCasal_contas_migrado";
 
 
-        if (!dados) {
-            return [];
-        }
+    let contas = [];
 
-
-        try {
-
-            return JSON.parse(dados);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar contas:",
-                erro
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    function salvarContas() {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(contas)
-        );
-
-    }
+    let casalId = null;
 
 
     /* =====================================================
@@ -136,15 +95,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 style: "currency",
                 currency: "BRL"
             }
-        ).format(numero);
+        ).format(
+            Number(numero) || 0
+        );
 
     }
 
 
     function formatarData(dataTexto) {
 
+        if (!dataTexto) {
+
+            return "-";
+
+        }
+
+
         const partes =
             dataTexto.split("-");
+
+
+        if (partes.length !== 3) {
+
+            return dataTexto;
+
+        }
 
 
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -172,20 +147,452 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
 
-        return meses[
-            Number(numeroMes) - 1
-        ];
+        return (
+            meses[
+                Number(numeroMes) - 1
+            ] || ""
+        );
 
     }
 
 
-    function criarId() {
+    function escaparHTML(valorTexto) {
 
-        return (
-            Date.now().toString() +
-            Math.random()
-                .toString(16)
-                .slice(2)
+        return String(
+            valorTexto ?? ""
+        )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       DATA ATUAL
+    ====================================================== */
+
+    function dataAtual() {
+
+        const agora =
+            new Date();
+
+
+        const ano =
+            agora.getFullYear();
+
+
+        const mes =
+            String(
+                agora.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const dia =
+            String(
+                agora.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return `${ano}-${mes}-${dia}`;
+
+    }
+
+
+    /* =====================================================
+       IDENTIFICAR USUÁRIO E CASAL
+    ====================================================== */
+
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href =
+                "../login.html";
+
+            return false;
+
+        }
+
+
+        console.log(
+            "👤 Usuário:",
+            user.email
+        );
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id")
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
+
+
+        if (
+            membroError ||
+            !membro
+        ) {
+
+            console.error(
+                "❌ Não foi possível localizar o casal:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId =
+            membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR CONTAS DO SUPABASE
+    ====================================================== */
+
+    async function carregarContasSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("contas")
+            .select("*")
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .order(
+                "vencimento",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar contas:",
+                error
+            );
+
+            return false;
+
+        }
+
+
+        contas =
+            data || [];
+
+
+        console.log(
+            `✅ ${contas.length} conta(s) carregada(s) do Supabase.`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       LOCALSTORAGE — DADOS ANTIGOS
+    ====================================================== */
+
+    function carregarContasLocais() {
+
+        const dados =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!dados) {
+
+            return [];
+
+        }
+
+
+        try {
+
+            const registros =
+                JSON.parse(dados);
+
+
+            if (
+                !Array.isArray(registros)
+            ) {
+
+                return [];
+
+            }
+
+
+            return registros;
+
+        } catch (erro) {
+
+            console.error(
+                "❌ Erro ao carregar contas antigas:",
+                erro
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO LOCALSTORAGE → SUPABASE
+    ====================================================== */
+
+    async function migrarContas() {
+
+        const jaMigrado =
+            localStorage.getItem(
+                MIGRACAO_KEY
+            );
+
+
+        if (
+            jaMigrado === "true"
+        ) {
+
+            return;
+
+        }
+
+
+        const locais =
+            carregarContasLocais();
+
+
+        if (
+            locais.length === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Verifica se já existem contas
+           desse casal no Supabase.
+        */
+
+        const {
+            count,
+            error: countError
+        } = await supabaseClient
+            .from("contas")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "casal_id",
+                casalId
+            );
+
+
+        if (countError) {
+
+            console.error(
+                "❌ Erro ao verificar contas existentes:",
+                countError
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Se já houver dados no banco,
+           evitamos duplicidade.
+        */
+
+        if (
+            Number(count) > 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            console.log(
+                "ℹ️ Já existem contas no Supabase. Migração não executada."
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "📦 Migrando contas antigas para o Supabase..."
+        );
+
+
+        const registrosParaInserir =
+            locais
+                .filter(function (conta) {
+
+                    return (
+                        conta.descricao &&
+                        conta.valor &&
+                        conta.vencimento
+                    );
+
+                })
+                .map(function (conta) {
+
+                    return {
+
+                        casal_id:
+                            casalId,
+
+                        descricao:
+                            String(
+                                conta.descricao || ""
+                            ).trim(),
+
+                        valor:
+                            Number(
+                                conta.valor
+                            ) || 0,
+
+                        vencimento:
+                            conta.vencimento,
+
+                        categoria:
+                            conta.categoria ||
+                            "Outros",
+
+                        /*
+                           A tela usa "recorrente".
+                           O banco usa "tipo".
+                        */
+
+                        tipo:
+                            conta.tipo ||
+                            conta.recorrente ||
+                            "Única",
+
+                        responsavel:
+                            conta.responsavel ||
+                            "Casal",
+
+                        status:
+                            conta.status ===
+                            "Pago"
+                                ? "Pago"
+                                : "Pendente"
+
+                    };
+
+                });
+
+
+        if (
+            registrosParaInserir.length === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("contas")
+            .insert(
+                registrosParaInserir
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro durante a migração das contas:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            MIGRACAO_KEY,
+            "true"
+        );
+
+
+        console.log(
+            `✅ ${registrosParaInserir.length} conta(s) migrada(s) para o Supabase.`
         );
 
     }
@@ -197,7 +604,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function determinarStatus(conta) {
 
-        if (conta.status === "Pago") {
+        if (
+            conta.status ===
+            "Pago"
+        ) {
 
             return "Pago";
 
@@ -206,6 +616,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const hoje =
             new Date();
+
 
         hoje.setHours(
             0,
@@ -221,7 +632,9 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        if (venc < hoje) {
+        if (
+            venc < hoje
+        ) {
 
             return "Vencida";
 
@@ -246,8 +659,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return contas.filter(
             function (conta) {
 
-                return conta.vencimento.startsWith(
-                    mes
+                return (
+                    conta.vencimento &&
+                    conta.vencimento.startsWith(
+                        mes
+                    )
                 );
 
             }
@@ -275,25 +691,33 @@ document.addEventListener("DOMContentLoaded", function () {
             function (conta) {
 
                 const valorConta =
-                    Number(conta.valor);
+                    Number(
+                        conta.valor
+                    ) || 0;
 
 
-                total += valorConta;
+                total +=
+                    valorConta;
 
 
                 const statusAtual =
-                    determinarStatus(conta);
+                    determinarStatus(
+                        conta
+                    );
 
 
                 if (
-                    statusAtual === "Pago"
+                    statusAtual ===
+                    "Pago"
                 ) {
 
-                    pagas += valorConta;
+                    pagas +=
+                        valorConta;
 
                 } else {
 
-                    pendentes += valorConta;
+                    pendentes +=
+                        valorConta;
 
                 }
 
@@ -304,8 +728,10 @@ document.addEventListener("DOMContentLoaded", function () {
         totalContas.textContent =
             moeda(total);
 
+
         totalPagas.textContent =
             moeda(pagas);
+
 
         totalPendentes.textContent =
             moeda(pendentes);
@@ -337,6 +763,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const hoje =
             new Date();
 
+
         hoje.setHours(
             0,
             0,
@@ -351,7 +778,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (conta) {
 
                         return (
-                            determinarStatus(conta) !==
+                            determinarStatus(
+                                conta
+                            ) !==
                             "Pago"
                         );
 
@@ -373,7 +802,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-        if (proximas.length === 0) {
+        if (
+            proximas.length === 0
+        ) {
 
             proximoVencimento.textContent =
                 "—";
@@ -388,7 +819,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const partes =
-            proxima.vencimento.split("-");
+            proxima.vencimento
+                .split("-");
 
 
         proximoVencimento.textContent =
@@ -408,6 +840,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const hoje =
             new Date();
 
+
         hoje.setHours(
             0,
             0,
@@ -417,7 +850,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const limite =
-            new Date(hoje);
+            new Date(
+                hoje
+            );
+
 
         limite.setDate(
             limite.getDate() + 3
@@ -429,7 +865,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (conta) {
 
                     if (
-                        determinarStatus(conta) ===
+                        determinarStatus(
+                            conta
+                        ) ===
                         "Pago"
                     ) {
 
@@ -458,7 +896,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (conta) {
 
                     return (
-                        determinarStatus(conta) ===
+                        determinarStatus(
+                            conta
+                        ) ===
                         "Vencida"
                     );
 
@@ -466,15 +906,22 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        if (vencidas.length > 0) {
+        if (
+            vencidas.length > 0
+        ) {
 
             const valorTotal =
                 vencidas.reduce(
-                    function (soma, conta) {
+                    function (
+                        soma,
+                        conta
+                    ) {
 
                         return (
                             soma +
-                            Number(conta.valor)
+                            Number(
+                                conta.valor
+                            )
                         );
 
                     },
@@ -499,15 +946,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (proximas.length > 0) {
+        if (
+            proximas.length > 0
+        ) {
 
             const valorTotal =
                 proximas.reduce(
-                    function (soma, conta) {
+                    function (
+                        soma,
+                        conta
+                    ) {
 
                         return (
                             soma +
-                            Number(conta.valor)
+                            Number(
+                                conta.valor
+                            )
                         );
 
                     },
@@ -569,20 +1023,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (conta) {
 
                         return (
-                            determinarStatus(conta) !==
+                            determinarStatus(
+                                conta
+                            ) !==
                             "Pago"
                         );
 
                     }
                 )
-                .slice(0, 5);
+                .slice(
+                    0,
+                    5
+                );
 
 
         upcomingList.innerHTML =
             "";
 
 
-        if (proximas.length === 0) {
+        if (
+            proximas.length === 0
+        ) {
 
             upcomingList.innerHTML = `
 
@@ -601,7 +1062,8 @@ document.addEventListener("DOMContentLoaded", function () {
             function (conta) {
 
                 const partes =
-                    conta.vencimento.split("-");
+                    conta.vencimento
+                        .split("-");
 
 
                 const elemento =
@@ -619,11 +1081,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="upcoming-date">
 
                         <strong>
-                            ${partes[2]}
+                            ${escaparHTML(partes[2])}
                         </strong>
 
                         <span>
-                            ${nomeMes(partes[1])}
+                            ${escaparHTML(
+                                nomeMes(partes[1])
+                            )}
                         </span>
 
                     </div>
@@ -632,18 +1096,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="upcoming-info">
 
                         <strong>
-                            ${conta.descricao}
+                            ${escaparHTML(
+                                conta.descricao
+                            )}
                         </strong>
 
                         <span>
-                            ${conta.categoria}
+                            ${escaparHTML(
+                                conta.categoria
+                            )}
                         </span>
 
                     </div>
 
 
                     <strong class="upcoming-value">
-                        ${moeda(Number(conta.valor))}
+                        ${moeda(
+                            Number(
+                                conta.valor
+                            )
+                        )}
                     </strong>
 
                 `;
@@ -666,7 +1138,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function badgeStatus(status) {
 
         if (
-            status === "Pago"
+            status ===
+            "Pago"
         ) {
 
             return `
@@ -679,7 +1152,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            status === "Vencida"
+            status ===
+            "Vencida"
         ) {
 
             return `
@@ -709,7 +1183,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function badgeTipo(tipo) {
 
         if (
-            tipo === "Mensal"
+            tipo ===
+            "Mensal"
         ) {
 
             return `
@@ -758,7 +1233,9 @@ document.addEventListener("DOMContentLoaded", function () {
             "";
 
 
-        if (registros.length === 0) {
+        if (
+            registros.length === 0
+        ) {
 
             emptyTable.style.display =
                 "block";
@@ -776,7 +1253,9 @@ document.addEventListener("DOMContentLoaded", function () {
             function (conta) {
 
                 const status =
-                    determinarStatus(conta);
+                    determinarStatus(
+                        conta
+                    );
 
 
                 const linha =
@@ -788,40 +1267,59 @@ document.addEventListener("DOMContentLoaded", function () {
                 linha.innerHTML = `
 
                     <td>
-                        ${formatarData(conta.vencimento)}
+                        ${formatarData(
+                            conta.vencimento
+                        )}
                     </td>
 
                     <td>
                         <strong>
-                            ${conta.descricao}
+                            ${escaparHTML(
+                                conta.descricao
+                            )}
                         </strong>
                     </td>
 
                     <td>
-                        ${conta.categoria}
+                        ${escaparHTML(
+                            conta.categoria
+                        )}
                     </td>
 
                     <td>
-                        ${conta.responsavel}
+                        ${escaparHTML(
+                            conta.responsavel
+                        )}
                     </td>
 
                     <td>
-                        ${badgeTipo(conta.recorrente)}
+                        ${badgeTipo(
+                            conta.tipo ||
+                            conta.recorrente
+                        )}
                     </td>
 
                     <td>
-                        ${badgeStatus(status)}
+                        ${badgeStatus(
+                            status
+                        )}
                     </td>
 
                     <td class="value-cell">
-                        ${moeda(Number(conta.valor))}
+                        ${moeda(
+                            Number(
+                                conta.valor
+                            )
+                        )}
                     </td>
 
                     <td>
 
                         <button
                             class="delete-button"
-                            data-id="${conta.id}"
+                            data-id="${escaparHTML(
+                                conta.id
+                            )}"
                             title="Excluir conta"
                         >
                             ×
@@ -843,7 +1341,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       ATUALIZAR
+       ATUALIZAR TELA
     ====================================================== */
 
     function atualizarTela() {
@@ -867,20 +1365,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener(
         "submit",
-        function (evento) {
+        async function (evento) {
 
             evento.preventDefault();
 
 
             const novaConta = {
 
-                id: criarId(),
+                casal_id:
+                    casalId,
 
                 descricao:
                     descricao.value.trim(),
 
                 valor:
-                    Number(valor.value),
+                    Number(
+                        valor.value
+                    ) || 0,
 
                 vencimento:
                     vencimento.value,
@@ -888,7 +1389,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 categoria:
                     categoria.value,
 
-                recorrente:
+                tipo:
                     recorrente.value,
 
                 responsavel:
@@ -905,6 +1406,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 !novaConta.valor ||
                 !novaConta.vencimento ||
                 !novaConta.categoria ||
+                !novaConta.tipo ||
                 !novaConta.responsavel
             ) {
 
@@ -917,12 +1419,74 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            contas.push(
-                novaConta
+            const botaoSubmit =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (botaoSubmit) {
+
+                botaoSubmit.disabled =
+                    true;
+
+                botaoSubmit.textContent =
+                    "Salvando...";
+
+            }
+
+
+            const {
+                data: contaInserida,
+                error
+            } = await supabaseClient
+                .from("contas")
+                .insert(
+                    novaConta
+                )
+                .select()
+                .single();
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao salvar conta:",
+                    error
+                );
+
+
+                alert(
+                    "Não foi possível salvar a conta."
+                );
+
+
+                if (botaoSubmit) {
+
+                    botaoSubmit.disabled =
+                        false;
+
+                    botaoSubmit.textContent =
+                        "Adicionar";
+
+                }
+
+
+                return;
+
+            }
+
+
+            console.log(
+                "✅ Conta salva no Supabase:",
+                contaInserida
             );
 
 
-            salvarContas();
+            contas.push(
+                contaInserida
+            );
+
 
             atualizarTela();
 
@@ -932,6 +1496,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             vencimento.value =
                 dataAtual();
+
+
+            if (botaoSubmit) {
+
+                botaoSubmit.disabled =
+                    false;
+
+                botaoSubmit.textContent =
+                    "Adicionar";
+
+            }
 
         }
     );
@@ -943,8 +1518,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     listaContas.addEventListener(
         "click",
-        function (evento) {
+        async function (evento) {
 
+
+            /* ---------------------------------------------
+               PAGAR CONTA
+            ---------------------------------------------- */
 
             const botaoStatus =
                 evento.target.closest(
@@ -952,10 +1531,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            if (botaoStatus) {
+            if (
+                botaoStatus
+            ) {
 
                 const linha =
-                    botaoStatus.closest("tr");
+                    botaoStatus.closest(
+                        "tr"
+                    );
+
+
+                if (!linha) {
+                    return;
+                }
 
 
                 const botaoExcluir =
@@ -964,8 +1552,57 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
+                if (!botaoExcluir) {
+                    return;
+                }
+
+
                 const id =
                     botaoExcluir.dataset.id;
+
+
+                botaoStatus.disabled =
+                    true;
+
+
+                const {
+                    error
+                } = await supabaseClient
+                    .from("contas")
+                    .update({
+                        status: "Pago",
+                        updated_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        id
+                    )
+                    .eq(
+                        "casal_id",
+                        casalId
+                    );
+
+
+                if (error) {
+
+                    console.error(
+                        "❌ Erro ao marcar conta como paga:",
+                        error
+                    );
+
+
+                    alert(
+                        "Não foi possível marcar a conta como paga."
+                    );
+
+
+                    botaoStatus.disabled =
+                        false;
+
+                    return;
+
+                }
 
 
                 contas =
@@ -973,11 +1610,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         function (conta) {
 
                             if (
-                                conta.id === id
+                                conta.id ===
+                                id
                             ) {
 
-                                conta.status =
-                                    "Pago";
+                                return {
+
+                                    ...conta,
+
+                                    status:
+                                        "Pago"
+
+                                };
 
                             }
 
@@ -988,14 +1632,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                salvarContas();
-
                 atualizarTela();
+
+
+                console.log(
+                    "✅ Conta marcada como paga."
+                );
+
 
                 return;
 
             }
 
+
+            /* ---------------------------------------------
+               EXCLUIR CONTA
+            ---------------------------------------------- */
 
             const botaoExcluir =
                 evento.target.closest(
@@ -1003,8 +1655,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            if (!botaoExcluir) {
+            if (
+                !botaoExcluir
+            ) {
+
                 return;
+
             }
 
 
@@ -1018,8 +1674,52 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            if (!confirmar) {
+            if (
+                !confirmar
+            ) {
+
                 return;
+
+            }
+
+
+            botaoExcluir.disabled =
+                true;
+
+
+            const {
+                error
+            } = await supabaseClient
+                .from("contas")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                )
+                .eq(
+                    "casal_id",
+                    casalId
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao excluir conta:",
+                    error
+                );
+
+
+                alert(
+                    "Não foi possível excluir a conta."
+                );
+
+
+                botaoExcluir.disabled =
+                    false;
+
+                return;
+
             }
 
 
@@ -1028,16 +1728,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (conta) {
 
                         return (
-                            conta.id !== id
+                            conta.id !==
+                            id
                         );
 
                     }
                 );
 
 
-            salvarContas();
-
             atualizarTela();
+
+
+            console.log(
+                "✅ Conta excluída."
+            );
 
         }
     );
@@ -1054,37 +1758,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       DATA
-    ====================================================== */
-
-    function dataAtual() {
-
-        const agora =
-            new Date();
-
-
-        const ano =
-            agora.getFullYear();
-
-
-        const mes =
-            String(
-                agora.getMonth() + 1
-            ).padStart(2, "0");
-
-
-        const dia =
-            String(
-                agora.getDate()
-            ).padStart(2, "0");
-
-
-        return `${ano}-${mes}-${dia}`;
-
-    }
-
-
-    /* =====================================================
        INICIALIZAÇÃO
     ====================================================== */
 
@@ -1093,8 +1766,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     mesFiltro.value =
-        dataAtual().slice(0, 7);
+        dataAtual().slice(
+            0,
+            7
+        );
 
+
+    /* =====================================================
+       IDENTIFICAR CASAL
+    ====================================================== */
+
+    const casalCarregado =
+        await carregarCasal();
+
+
+    if (
+        !casalCarregado
+    ) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO
+    ====================================================== */
+
+    await migrarContas();
+
+
+    /* =====================================================
+       CARREGAR DO SUPABASE
+    ====================================================== */
+
+    const carregou =
+        await carregarContasSupabase();
+
+
+    if (
+        !carregou
+    ) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR TELA
+    ====================================================== */
 
     atualizarTela();
 

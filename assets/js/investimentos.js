@@ -1,17 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
        ELEMENTOS
     ====================================================== */
-
-    const METAS_KEY =
-        "financasCasal_metas";
-
-
-    const INVESTIMENTOS_KEY =
-        "financasCasal_investimentos";
-
 
     const form =
         document.getElementById(
@@ -24,25 +16,30 @@ document.addEventListener("DOMContentLoaded", function () {
             "valorAporte"
         );
 
+
     const dataAporte =
         document.getElementById(
             "dataAporte"
         );
+
 
     const tipoInvestimento =
         document.getElementById(
             "tipoInvestimento"
         );
 
+
     const responsavel =
         document.getElementById(
             "responsavelInvestimento"
         );
 
+
     const metaInvestimento =
         document.getElementById(
             "metaInvestimento"
         );
+
 
     const observacaoAporte =
         document.getElementById(
@@ -55,15 +52,18 @@ document.addEventListener("DOMContentLoaded", function () {
             "aportesMes"
         );
 
+
     const totalAportado =
         document.getElementById(
             "totalAportado"
         );
 
+
     const aporteMedio =
         document.getElementById(
             "aporteMedio"
         );
+
 
     const quantidadeAportes =
         document.getElementById(
@@ -76,10 +76,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "metaPrincipalNome"
         );
 
+
     const metaPrincipalDescricao =
         document.getElementById(
             "metaPrincipalDescricao"
         );
+
 
     const metaPrincipalPercentual =
         document.getElementById(
@@ -111,68 +113,23 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-    let metas =
-        carregar(
-            METAS_KEY
-        );
-
-
-    let investimentos =
-        carregar(
-            INVESTIMENTOS_KEY
-        );
-
-
     /* =====================================================
-       STORAGE
+       CONFIGURAÇÃO
     ====================================================== */
 
-    function carregar(chave) {
-
-        const dados =
-            localStorage.getItem(
-                chave
-            );
+    const INVESTIMENTOS_KEY =
+        "financasCasal_investimentos";
 
 
-        if (!dados) {
-            return [];
-        }
+    const MIGRACAO_KEY =
+        "financasCasal_investimentos_migrado";
 
 
-        try {
+    let metas = [];
 
-            return JSON.parse(
-                dados
-            );
+    let investimentos = [];
 
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar dados:",
-                erro
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    function salvar(
-        chave,
-        dados
-    ) {
-
-        localStorage.setItem(
-            chave,
-            JSON.stringify(
-                dados
-            )
-        );
-
-    }
+    let casalId = null;
 
 
     /* =====================================================
@@ -187,18 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 style: "currency",
                 currency: "BRL"
             }
-        ).format(numero);
-
-    }
-
-
-    function criarId() {
-
-        return (
-            Date.now().toString() +
-            Math.random()
-                .toString(16)
-                .slice(2)
+        ).format(
+            Number(numero) || 0
         );
 
     }
@@ -232,17 +179,31 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        return (
-            `${ano}-${mes}-${dia}`
-        );
+        return `${ano}-${mes}-${dia}`;
 
     }
 
 
     function formatarData(data) {
 
+        if (!data) {
+
+            return "—";
+
+        }
+
+
         const partes =
             data.split("-");
+
+
+        if (
+            partes.length !== 3
+        ) {
+
+            return data;
+
+        }
 
 
         return (
@@ -252,22 +213,629 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function atualizarMetas() {
+    function escaparHTML(valor) {
 
-        metas =
-            carregar(
-                METAS_KEY
+        return String(
+            valor ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
             );
 
     }
 
 
-    function atualizarInvestimentos() {
+    /* =====================================================
+       LOCALSTORAGE
+       SOMENTE PARA MIGRAÇÃO
+    ====================================================== */
+
+    function carregarLocal(chave) {
+
+        const dados =
+            localStorage.getItem(
+                chave
+            );
+
+
+        if (!dados) {
+
+            return [];
+
+        }
+
+
+        try {
+
+            const resultado =
+                JSON.parse(
+                    dados
+                );
+
+
+            return Array.isArray(
+                resultado
+            )
+                ? resultado
+                : [];
+
+        } catch (erro) {
+
+            console.error(
+                "❌ Erro ao carregar dados locais:",
+                erro
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =====================================================
+       IDENTIFICAR USUÁRIO E CASAL
+    ====================================================== */
+
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href =
+                "../login.html";
+
+            return false;
+
+        }
+
+
+        console.log(
+            "👤 Usuário:",
+            user.email
+        );
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id")
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
+
+
+        if (
+            membroError ||
+            !membro
+        ) {
+
+            console.error(
+                "❌ Não foi possível localizar o casal:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId =
+            membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR METAS DO SUPABASE
+    ====================================================== */
+
+    async function carregarMetasSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("metas")
+            .select(
+                `
+                id,
+                casal_id,
+                legacy_id,
+                nome,
+                tipo,
+                responsavel,
+                objetivo,
+                atual,
+                aporte_mensal,
+                prazo,
+                descricao,
+                created_at
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar metas:",
+                error
+            );
+
+            return false;
+
+        }
+
+
+        metas =
+            (data || []).map(
+                function (meta) {
+
+                    return {
+
+                        id:
+                            meta.id,
+
+                        casalId:
+                            meta.casal_id,
+
+                        legacyId:
+                            meta.legacy_id,
+
+                        nome:
+                            meta.nome,
+
+                        tipo:
+                            meta.tipo,
+
+                        responsavel:
+                            meta.responsavel,
+
+                        objetivo:
+                            Number(
+                                meta.objetivo
+                            ) || 0,
+
+                        atual:
+                            Number(
+                                meta.atual
+                            ) || 0,
+
+                        aporteMensal:
+                            Number(
+                                meta.aporte_mensal
+                            ) || 0,
+
+                        prazo:
+                            meta.prazo,
+
+                        descricao:
+                            meta.descricao ||
+                            "",
+
+                        criadaEm:
+                            meta.created_at
+
+                    };
+
+                }
+            );
+
+
+        console.log(
+            `✅ ${metas.length} meta(s) carregada(s).`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR INVESTIMENTOS DO SUPABASE
+    ====================================================== */
+
+    async function carregarInvestimentosSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("investimentos")
+            .select("*")
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .order(
+                "data",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar investimentos:",
+                error
+            );
+
+            return false;
+
+        }
+
 
         investimentos =
-            carregar(
+            (data || []).map(
+                function (item) {
+
+                    return {
+
+                        id:
+                            item.id,
+
+                        casalId:
+                            item.casal_id,
+
+                        metaId:
+                            item.meta_id,
+
+                        valor:
+                            Number(
+                                item.valor
+                            ) || 0,
+
+                        data:
+                            item.data,
+
+                        tipo:
+                            item.tipo,
+
+                        responsavel:
+                            item.responsavel,
+
+                        observacao:
+                            item.observacao ||
+                            ""
+
+                    };
+
+                }
+            );
+
+
+        console.log(
+            `✅ ${investimentos.length} investimento(s) carregado(s).`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO DO LOCALSTORAGE
+    ====================================================== */
+
+    async function migrarInvestimentos() {
+
+        const jaMigrado =
+            localStorage.getItem(
+                MIGRACAO_KEY
+            );
+
+
+        if (
+            jaMigrado === "true"
+        ) {
+
+            return;
+
+        }
+
+
+        const investimentosLocais =
+            carregarLocal(
                 INVESTIMENTOS_KEY
             );
+
+
+        if (
+            investimentosLocais.length === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            console.log(
+                "ℹ️ Nenhum investimento antigo encontrado para migrar."
+            );
+
+            return;
+
+        }
+
+
+        /* -------------------------------------------------
+           VERIFICAR SE JÁ EXISTEM INVESTIMENTOS NO BANCO
+        -------------------------------------------------- */
+
+        const {
+            count,
+            error
+        } = await supabaseClient
+            .from("investimentos")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "casal_id",
+                casalId
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao verificar investimentos existentes:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if (
+            Number(count) > 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                "ℹ️ Já existem investimentos no Supabase. Migração automática não executada."
+            );
+
+
+            return;
+
+        }
+
+
+        console.log(
+            "📦 Migrando investimentos antigos para o Supabase..."
+        );
+
+
+        /* -------------------------------------------------
+           MAPA DAS METAS ANTIGAS
+           
+           ID antigo da meta
+                  ↓
+           legacy_id
+                  ↓
+           novo UUID da meta
+        -------------------------------------------------- */
+
+        const metasPorLegacyId =
+            new Map();
+
+
+        metas.forEach(
+            function (meta) {
+
+                if (
+                    meta.legacyId
+                ) {
+
+                    metasPorLegacyId.set(
+                        String(
+                            meta.legacyId
+                        ),
+                        meta.id
+                    );
+
+                }
+
+            }
+        );
+
+
+        const registros =
+            investimentosLocais
+                .filter(
+                    function (item) {
+
+                        return (
+                            Number(
+                                item.valor
+                            ) > 0 &&
+                            item.data &&
+                            item.tipo
+                        );
+
+                    }
+                )
+                .map(
+                    function (item) {
+
+                        const metaIdAntiga =
+                            item.metaId
+                                ? String(
+                                    item.metaId
+                                )
+                                : null;
+
+
+                        const novoMetaId =
+                            metaIdAntiga
+                                ? (
+                                    metasPorLegacyId.get(
+                                        metaIdAntiga
+                                    ) || null
+                                )
+                                : null;
+
+
+                        return {
+
+                            casal_id:
+                                casalId,
+
+                            meta_id:
+                                novoMetaId,
+
+                            valor:
+                                Number(
+                                    item.valor
+                                ) || 0,
+
+                            data:
+                                item.data,
+
+                            tipo:
+                                item.tipo,
+
+                            responsavel:
+                                item.responsavel ||
+                                "Casal",
+
+                            observacao:
+                                String(
+                                    item.observacao ||
+                                    ""
+                                ).trim()
+
+                        };
+
+                    }
+                );
+
+
+        if (
+            registros.length === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                "ℹ️ Não existem registros válidos para migrar."
+            );
+
+
+            return;
+
+        }
+
+
+        const {
+            error:
+                erroInsercao
+        } = await supabaseClient
+            .from("investimentos")
+            .insert(
+                registros
+            );
+
+
+        if (
+            erroInsercao
+        ) {
+
+            console.error(
+                "❌ Erro durante a migração dos investimentos:",
+                erroInsercao
+            );
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            MIGRACAO_KEY,
+            "true"
+        );
+
+
+        console.log(
+            `✅ ${registros.length} investimento(s) migrado(s) para o Supabase.`
+        );
 
     }
 
@@ -276,55 +844,46 @@ document.addEventListener("DOMContentLoaded", function () {
        SELECT DE METAS
     ====================================================== */
 
-    function preencherMetas() {
+function preencherMetas() {
 
-        metaInvestimento.innerHTML = `
+    metaInvestimento.innerHTML = `
 
-            <option value="">
-                Sem meta específica
-            </option>
+        <option value="">
+            Sem meta específica
+        </option>
 
-        `;
-
-
-        const metasInvestimento =
-            metas.filter(
-                function (meta) {
-
-                    return (
-                        meta.tipo ===
-                        "Investimento"
-                    );
-
-                }
-            );
+    `;
 
 
-        metasInvestimento.forEach(
-            function (meta) {
-
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+    const metasDisponiveis =
+        metas;
 
 
-                option.value =
-                    meta.id;
+    metasDisponiveis.forEach(
+        function (meta) {
 
-
-                option.textContent =
-                    meta.nome;
-
-
-                metaInvestimento.appendChild(
-                    option
+            const option =
+                document.createElement(
+                    "option"
                 );
 
-            }
-        );
 
-    }
+            option.value =
+                meta.id;
+
+
+            option.textContent =
+                meta.nome;
+
+
+            metaInvestimento.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
 
 
     /* =====================================================
@@ -345,6 +904,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (item) {
 
                     return (
+                        item.data &&
                         item.data.startsWith(
                             mesAtual
                         )
@@ -400,15 +960,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         aportesMes.textContent =
-            moeda(totalMes);
+            moeda(
+                totalMes
+            );
 
 
         totalAportado.textContent =
-            moeda(total);
+            moeda(
+                total
+            );
 
 
         aporteMedio.textContent =
-            moeda(media);
+            moeda(
+                media
+            );
 
 
         quantidadeAportes.textContent =
@@ -463,8 +1029,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (item) {
 
                     return (
-                        Number(item.atual) <
-                        Number(item.objetivo)
+                        Number(
+                            item.atual
+                        ) <
+                        Number(
+                            item.objetivo
+                        )
                     );
 
                 }
@@ -473,12 +1043,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const percentual =
-            Number(meta.objetivo) > 0
+            Number(
+                meta.objetivo
+            ) > 0
                 ? Math.min(
                     100,
                     (
-                        Number(meta.atual) /
-                        Number(meta.objetivo)
+                        Number(
+                            meta.atual
+                        ) /
+                        Number(
+                            meta.objetivo
+                        )
                     ) * 100
                 )
                 : 0;
@@ -538,7 +1114,9 @@ document.addEventListener("DOMContentLoaded", function () {
             recentInvestments.innerHTML = `
 
                 <div class="empty-investment-state">
+
                     Nenhum aporte registrado.
+
                 </div>
 
             `;
@@ -583,24 +1161,44 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="recent-info">
 
                         <strong>
-                            ${moeda(item.valor)}
+                            ${moeda(
+                                item.valor
+                            )}
                         </strong>
 
                         <span>
-                            ${formatarData(item.data)}
+
+                            ${formatarData(
+                                item.data
+                            )}
+
                             ·
-                            ${item.tipo}
+
+                            ${escaparHTML(
+                                item.tipo
+                            )}
+
                             ${
                                 meta
-                                    ? ` · ${meta.nome}`
+                                    ? `
+                                        ·
+                                        ${escaparHTML(
+                                            meta.nome
+                                        )}
+                                      `
                                     : ""
                             }
+
                         </span>
 
                     </div>
 
                     <strong class="recent-value">
-                        ${item.responsavel}
+
+                        ${escaparHTML(
+                            item.responsavel
+                        )}
+
                     </strong>
 
                 `;
@@ -694,34 +1292,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 linha.innerHTML = `
 
                     <td>
-                        ${formatarData(item.data)}
+
+                        ${formatarData(
+                            item.data
+                        )}
+
                     </td>
 
                     <td class="value-cell">
-                        ${moeda(item.valor)}
+
+                        ${moeda(
+                            item.valor
+                        )}
+
                     </td>
 
                     <td>
-                        ${item.tipo}
+
+                        ${escaparHTML(
+                            item.tipo
+                        )}
+
                     </td>
 
                     <td>
-                        ${item.responsavel}
+
+                        ${escaparHTML(
+                            item.responsavel
+                        )}
+
                     </td>
 
                     <td>
-                        ${meta?.nome || "—"}
+
+                        ${
+                            meta
+                                ? escaparHTML(
+                                    meta.nome
+                                )
+                                : "—"
+                        }
+
                     </td>
 
                     <td>
-                        ${item.observacao || "—"}
+
+                        ${
+                            item.observacao
+                                ? escaparHTML(
+                                    item.observacao
+                                )
+                                : "—"
+                        }
+
                     </td>
 
                     <td>
 
                         <button
                             class="delete-button"
-                            data-id="${item.id}"
+                            data-id="${escaparHTML(
+                                item.id
+                            )}"
                             title="Excluir aporte"
                         >
                             ×
@@ -748,10 +1380,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function atualizarTela() {
 
-        atualizarMetas();
-
-        atualizarInvestimentos();
-
         preencherMetas();
 
         atualizarResumo();
@@ -771,7 +1399,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener(
         "submit",
-        function (evento) {
+        async function (evento) {
 
             evento.preventDefault();
 
@@ -796,35 +1424,31 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            const novoInvestimento = {
+            const data =
+                dataAporte.value;
 
-                id:
-                    criarId(),
 
-                valor:
-                    valor,
+            const tipo =
+                tipoInvestimento.value;
 
-                data:
-                    dataAporte.value,
 
-                tipo:
-                    tipoInvestimento.value,
+            const responsavelValor =
+                responsavel.value;
 
-                responsavel:
-                    responsavel.value,
 
-                metaId:
-                    metaInvestimento.value,
+            const metaId =
+                metaInvestimento.value ||
+                null;
 
-                observacao:
-                    observacaoAporte.value.trim()
 
-            };
+            const observacao =
+                observacaoAporte.value.trim();
 
 
             if (
-                !novoInvestimento.data ||
-                !novoInvestimento.tipo
+                !data ||
+                !tipo ||
+                !responsavelValor
             ) {
 
                 alert(
@@ -836,60 +1460,313 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            investimentos.push(
-                novoInvestimento
-            );
+            /* ---------------------------------------------
+               VERIFICAR META
+            ---------------------------------------------- */
 
-
-            salvar(
-                INVESTIMENTOS_KEY,
-                investimentos
-            );
-
-
-            /* ==============================================
-               ATUALIZA META VINCULADA
-            ============================================== */
-
-            if (
-                novoInvestimento.metaId
-            ) {
-
-                metas =
-                    metas.map(
+            const metaSelecionada =
+                metaId
+                    ? metas.find(
                         function (meta) {
 
-                            if (
+                            return (
                                 meta.id ===
-                                novoInvestimento.metaId
-                            ) {
-
-                                meta.atual =
-                                    Math.min(
-                                        Number(
-                                            meta.objetivo
-                                        ),
-                                        Number(
-                                            meta.atual
-                                        ) +
-                                        valor
-                                    );
-
-                            }
-
-
-                            return meta;
+                                metaId
+                            );
 
                         }
+                    )
+                    : null;
+
+
+            if (
+                metaId &&
+                !metaSelecionada
+            ) {
+
+                alert(
+                    "A meta selecionada não foi encontrada."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                metaSelecionada &&
+                Number(
+                    metaSelecionada.atual
+                ) >=
+                Number(
+                    metaSelecionada.objetivo
+                )
+            ) {
+
+                alert(
+                    "Esta meta já foi concluída."
+                );
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               BOTÃO
+            ---------------------------------------------- */
+
+            const botao =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (botao) {
+
+                botao.disabled =
+                    true;
+
+                botao.textContent =
+                    "Salvando...";
+
+            }
+
+
+            /* ---------------------------------------------
+               INSERIR INVESTIMENTO
+            ---------------------------------------------- */
+
+            const novoInvestimento = {
+
+                casal_id:
+                    casalId,
+
+                meta_id:
+                    metaId,
+
+                valor:
+                    valor,
+
+                data:
+                    data,
+
+                tipo:
+                    tipo,
+
+                responsavel:
+                    responsavelValor,
+
+                observacao:
+                    observacao
+
+            };
+
+
+            const {
+                data:
+                    investimentoInserido,
+                error
+            } = await supabaseClient
+                .from("investimentos")
+                .insert(
+                    novoInvestimento
+                )
+                .select()
+                .single();
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao salvar investimento:",
+                    error
+                );
+
+
+                alert(
+                    "Não foi possível salvar o investimento."
+                );
+
+
+                if (botao) {
+
+                    botao.disabled =
+                        false;
+
+                    botao.textContent =
+                        "Adicionar";
+
+                }
+
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               ATUALIZAR META VINCULADA
+            ---------------------------------------------- */
+
+            if (
+                metaSelecionada
+            ) {
+
+                const novoAtual =
+                    Math.min(
+                        Number(
+                            metaSelecionada.objetivo
+                        ),
+                        Number(
+                            metaSelecionada.atual
+                        ) +
+                        valor
                     );
 
 
-                salvar(
-                    METAS_KEY,
-                    metas
+                const {
+                    data:
+                        metaAtualizada,
+                    error:
+                        erroMeta
+                } = await supabaseClient
+                    .from("metas")
+                    .update({
+                        atual:
+                            novoAtual,
+
+                        updated_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        metaId
+                    )
+                    .eq(
+                        "casal_id",
+                        casalId
+                    )
+                    .select()
+                    .single();
+
+
+                if (erroMeta) {
+
+                    console.error(
+                        "❌ Erro ao atualizar meta:",
+                        erroMeta
+                    );
+
+
+                    /* -------------------------------------
+                       DESFAZER INVESTIMENTO
+                    -------------------------------------- */
+
+                    await supabaseClient
+                        .from("investimentos")
+                        .delete()
+                        .eq(
+                            "id",
+                            investimentoInserido.id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    alert(
+                        "Não foi possível atualizar a meta. O investimento não foi mantido."
+                    );
+
+
+                    if (botao) {
+
+                        botao.disabled =
+                            false;
+
+                        botao.textContent =
+                            "Adicionar";
+
+                    }
+
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "✅ Meta atualizada:",
+                    metaAtualizada
                 );
 
             }
+
+
+            /* ---------------------------------------------
+               ADICIONAR NO ESTADO DA PÁGINA
+            ---------------------------------------------- */
+
+            investimentos.unshift({
+
+                id:
+                    investimentoInserido.id,
+
+                casalId:
+                    investimentoInserido.casal_id,
+
+                metaId:
+                    investimentoInserido.meta_id,
+
+                valor:
+                    Number(
+                        investimentoInserido.valor
+                    ) || 0,
+
+                data:
+                    investimentoInserido.data,
+
+                tipo:
+                    investimentoInserido.tipo,
+
+                responsavel:
+                    investimentoInserido.responsavel,
+
+                observacao:
+                    investimentoInserido.observacao ||
+                    ""
+
+            });
+
+
+            /* ---------------------------------------------
+               ATUALIZAR META NO ESTADO LOCAL
+            ---------------------------------------------- */
+
+            if (
+                metaSelecionada
+            ) {
+
+                metaSelecionada.atual =
+                    Math.min(
+                        Number(
+                            metaSelecionada.objetivo
+                        ),
+                        Number(
+                            metaSelecionada.atual
+                        ) +
+                        valor
+                    );
+
+            }
+
+
+            console.log(
+                "✅ Investimento salvo no Supabase:",
+                investimentoInserido
+            );
 
 
             form.reset();
@@ -901,6 +1778,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
             atualizarTela();
 
+
+            if (botao) {
+
+                botao.disabled =
+                    false;
+
+                botao.textContent =
+                    "Adicionar";
+
+            }
+
         }
     );
 
@@ -911,7 +1799,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     investmentHistory.addEventListener(
         "click",
-        function (evento) {
+        async function (evento) {
 
             const botao =
                 evento.target.closest(
@@ -920,6 +1808,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (!botao) {
+
                 return;
 
             }
@@ -943,7 +1832,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (!investimento) {
+
                 return;
+
             }
 
 
@@ -954,54 +1845,185 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (!confirmar) {
+
                 return;
+
             }
 
 
-            /*
-            Reverte o valor da meta
-            */
+            botao.disabled =
+                true;
 
-            if (
+
+            /* ---------------------------------------------
+               LOCALIZAR META
+            ---------------------------------------------- */
+
+            const meta =
                 investimento.metaId
-            ) {
+                    ? metas.find(
+                        function (item) {
 
-                metas =
-                    metas.map(
-                        function (meta) {
-
-                            if (
-                                meta.id ===
+                            return (
+                                item.id ===
                                 investimento.metaId
-                            ) {
-
-                                meta.atual =
-                                    Math.max(
-                                        0,
-                                        Number(
-                                            meta.atual
-                                        ) -
-                                        Number(
-                                            investimento.valor
-                                        )
-                                    );
-
-                            }
-
-
-                            return meta;
+                            );
 
                         }
+                    )
+                    : null;
+
+
+            let valorMetaAnterior =
+                null;
+
+
+            let valorMetaNovo =
+                null;
+
+
+            /* ---------------------------------------------
+               ATUALIZAR META ANTES DA EXCLUSÃO
+            ---------------------------------------------- */
+
+            if (
+                meta
+            ) {
+
+                valorMetaAnterior =
+                    Number(
+                        meta.atual
+                    ) || 0;
+
+
+                valorMetaNovo =
+                    Math.max(
+                        0,
+                        valorMetaAnterior -
+                        Number(
+                            investimento.valor
+                        )
                     );
 
 
-                salvar(
-                    METAS_KEY,
-                    metas
-                );
+                const {
+                    error:
+                        erroMeta
+                } = await supabaseClient
+                    .from("metas")
+                    .update({
+                        atual:
+                            valorMetaNovo,
+
+                        updated_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        meta.id
+                    )
+                    .eq(
+                        "casal_id",
+                        casalId
+                    );
+
+
+                if (erroMeta) {
+
+                    console.error(
+                        "❌ Erro ao atualizar meta antes da exclusão:",
+                        erroMeta
+                    );
+
+
+                    alert(
+                        "Não foi possível atualizar a meta."
+                    );
+
+
+                    botao.disabled =
+                        false;
+
+                    return;
+
+                }
 
             }
 
+
+            /* ---------------------------------------------
+               EXCLUIR INVESTIMENTO
+            ---------------------------------------------- */
+
+            const {
+                error
+            } = await supabaseClient
+                .from("investimentos")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                )
+                .eq(
+                    "casal_id",
+                    casalId
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao excluir investimento:",
+                    error
+                );
+
+
+                /* -----------------------------------------
+                   RESTAURAR META CASO NECESSÁRIO
+                ------------------------------------------ */
+
+                if (
+                    meta &&
+                    valorMetaAnterior !== null
+                ) {
+
+                    await supabaseClient
+                        .from("metas")
+                        .update({
+                            atual:
+                                valorMetaAnterior,
+
+                            updated_at:
+                                new Date().toISOString()
+                        })
+                        .eq(
+                            "id",
+                            meta.id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+                }
+
+
+                alert(
+                    "Não foi possível excluir o investimento."
+                );
+
+
+                botao.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               ATUALIZAR ESTADO DA PÁGINA
+            ---------------------------------------------- */
 
             investimentos =
                 investimentos.filter(
@@ -1016,13 +2038,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            salvar(
-                INVESTIMENTOS_KEY,
-                investimentos
-            );
+            if (
+                meta &&
+                valorMetaNovo !== null
+            ) {
+
+                meta.atual =
+                    valorMetaNovo;
+
+            }
 
 
             atualizarTela();
+
+
+            console.log(
+                "✅ Investimento excluído."
+            );
 
         }
     );
@@ -1035,6 +2067,68 @@ document.addEventListener("DOMContentLoaded", function () {
     dataAporte.value =
         dataAtual();
 
+
+    /* =====================================================
+       IDENTIFICAR CASAL
+    ====================================================== */
+
+    const casalCarregado =
+        await carregarCasal();
+
+
+    if (
+        !casalCarregado
+    ) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR METAS
+    ====================================================== */
+
+    const carregouMetas =
+        await carregarMetasSupabase();
+
+
+    if (
+        !carregouMetas
+    ) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       MIGRAR INVESTIMENTOS ANTIGOS
+    ====================================================== */
+
+    await migrarInvestimentos();
+
+
+    /* =====================================================
+       CARREGAR INVESTIMENTOS
+    ====================================================== */
+
+    const carregouInvestimentos =
+        await carregarInvestimentosSupabase();
+
+
+    if (
+        !carregouInvestimentos
+    ) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR TELA
+    ====================================================== */
 
     atualizarTela();
 

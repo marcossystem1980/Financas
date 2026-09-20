@@ -1,20 +1,27 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       STORAGE
+       CONFIGURAÇÃO
     ====================================================== */
 
     const STORAGE_KEY =
         "financasCasal_sonhos";
 
 
-    let sonhos =
-        carregarSonhos();
+    const MIGRACAO_KEY =
+        "financasCasal_sonhos_migrado";
 
 
-    let filtroAtual =
-        "todos";
+    const BUCKET_SONHOS =
+        "sonhos";
+
+
+    let sonhos = [];
+
+    let filtroAtual = "todos";
+
+    let casalId = null;
 
 
     /* =====================================================
@@ -153,11 +160,22 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+    if (!form) {
+
+        console.error(
+            "❌ Formulário de sonhos não encontrado."
+        );
+
+        return;
+
+    }
+
+
     /* =====================================================
-       STORAGE
+       LOCALSTORAGE — SOMENTE MIGRAÇÃO
     ====================================================== */
 
-    function carregarSonhos() {
+    function carregarSonhosLocais() {
 
         const dados =
             localStorage.getItem(
@@ -174,32 +192,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
 
-            return JSON.parse(
-                dados
-            );
+            const resultado =
+                JSON.parse(
+                    dados
+                );
+
+
+            return Array.isArray(
+                resultado
+            )
+                ? resultado
+                : [];
 
         } catch (erro) {
 
             console.error(
-                "Erro ao carregar sonhos:",
+                "❌ Erro ao carregar sonhos antigos:",
                 erro
             );
 
             return [];
 
         }
-
-    }
-
-
-    function salvarSonhos() {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(
-                sonhos
-            )
-        );
 
     }
 
@@ -223,7 +237,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function dataAtual() {
+
+        const agora =
+            new Date();
+
+
+        const ano =
+            agora.getFullYear();
+
+
+        const mes =
+            String(
+                agora.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const dia =
+            String(
+                agora.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return `${ano}-${mes}-${dia}`;
+
+    }
+
+
     function criarId() {
+
+        if (
+            window.crypto &&
+            typeof window.crypto.randomUUID ===
+            "function"
+        ) {
+
+            return window.crypto.randomUUID();
+
+        }
+
 
         return (
             Date.now().toString() +
@@ -294,12 +352,93 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       IMAGEM
+       IDENTIFICAR CASAL
     ====================================================== */
 
-    function processarImagem(
-        arquivo
-    ) {
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href =
+                "../login.html";
+
+            return false;
+
+        }
+
+
+        console.log(
+            "👤 Usuário:",
+            user.email
+        );
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id")
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
+
+
+        if (
+            membroError ||
+            !membro
+        ) {
+
+            console.error(
+                "❌ Não foi possível localizar o casal:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId =
+            membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       IMAGENS
+    ====================================================== */
+
+    function processarImagem(arquivo) {
 
         return new Promise(
             function (
@@ -310,7 +449,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!arquivo) {
 
                     resolve("");
-
                     return;
 
                 }
@@ -357,8 +495,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                                     altura =
-                                        altura *
-                                        proporcao;
+                                        Math.round(
+                                            altura *
+                                            proporcao
+                                        );
 
                                 }
 
@@ -383,6 +523,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                     );
 
 
+                                if (!contexto) {
+
+                                    reject(
+                                        new Error(
+                                            "Não foi possível preparar a imagem."
+                                        )
+                                    );
+
+                                    return;
+
+                                }
+
+
                                 contexto.drawImage(
                                     imagem,
                                     0,
@@ -395,7 +548,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 const resultado =
                                     canvas.toDataURL(
                                         "image/jpeg",
-                                        .75
+                                        0.75
                                     );
 
 
@@ -446,60 +599,698 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    imagemSonho.addEventListener(
-        "change",
-        async function () {
+    async function dataUrlParaBlob(
+        dataUrl
+    ) {
 
-            const arquivo =
-                imagemSonho.files[0];
+        const resposta =
+            await fetch(
+                dataUrl
+            );
 
 
-            if (!arquivo) {
+        if (!resposta.ok) {
 
-                dreamImagePreview.innerHTML = `
+            throw new Error(
+                "Não foi possível preparar a imagem para envio."
+            );
 
-                    <span>
-                        A imagem escolhida aparecerá aqui.
-                    </span>
+        }
 
-                `;
 
-                return;
+        return resposta.blob();
+
+    }
+
+
+    async function enviarImagem(
+        dataUrl,
+        sonhoId
+    ) {
+
+        if (!dataUrl) {
+
+            return null;
+
+        }
+
+
+        const blob =
+            await dataUrlParaBlob(
+                dataUrl
+            );
+
+
+        const caminho =
+            `${casalId}/${sonhoId}.jpg`;
+
+
+        const {
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_SONHOS)
+            .upload(
+                caminho,
+                blob,
+                {
+                    contentType:
+                        "image/jpeg",
+
+                    upsert:
+                        false,
+
+                    cacheControl:
+                        "3600"
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        return caminho;
+
+    }
+
+
+    async function gerarUrlImagem(
+        imagemPath
+    ) {
+
+        if (!imagemPath) {
+
+            return "";
+
+        }
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_SONHOS)
+            .createSignedUrl(
+                imagemPath,
+                60 * 60 * 24 * 7
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao gerar URL da imagem:",
+                error
+            );
+
+            return "";
+
+        }
+
+
+        return (
+            data?.signedUrl ||
+            ""
+        );
+
+    }
+
+
+    async function excluirImagem(
+        imagemPath
+    ) {
+
+        if (!imagemPath) {
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_SONHOS)
+            .remove([
+                imagemPath
+            ]);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+    }
+
+
+    async function carregarUrlsDasImagens() {
+
+        await Promise.all(
+            sonhos.map(
+                async function (sonho) {
+
+                    sonho.imagemUrl =
+                        await gerarUrlImagem(
+                            sonho.imagemPath
+                        );
+
+                }
+            )
+        );
+
+    }
+
+
+    if (imagemSonho) {
+
+        imagemSonho.addEventListener(
+            "change",
+            async function () {
+
+                const arquivo =
+                    imagemSonho.files[0];
+
+
+                if (!arquivo) {
+
+                    dreamImagePreview.innerHTML = `
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+                    `;
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const imagem =
+                        await processarImagem(
+                            arquivo
+                        );
+
+
+                    dreamImagePreview.innerHTML = `
+                        <img
+                            src="${imagem}"
+                            alt="Prévia do sonho"
+                        >
+                    `;
+
+                } catch (erro) {
+
+                    console.error(
+                        "❌ Erro na prévia da imagem:",
+                        erro
+                    );
+
+
+                    dreamImagePreview.innerHTML = `
+                        <span>
+                            Não foi possível carregar a imagem.
+                        </span>
+                    `;
+
+                }
 
             }
+        );
+
+    }
+
+
+    /* =====================================================
+       CARREGAR SONHOS DO SUPABASE
+    ====================================================== */
+
+    async function carregarSonhosSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("sonhos")
+            .select(
+                `
+                id,
+                casal_id,
+                legacy_id,
+                nome,
+                tipo,
+                valor,
+                reservado,
+                prioridade,
+                prazo,
+                imagem_path,
+                link,
+                descricao,
+                concluido,
+                created_at,
+                updated_at
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar sonhos:",
+                error
+            );
+
+            return false;
+
+        }
+
+
+        sonhos =
+            (data || []).map(
+                function (item) {
+
+                    return {
+
+                        id:
+                            item.id,
+
+                        casalId:
+                            item.casal_id,
+
+                        legacyId:
+                            item.legacy_id,
+
+                        nome:
+                            item.nome,
+
+                        tipo:
+                            item.tipo,
+
+                        valor:
+                            Number(
+                                item.valor
+                            ) || 0,
+
+                        reservado:
+                            Number(
+                                item.reservado
+                            ) || 0,
+
+                        prioridade:
+                            item.prioridade ||
+                            "Sonho",
+
+                        prazo:
+                            item.prazo,
+
+                        imagemPath:
+                            item.imagem_path ||
+                            "",
+
+                        imagemUrl:
+                            "",
+
+                        link:
+                            item.link ||
+                            "",
+
+                        descricao:
+                            item.descricao ||
+                            "",
+
+                        concluido:
+                            Boolean(
+                                item.concluido
+                            ),
+
+                        criadoEm:
+                            item.created_at,
+
+                        atualizadoEm:
+                            item.updated_at
+
+                    };
+
+                }
+            );
+
+
+        await carregarUrlsDasImagens();
+
+
+        console.log(
+            `✅ ${sonhos.length} sonho(s) carregado(s).`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO DOS SONHOS ANTIGOS
+    ====================================================== */
+
+    async function migrarSonhos() {
+
+        const jaMigrado =
+            localStorage.getItem(
+                MIGRACAO_KEY
+            );
+
+
+        if (
+            jaMigrado ===
+            "true"
+        ) {
+
+            return;
+
+        }
+
+
+        const antigos =
+            carregarSonhosLocais();
+
+
+        if (
+            antigos.length ===
+            0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                "ℹ️ Nenhum sonho antigo encontrado para migrar."
+            );
+
+
+            return;
+
+        }
+
+
+        const {
+            data: existentes,
+            error: erroExistentes
+        } = await supabaseClient
+            .from("sonhos")
+            .select(
+                "id, legacy_id, imagem_path"
+            )
+            .eq(
+                "casal_id",
+                casalId
+            );
+
+
+        if (erroExistentes) {
+
+            console.error(
+                "❌ Erro ao verificar sonhos existentes:",
+                erroExistentes
+            );
+
+            return;
+
+        }
+
+
+        const porLegacy =
+            new Map();
+
+
+        (existentes || []).forEach(
+            function (item) {
+
+                if (
+                    item.legacy_id
+                ) {
+
+                    porLegacy.set(
+                        String(
+                            item.legacy_id
+                        ),
+                        item
+                    );
+
+                }
+
+            }
+        );
+
+
+        console.log(
+            "📦 Iniciando migração dos sonhos antigos..."
+        );
+
+
+        let erros = 0;
+
+
+        for (
+            const antigo of antigos
+        ) {
+
+            const legacyId =
+                String(
+                    antigo.id ??
+                    criarId()
+                );
+
+
+            let existente =
+                porLegacy.get(
+                    legacyId
+                ) ||
+                null;
 
 
             try {
 
-                const imagem =
-                    await processarImagem(
-                        arquivo
+                if (!existente) {
+
+                    const novoId =
+                        criarId();
+
+
+                    const registro = {
+
+                        id:
+                            novoId,
+
+                        casal_id:
+                            casalId,
+
+                        legacy_id:
+                            legacyId,
+
+                        nome:
+                            String(
+                                antigo.nome ||
+                                "Sem nome"
+                            ).trim(),
+
+                        tipo:
+                            antigo.tipo ||
+                            "Outro",
+
+                        valor:
+                            Number(
+                                antigo.valor
+                            ) || 0,
+
+                        reservado:
+                            Number(
+                                antigo.reservado
+                            ) || 0,
+
+                        prioridade:
+                            antigo.prioridade ||
+                            "Sonho",
+
+                        prazo:
+                            antigo.prazo ||
+                            null,
+
+                        imagem_path:
+                            null,
+
+                        link:
+                            antigo.link ||
+                            null,
+
+                        descricao:
+                            String(
+                                antigo.descricao ||
+                                ""
+                            ).trim(),
+
+                        concluido:
+                            Boolean(
+                                antigo.concluido
+                            ),
+
+                        created_at:
+                            antigo.criadoEm ||
+                            new Date().toISOString()
+
+                    };
+
+
+                    const {
+                        data: inserido,
+                        error: erroInsert
+                    } = await supabaseClient
+                        .from("sonhos")
+                        .insert(
+                            registro
+                        )
+                        .select(
+                            "id, legacy_id, imagem_path"
+                        )
+                        .single();
+
+
+                    if (erroInsert) {
+
+                        throw erroInsert;
+
+                    }
+
+
+                    existente =
+                        inserido;
+
+
+                    porLegacy.set(
+                        legacyId,
+                        existente
                     );
 
+                }
 
-                dreamImagePreview.innerHTML = `
 
-                    <img
-                        src="${imagem}"
-                        alt="Prévia do sonho"
-                    >
+                /* -----------------------------------------
+                   MIGRAR IMAGEM BASE64 ANTIGA
+                ------------------------------------------ */
 
-                `;
+                if (
+                    antigo.imagem &&
+                    String(
+                        antigo.imagem
+                    ).startsWith(
+                        "data:image/"
+                    ) &&
+                    !existente.imagem_path
+                ) {
+
+                    const caminho =
+                        await enviarImagem(
+                            antigo.imagem,
+                            existente.id
+                        );
+
+
+                    const {
+                        error: erroImagem
+                    } = await supabaseClient
+                        .from("sonhos")
+                        .update({
+                            imagem_path:
+                                caminho,
+
+                            updated_at:
+                                new Date().toISOString()
+                        })
+                        .eq(
+                            "id",
+                            existente.id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    if (erroImagem) {
+
+                        await excluirImagem(
+                            caminho
+                        );
+
+                        throw erroImagem;
+
+                    }
+
+
+                    existente.imagem_path =
+                        caminho;
+
+                }
 
             } catch (erro) {
 
-                dreamImagePreview.innerHTML = `
+                erros += 1;
 
-                    <span>
-                        Não foi possível carregar a imagem.
-                    </span>
 
-                `;
+                console.error(
+                    "❌ Erro ao migrar sonho:",
+                    antigo,
+                    erro
+                );
 
             }
 
         }
-    );
+
+
+        if (
+            erros === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                `✅ ${antigos.length} sonho(s) migrado(s) para o Supabase.`
+            );
+
+        } else {
+
+            console.warn(
+                `⚠️ ${erros} sonho(s) apresentaram erro durante a migração. A migração será tentada novamente na próxima abertura.`
+            );
+
+        }
+
+    }
 
 
     /* =====================================================
@@ -509,7 +1300,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function progresso(sonho) {
 
         if (
-            Number(sonho.valor) <= 0
+            Number(
+                sonho.valor
+            ) <= 0
         ) {
 
             return 0;
@@ -648,7 +1441,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         switch (
-            ordenacao.value
+            ordenacao?.value
         ) {
 
 
@@ -705,9 +1498,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 copia.sort(
                     function (a, b) {
 
-                        return a.nome.localeCompare(
-                            b.nome,
-                            "pt-BR"
+                        return (
+                            a.nome.localeCompare(
+                                b.nome,
+                                "pt-BR"
+                            )
                         );
 
                     }
@@ -740,7 +1535,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         ) {
 
                             return (
-                                pA - pB
+                                pA -
+                                pB
                             );
 
                         }
@@ -776,9 +1572,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sonhos.filter(
                 function (sonho) {
 
-                    return (
-                        !sonho.concluido
-                    );
+                    return !sonho.concluido;
 
                 }
             );
@@ -835,20 +1629,42 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        sonhosAtivos.textContent =
-            ativos.length;
+        if (sonhosAtivos) {
+
+            sonhosAtivos.textContent =
+                ativos.length;
+
+        }
 
 
-        valorSonhos.textContent =
-            moeda(total);
+        if (valorSonhos) {
+
+            valorSonhos.textContent =
+                moeda(
+                    total
+                );
+
+        }
 
 
-        valorReservado.textContent =
-            moeda(reservado);
+        if (valorReservado) {
+
+            valorReservado.textContent =
+                moeda(
+                    reservado
+                );
+
+        }
 
 
-        valorFaltante.textContent =
-            moeda(faltante);
+        if (valorFaltante) {
+
+            valorFaltante.textContent =
+                moeda(
+                    faltante
+                );
+
+        }
 
     }
 
@@ -860,27 +1676,48 @@ document.addEventListener("DOMContentLoaded", function () {
     function atualizarDestaque() {
 
         if (
-            sonhos.length === 0
+            sonhos.length ===
+            0
         ) {
 
-            featuredName.textContent =
-                "Ainda não temos um sonho cadastrado";
+            if (featuredName) {
+
+                featuredName.textContent =
+                    "Ainda não temos um sonho cadastrado";
+
+            }
 
 
-            featuredDescription.textContent =
-                "Adicione um sonho para começar a acompanhar essa conquista.";
+            if (featuredDescription) {
+
+                featuredDescription.textContent =
+                    "Adicione um sonho para começar a acompanhar essa conquista.";
+
+            }
 
 
-            featuredPercent.textContent =
-                "0%";
+            if (featuredPercent) {
+
+                featuredPercent.textContent =
+                    "0%";
+
+            }
 
 
-            featuredBar.style.width =
-                "0%";
+            if (featuredBar) {
+
+                featuredBar.style.width =
+                    "0%";
+
+            }
 
 
-            featuredImage.innerHTML =
-                "<span>♡</span>";
+            if (featuredImage) {
+
+                featuredImage.innerHTML =
+                    "<span>♡</span>";
+
+            }
 
 
             return;
@@ -894,8 +1731,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (a, b) {
 
                         return (
-                            pesoPrioridade(a.prioridade) -
-                            pesoPrioridade(b.prioridade)
+                            pesoPrioridade(
+                                a.prioridade
+                            ) -
+                            pesoPrioridade(
+                                b.prioridade
+                            )
                         );
 
                     }
@@ -903,13 +1744,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 .find(
                     function (sonho) {
 
-                        return (
-                            !sonho.concluido
-                        );
+                        return !sonho.concluido;
 
                     }
                 ) ||
-                sonhos[0];
+            sonhos[0];
 
 
         const percent =
@@ -918,40 +1757,58 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        featuredName.textContent =
-            destaque.nome;
+        if (featuredName) {
+
+            featuredName.textContent =
+                destaque.nome;
+
+        }
 
 
-        featuredDescription.textContent =
-            destaque.descricao ||
-            `${moeda(destaque.reservado)} de ${moeda(destaque.valor)}`;
+        if (featuredDescription) {
+
+            featuredDescription.textContent =
+                destaque.descricao ||
+                `${moeda(destaque.reservado)} de ${moeda(destaque.valor)}`;
+
+        }
 
 
-        featuredPercent.textContent =
-            `${percent.toFixed(1)}%`;
+        if (featuredPercent) {
+
+            featuredPercent.textContent =
+                `${percent.toFixed(1)}%`;
+
+        }
 
 
-        featuredBar.style.width =
-            `${percent}%`;
+        if (featuredBar) {
+
+            featuredBar.style.width =
+                `${percent}%`;
+
+        }
 
 
-        if (
-            destaque.imagem
-        ) {
+        if (featuredImage) {
 
-            featuredImage.innerHTML = `
+            if (
+                destaque.imagemUrl
+            ) {
 
-                <img
-                    src="${destaque.imagem}"
-                    alt="${escaparHTML(destaque.nome)}"
-                >
+                featuredImage.innerHTML = `
+                    <img
+                        src="${destaque.imagemUrl}"
+                        alt="${escaparHTML(destaque.nome)}"
+                    >
+                `;
 
-            `;
+            } else {
 
-        } else {
+                featuredImage.innerHTML =
+                    "<span>♡</span>";
 
-            featuredImage.innerHTML =
-                "<span>♡</span>";
+            }
 
         }
 
@@ -979,17 +1836,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            lista.length === 0
+            lista.length ===
+            0
         ) {
 
             dreamGrid.innerHTML = `
-
                 <div class="empty-dream-state">
-
                     Nenhum sonho encontrado.
-
                 </div>
-
             `;
 
             return;
@@ -1012,10 +1866,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const imagem =
-                    sonho.imagem
+                    sonho.imagemUrl
                         ? `
                             <img
-                                src="${sonho.imagem}"
+                                src="${sonho.imagemUrl}"
                                 alt="${escaparHTML(sonho.nome)}"
                             >
                         `
@@ -1134,7 +1988,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         ? "completed"
                                         : ""
                                 }"
-                                data-id="${sonho.id}"
+                                data-id="${escaparHTML(sonho.id)}"
                                 data-action="concluir"
                             >
 
@@ -1169,7 +2023,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <button
                             class="dream-delete"
-                            data-id="${sonho.id}"
+                            data-id="${escaparHTML(sonho.id)}"
                             data-action="excluir"
                         >
                             Excluir sonho
@@ -1187,6 +2041,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
         );
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR TELA
+    ====================================================== */
+
+    function atualizarTela() {
+
+        atualizarResumo();
+
+        atualizarDestaque();
+
+        renderizar();
 
     }
 
@@ -1214,12 +2083,57 @@ document.addEventListener("DOMContentLoaded", function () {
                 ) || 0;
 
 
+            const nome =
+                nomeSonho.value.trim();
+
+
+            const tipo =
+                tipoSonho.value;
+
+
+            const prioridade =
+                prioridadeSonho.value;
+
+
+            const prazo =
+                prazoSonho.value ||
+                null;
+
+
+            const descricao =
+                descricaoSonho.value.trim();
+
+
+            if (!nome) {
+
+                alert(
+                    "Informe o nome do sonho."
+                );
+
+                return;
+
+            }
+
+
             if (
                 valor <= 0
             ) {
 
                 alert(
                     "Informe um valor válido."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                reservado < 0
+            ) {
+
+                alert(
+                    "O valor reservado não pode ser negativo."
                 );
 
                 return;
@@ -1240,100 +2154,337 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            let imagem = "";
+            const botao =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
 
 
-            if (
-                imagemSonho.files[0]
-            ) {
+            if (botao) {
 
-                try {
+                botao.disabled =
+                    true;
 
-                    imagem =
-                        await processarImagem(
-                            imagemSonho.files[0]
-                        );
-
-                } catch (erro) {
-
-                    alert(
-                        "Não foi possível processar a imagem."
-                    );
-
-                    return;
-
-                }
+                botao.textContent =
+                    "Salvando...";
 
             }
 
 
-            const novoSonho = {
-
-                id:
-                    criarId(),
-
-                nome:
-                    nomeSonho.value.trim(),
-
-                tipo:
-                    tipoSonho.value,
-
-                valor:
-                    valor,
-
-                reservado:
-                    reservado,
-
-                prioridade:
-                    prioridadeSonho.value,
-
-                prazo:
-                    prazoSonho.value,
-
-                imagem:
-                    imagem,
-
-                descricao:
-                    descricaoSonho.value.trim(),
-
-                concluido:
-                    false,
-
-                criadoEm:
-                    new Date().toISOString()
-
-            };
+            let dataUrlImagem =
+                "";
 
 
-            sonhos.push(
-                novoSonho
-            );
+            try {
+
+                if (
+                    imagemSonho &&
+                    imagemSonho.files[0]
+                ) {
+
+                    dataUrlImagem =
+                        await processarImagem(
+                            imagemSonho.files[0]
+                        );
+
+                }
 
 
-            salvarSonhos();
+                const novoId =
+                    criarId();
 
 
-            renderizar();
+                const registro = {
 
-            atualizarResumo();
+                    id:
+                        novoId,
 
-            atualizarDestaque();
+                    casal_id:
+                        casalId,
+
+                    legacy_id:
+                        null,
+
+                    nome:
+                        nome,
+
+                    tipo:
+                        tipo,
+
+                    valor:
+                        valor,
+
+                    reservado:
+                        reservado,
+
+                    prioridade:
+                        prioridade,
+
+                    prazo:
+                        prazo,
+
+                    imagem_path:
+                        null,
+
+                    link:
+                        null,
+
+                    descricao:
+                        descricao ||
+                        null,
+
+                    concluido:
+                        false
+
+                };
 
 
-            form.reset();
+                const {
+                    data: sonhoInserido,
+                    error: erroInsert
+                } = await supabaseClient
+                    .from("sonhos")
+                    .insert(
+                        registro
+                    )
+                    .select()
+                    .single();
 
 
-            valorReservadoInput.value =
-                0;
+                if (erroInsert) {
+
+                    throw erroInsert;
+
+                }
 
 
-            dreamImagePreview.innerHTML = `
+                let imagemPath =
+                    null;
 
-                <span>
-                    A imagem escolhida aparecerá aqui.
-                </span>
 
-            `;
+                try {
+
+                    if (
+                        dataUrlImagem
+                    ) {
+
+                        imagemPath =
+                            await enviarImagem(
+                                dataUrlImagem,
+                                novoId
+                            );
+
+
+                        const {
+                            error: erroImagem
+                        } = await supabaseClient
+                            .from("sonhos")
+                            .update({
+                                imagem_path:
+                                    imagemPath,
+
+                                updated_at:
+                                    new Date().toISOString()
+                            })
+                            .eq(
+                                "id",
+                                novoId
+                            )
+                            .eq(
+                                "casal_id",
+                                casalId
+                            );
+
+
+                        if (erroImagem) {
+
+                            await excluirImagem(
+                                imagemPath
+                            );
+
+                            throw erroImagem;
+
+                        }
+
+                    }
+
+                } catch (
+                    erroImagemUpload
+                ) {
+
+                    console.error(
+                        "❌ Erro ao enviar a imagem:",
+                        erroImagemUpload
+                    );
+
+
+                    await supabaseClient
+                        .from("sonhos")
+                        .delete()
+                        .eq(
+                            "id",
+                            novoId
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    throw new Error(
+                        "Não foi possível enviar a imagem. O sonho não foi salvo."
+                    );
+
+                }
+
+
+                const sonhoLocal = {
+
+                    id:
+                        sonhoInserido.id,
+
+                    casalId:
+                        sonhoInserido.casal_id,
+
+                    legacyId:
+                        sonhoInserido.legacy_id,
+
+                    nome:
+                        sonhoInserido.nome,
+
+                    tipo:
+                        sonhoInserido.tipo,
+
+                    valor:
+                        Number(
+                            sonhoInserido.valor
+                        ) || 0,
+
+                    reservado:
+                        Number(
+                            sonhoInserido.reservado
+                        ) || 0,
+
+                    prioridade:
+                        sonhoInserido.prioridade,
+
+                    prazo:
+                        sonhoInserido.prazo,
+
+                    imagemPath:
+                        imagemPath ||
+                        sonhoInserido.imagem_path ||
+                        "",
+
+                    imagemUrl:
+                        "",
+
+                    link:
+                        sonhoInserido.link ||
+                        "",
+
+                    descricao:
+                        sonhoInserido.descricao ||
+                        "",
+
+                    concluido:
+                        Boolean(
+                            sonhoInserido.concluido
+                        ),
+
+                    criadoEm:
+                        sonhoInserido.created_at,
+
+                    atualizadoEm:
+                        sonhoInserido.updated_at
+
+                };
+
+
+                if (
+                    sonhoLocal.imagemPath
+                ) {
+
+                    sonhoLocal.imagemUrl =
+                        await gerarUrlImagem(
+                            sonhoLocal.imagemPath
+                        );
+
+                }
+
+
+                sonhos.unshift(
+                    sonhoLocal
+                );
+
+
+                atualizarTela();
+
+
+                form.reset();
+
+
+                if (
+                    valorReservadoInput
+                ) {
+
+                    valorReservadoInput.value =
+                        0;
+
+                }
+
+
+                if (
+                    dreamImagePreview
+                ) {
+
+                    dreamImagePreview.innerHTML = `
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+                    `;
+
+                }
+
+
+                alert(
+                    "Sonho salvo com sucesso."
+                );
+
+
+                console.log(
+                    "✅ Sonho salvo no Supabase:",
+                    sonhoInserido
+                );
+
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro ao salvar sonho:",
+                    erro
+                );
+
+
+                alert(
+                    erro?.message ===
+                    "Não foi possível enviar a imagem. O sonho não foi salvo."
+                        ? erro.message
+                        : "Não foi possível salvar o sonho."
+                );
+
+            } finally {
+
+                if (botao) {
+
+                    botao.disabled =
+                        false;
+
+                    botao.textContent =
+                        "Adicionar sonho";
+
+                }
+
+            }
 
         }
     );
@@ -1345,7 +2496,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     dreamGrid.addEventListener(
         "click",
-        function (evento) {
+        async function (evento) {
 
             const botao =
                 evento.target.closest(
@@ -1354,7 +2505,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (!botao) {
+
                 return;
+
             }
 
 
@@ -1366,43 +2519,109 @@ document.addEventListener("DOMContentLoaded", function () {
                 botao.dataset.action;
 
 
-            if (
-                acao === "concluir"
-            ) {
+            const sonho =
+                sonhos.find(
+                    function (item) {
 
-                sonhos =
-                    sonhos.map(
-                        function (sonho) {
+                        return (
+                            item.id ===
+                            id
+                        );
 
-                            if (
-                                sonho.id ===
-                                id
-                            ) {
-
-                                sonho.concluido =
-                                    !sonho.concluido;
-
-                            }
+                    }
+                );
 
 
-                            return sonho;
-
-                        }
-                    );
-
-
-                salvarSonhos();
-
-                renderizar();
-
-                atualizarResumo();
-
-                atualizarDestaque();
+            if (!sonho) {
 
                 return;
 
             }
 
+
+            /* -----------------------------------------
+               CONCLUIR / DESFAZER
+            ------------------------------------------ */
+
+            if (
+                acao === "concluir"
+            ) {
+
+                botao.disabled =
+                    true;
+
+
+                const novoStatus =
+                    !sonho.concluido;
+
+
+                const {
+                    data: sonhoAtualizado,
+                    error
+                } = await supabaseClient
+                    .from("sonhos")
+                    .update({
+                        concluido:
+                            novoStatus,
+
+                        updated_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        id
+                    )
+                    .eq(
+                        "casal_id",
+                        casalId
+                    )
+                    .select()
+                    .single();
+
+
+                if (error) {
+
+                    console.error(
+                        "❌ Erro ao atualizar sonho:",
+                        error
+                    );
+
+
+                    alert(
+                        "Não foi possível atualizar o sonho."
+                    );
+
+
+                    botao.disabled =
+                        false;
+
+                    return;
+
+                }
+
+
+                sonho.concluido =
+                    Boolean(
+                        sonhoAtualizado.concluido
+                    );
+
+
+                atualizarTela();
+
+
+                console.log(
+                    "✅ Status do sonho atualizado."
+                );
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               EXCLUIR
+            ------------------------------------------ */
 
             if (
                 acao === "excluir"
@@ -1415,30 +2634,88 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 if (!confirmar) {
+
                     return;
+
                 }
 
 
-                sonhos =
-                    sonhos.filter(
-                        function (sonho) {
+                botao.disabled =
+                    true;
 
-                            return (
-                                sonho.id !==
-                                id
-                            );
 
-                        }
+                try {
+
+                    if (
+                        sonho.imagemPath
+                    ) {
+
+                        await excluirImagem(
+                            sonho.imagemPath
+                        );
+
+                    }
+
+
+                    const {
+                        error
+                    } = await supabaseClient
+                        .from("sonhos")
+                        .delete()
+                        .eq(
+                            "id",
+                            id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    if (error) {
+
+                        throw error;
+
+                    }
+
+
+                    sonhos =
+                        sonhos.filter(
+                            function (item) {
+
+                                return (
+                                    item.id !==
+                                    id
+                                );
+
+                            }
+                        );
+
+
+                    atualizarTela();
+
+
+                    console.log(
+                        "✅ Sonho excluído do Supabase."
+                    );
+
+                } catch (erro) {
+
+                    console.error(
+                        "❌ Erro ao excluir sonho:",
+                        erro
                     );
 
 
-                salvarSonhos();
+                    alert(
+                        "Não foi possível excluir o sonho."
+                    );
 
-                renderizar();
 
-                atualizarResumo();
+                    botao.disabled =
+                        false;
 
-                atualizarDestaque();
+                }
 
             }
 
@@ -1500,40 +2777,78 @@ document.addEventListener("DOMContentLoaded", function () {
        ORDENAÇÃO
     ====================================================== */
 
-    ordenacao.addEventListener(
-        "change",
-        renderizar
-    );
+    if (ordenacao) {
+
+        ordenacao.addEventListener(
+            "change",
+            renderizar
+        );
+
+    }
 
 
     /* =====================================================
        NOVO SONHO
     ====================================================== */
 
-    scrollNovoSonho.addEventListener(
-        "click",
-        function () {
+    if (scrollNovoSonho) {
 
-            document
-                .getElementById(
-                    "novoSonho"
-                )
-                .scrollIntoView({
+        scrollNovoSonho.addEventListener(
+            "click",
+            function () {
+
+                const alvo =
+                    document.getElementById(
+                        "novoSonho"
+                    );
+
+
+                if (!alvo) {
+
+                    return;
+
+                }
+
+
+                alvo.scrollIntoView({
                     behavior: "smooth"
                 });
 
-        }
-    );
+            }
+        );
+
+    }
 
 
     /* =====================================================
        INICIALIZAÇÃO
     ====================================================== */
 
-    atualizarResumo();
+    const casalCarregado =
+        await carregarCasal();
 
-    atualizarDestaque();
 
-    renderizar();
+    if (!casalCarregado) {
+
+        return;
+
+    }
+
+
+    await migrarSonhos();
+
+
+    const carregouSonhos =
+        await carregarSonhosSupabase();
+
+
+    if (!carregouSonhos) {
+
+        return;
+
+    }
+
+
+    atualizarTela();
 
 });

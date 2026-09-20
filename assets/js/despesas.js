@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
@@ -60,61 +60,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       STORAGE
+       CONFIGURAÇÃO
     ====================================================== */
 
     const STORAGE_KEY =
         "financasCasal_despesas";
 
+    const MIGRACAO_KEY =
+        "financasCasal_despesas_migrado";
 
-    let despesas =
-        carregarDespesas();
+
+    let despesas = [];
+
+    let casalId = null;
 
 
     /* =====================================================
-       FUNÇÕES
+       FUNÇÕES AUXILIARES
     ====================================================== */
-
-    function carregarDespesas() {
-
-        const dados =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
-
-
-        if (!dados) {
-            return [];
-        }
-
-
-        try {
-
-            return JSON.parse(dados);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar despesas:",
-                erro
-            );
-
-            return [];
-
-        }
-
-    }
-
-
-    function salvarDespesas() {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(despesas)
-        );
-
-    }
-
 
     function moeda(valorNumerico) {
 
@@ -124,7 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 style: "currency",
                 currency: "BRL"
             }
-        ).format(valorNumerico);
+        ).format(
+            Number(valorNumerico) || 0
+        );
 
     }
 
@@ -150,13 +115,395 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function criarId() {
+    function dataAtual() {
 
-        return (
-            Date.now().toString() +
-            Math.random()
-                .toString(16)
-                .slice(2)
+        const agora =
+            new Date();
+
+
+        const ano =
+            agora.getFullYear();
+
+
+        const mes =
+            String(
+                agora.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const dia =
+            String(
+                agora.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return `${ano}-${mes}-${dia}`;
+
+    }
+
+
+    function escaparHTML(valorTexto) {
+
+        return String(
+            valorTexto ?? ""
+        )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       IDENTIFICAR USUÁRIO E CASAL
+    ====================================================== */
+
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient.auth.getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href =
+                "../login.html";
+
+            return false;
+
+        }
+
+
+        console.log(
+            "👤 Usuário:",
+            user.email
+        );
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id")
+            .eq("id", user.id)
+            .single();
+
+
+        if (
+            membroError ||
+            !membro
+        ) {
+
+            console.error(
+                "❌ Não foi possível localizar o casal:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId =
+            membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR DESPESAS DO SUPABASE
+    ====================================================== */
+
+    async function carregarDespesasSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("despesas")
+            .select("*")
+            .eq("casal_id", casalId)
+            .order("data", {
+                ascending: false
+            });
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar despesas:",
+                error
+            );
+
+            return false;
+
+        }
+
+
+        despesas =
+            data || [];
+
+
+        console.log(
+            `✅ ${despesas.length} despesa(s) carregada(s) do Supabase.`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       LER DADOS ANTIGOS DO LOCALSTORAGE
+    ====================================================== */
+
+    function carregarDespesasLocais() {
+
+        const dados =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!dados) {
+            return [];
+        }
+
+
+        try {
+
+            const registros =
+                JSON.parse(dados);
+
+
+            if (
+                !Array.isArray(registros)
+            ) {
+
+                return [];
+
+            }
+
+
+            return registros;
+
+        } catch (erro) {
+
+            console.error(
+                "❌ Erro ao carregar despesas locais:",
+                erro
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =====================================================
+       MIGRAR LOCALSTORAGE → SUPABASE
+    ====================================================== */
+
+    async function migrarDespesas() {
+
+        const jaMigrado =
+            localStorage.getItem(
+                MIGRACAO_KEY
+            );
+
+
+        if (jaMigrado === "true") {
+
+            return;
+
+        }
+
+
+        const locais =
+            carregarDespesasLocais();
+
+
+        if (
+            locais.length === 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Verificamos se já existe alguma despesa
+           no Supabase antes de importar.
+        */
+
+        const {
+            count,
+            error: countError
+        } = await supabaseClient
+            .from("despesas")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "casal_id",
+                casalId
+            );
+
+
+        if (countError) {
+
+            console.error(
+                "❌ Não foi possível verificar despesas existentes:",
+                countError
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Se já houver dados no Supabase,
+           não fazemos importação automática
+           para não criar duplicidades.
+        */
+
+        if (
+            Number(count) > 0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+            console.log(
+                "ℹ️ Já existem despesas no Supabase. Migração local não executada."
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "📦 Migrando despesas antigas para o Supabase..."
+        );
+
+
+        const registrosParaInserir =
+            locais.map(function (despesa) {
+
+                return {
+
+                    casal_id:
+                        casalId,
+
+                    descricao:
+                        String(
+                            despesa.descricao || ""
+                        ).trim(),
+
+                    valor:
+                        Number(
+                            despesa.valor
+                        ) || 0,
+
+                    data:
+                        despesa.data,
+
+                    categoria:
+                        despesa.categoria ||
+                        "Outros",
+
+                    tipo:
+                        despesa.tipo ||
+                        "Variável",
+
+                    pagador:
+                        despesa.pagador ||
+                        "Casal",
+
+                    status:
+                        despesa.status ||
+                        "Pendente"
+
+                };
+
+            });
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("despesas")
+            .insert(
+                registrosParaInserir
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro durante a migração:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            MIGRACAO_KEY,
+            "true"
+        );
+
+
+        console.log(
+            `✅ ${registrosParaInserir.length} despesa(s) migrada(s) para o Supabase.`
         );
 
     }
@@ -172,13 +519,18 @@ document.addEventListener("DOMContentLoaded", function () {
             mesFiltro.value;
 
 
-        return despesas.filter(function (despesa) {
+        return despesas.filter(
+            function (despesa) {
 
-            return despesa.data.startsWith(
-                mes
-            );
+                return (
+                    despesa.data &&
+                    despesa.data.startsWith(
+                        mes
+                    )
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -199,53 +551,66 @@ document.addEventListener("DOMContentLoaded", function () {
         let investimentos = 0;
 
 
-        registros.forEach(function (despesa) {
+        registros.forEach(
+            function (despesa) {
 
-            const valorDespesa =
-                Number(despesa.valor);
-
-
-            total += valorDespesa;
-
-
-            if (
-                despesa.tipo === "Fixa"
-            ) {
-
-                fixas += valorDespesa;
-
-            }
+                const valorDespesa =
+                    Number(
+                        despesa.valor
+                    ) || 0;
 
 
-            if (
-                despesa.tipo === "Variável"
-            ) {
-
-                variaveis += valorDespesa;
-
-            }
-
-
-            if (
-                despesa.tipo === "Investimento"
-            ) {
-
-                investimentos +=
+                total +=
                     valorDespesa;
 
-            }
 
-        });
+                if (
+                    despesa.tipo ===
+                    "Fixa"
+                ) {
+
+                    fixas +=
+                        valorDespesa;
+
+                }
+
+
+                if (
+                    despesa.tipo ===
+                    "Variável"
+                ) {
+
+                    variaveis +=
+                        valorDespesa;
+
+                }
+
+
+                if (
+                    despesa.tipo ===
+                    "Investimento"
+                ) {
+
+                    investimentos +=
+                        valorDespesa;
+
+                }
+
+            }
+        );
 
 
         totalMes.textContent =
             moeda(total);
 
+
         totalFixas.textContent =
             moeda(fixas);
 
+
         totalVariaveis.textContent =
             moeda(variaveis);
+
 
         totalInvestimentos.textContent =
             moeda(investimentos);
@@ -274,31 +639,47 @@ document.addEventListener("DOMContentLoaded", function () {
         const categorias = {};
 
 
-        registros.forEach(function (despesa) {
+        registros.forEach(
+            function (despesa) {
 
-            if (
-                !categorias[despesa.categoria]
-            ) {
+                const nomeCategoria =
+                    despesa.categoria ||
+                    "Outros";
+
+
+                if (
+                    !categorias[
+                        nomeCategoria
+                    ]
+                ) {
+
+                    categorias[
+                        nomeCategoria
+                    ] = 0;
+
+                }
+
 
                 categorias[
-                    despesa.categoria
-                ] = 0;
+                    nomeCategoria
+                ] +=
+                    Number(
+                        despesa.valor
+                    ) || 0;
 
             }
-
-
-            categorias[
-                despesa.categoria
-            ] += Number(despesa.valor);
-
-        });
+        );
 
 
         const entradas =
-            Object.entries(categorias);
+            Object.entries(
+                categorias
+            );
 
 
-        if (entradas.length === 0) {
+        if (
+            entradas.length === 0
+        ) {
 
             categoriasResumo.innerHTML = `
 
@@ -317,18 +698,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        entradas.sort(function (a, b) {
+        entradas.sort(
+            function (a, b) {
 
-            return b[1] - a[1];
+                return b[1] - a[1];
 
-        });
+            }
+        );
 
 
         const total =
             entradas.reduce(
-                function (soma, item) {
+                function (
+                    soma,
+                    item
+                ) {
 
-                    return soma + item[1];
+                    return (
+                        soma +
+                        item[1]
+                    );
 
                 },
                 0
@@ -339,67 +728,76 @@ document.addEventListener("DOMContentLoaded", function () {
             "";
 
 
-        entradas.forEach(function (item) {
+        entradas.forEach(
+            function (item) {
 
-            const nome =
-                item[0];
-
-            const valorCategoria =
-                item[1];
-
-            const percentual =
-                total > 0
-                    ? (
-                        valorCategoria /
-                        total
-                    ) * 100
-                    : 0;
+                const nome =
+                    item[0];
 
 
-            const elemento =
-                document.createElement(
-                    "div"
-                );
+                const valorCategoria =
+                    item[1];
 
 
-            elemento.className =
-                "category-summary-item";
+                const percentual =
+                    total > 0
+                        ? (
+                            valorCategoria /
+                            total
+                        ) * 100
+                        : 0;
 
 
-            elemento.innerHTML = `
+                const elemento =
+                    document.createElement(
+                        "div"
+                    );
 
-                <div class="category-summary-header">
 
-                    <span>
-                        ${nome}
+                elemento.className =
+                    "category-summary-item";
+
+
+                elemento.innerHTML = `
+
+                    <div class="category-summary-header">
+
+                        <span>
+                            ${escaparHTML(nome)}
+                        </span>
+
+                        <strong>
+                            ${moeda(valorCategoria)}
+                        </strong>
+
+                    </div>
+
+                    <div class="category-bar">
+
+                        <span
+                            style="width: ${Math.min(
+                                100,
+                                percentual
+                            )}%"
+                        ></span>
+
+                    </div>
+
+                    <span class="category-percent">
+
+                        ${percentual.toFixed(1)}% das despesas
+
                     </span>
 
-                    <strong>
-                        ${moeda(valorCategoria)}
-                    </strong>
-
-                </div>
-
-                <div class="category-bar">
-
-                    <span
-                        style="width: ${percentual}%"
-                    ></span>
-
-                </div>
-
-                <span class="category-percent">
-                    ${percentual.toFixed(1)}% das despesas
-                </span>
-
-            `;
+                `;
 
 
-            categoriasResumo.appendChild(
-                elemento
-            );
+                categoriasResumo.appendChild(
+                    elemento
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -411,7 +809,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function classeTipo(tipoDespesa) {
 
         if (
-            tipoDespesa === "Fixa"
+            tipoDespesa ===
+            "Fixa"
         ) {
 
             return "badge badge-fixed";
@@ -420,7 +819,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            tipoDespesa === "Investimento"
+            tipoDespesa ===
+            "Investimento"
         ) {
 
             return "badge badge-investment";
@@ -436,7 +836,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function classeStatus(statusDespesa) {
 
         if (
-            statusDespesa === "Pago"
+            statusDespesa ===
+            "Pago"
         ) {
 
             return "badge badge-paid";
@@ -463,7 +864,9 @@ document.addEventListener("DOMContentLoaded", function () {
             "";
 
 
-        if (registros.length === 0) {
+        if (
+            registros.length === 0
+        ) {
 
             emptyTable.style.display =
                 "block";
@@ -477,84 +880,114 @@ document.addEventListener("DOMContentLoaded", function () {
             "none";
 
 
-        registros.sort(function (a, b) {
+        registros.sort(
+            function (a, b) {
 
-            return (
-                new Date(b.data) -
-                new Date(a.data)
-            );
-
-        });
-
-
-        registros.forEach(function (despesa) {
-
-            const linha =
-                document.createElement(
-                    "tr"
+                return (
+                    new Date(b.data) -
+                    new Date(a.data)
                 );
 
-
-            linha.innerHTML = `
-
-                <td>
-                    ${formatarData(despesa.data)}
-                </td>
-
-                <td>
-                    <strong>
-                        ${despesa.descricao}
-                    </strong>
-                </td>
-
-                <td>
-                    ${despesa.categoria}
-                </td>
-
-                <td>
-
-                    <span class="${classeTipo(despesa.tipo)}">
-                        ${despesa.tipo}
-                    </span>
-
-                </td>
-
-                <td>
-                    ${despesa.pagador}
-                </td>
-
-                <td>
-
-                    <span class="${classeStatus(despesa.status)}">
-                        ${despesa.status}
-                    </span>
-
-                </td>
-
-                <td class="value-cell">
-                    ${moeda(Number(despesa.valor))}
-                </td>
-
-                <td>
-
-                    <button
-                        class="delete-button"
-                        data-id="${despesa.id}"
-                        title="Excluir despesa"
-                    >
-                        ×
-                    </button>
-
-                </td>
-
-            `;
+            }
+        );
 
 
-            listaDespesas.appendChild(
-                linha
-            );
+        registros.forEach(
+            function (despesa) {
 
-        });
+                const linha =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                linha.innerHTML = `
+
+                    <td>
+                        ${formatarData(
+                            despesa.data
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escaparHTML(
+                                despesa.descricao
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escaparHTML(
+                            despesa.categoria
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span class="${classeTipo(
+                            despesa.tipo
+                        )}">
+
+                            ${escaparHTML(
+                                despesa.tipo
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+                        ${escaparHTML(
+                            despesa.pagador
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span class="${classeStatus(
+                            despesa.status
+                        )}">
+
+                            ${escaparHTML(
+                                despesa.status
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td class="value-cell">
+
+                        ${moeda(
+                            despesa.valor
+                        )}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="delete-button"
+                            data-id="${escaparHTML(
+                                despesa.id
+                            )}"
+                            title="Excluir despesa"
+                        >
+                            ×
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                listaDespesas.appendChild(
+                    linha
+                );
+
+            }
+        );
 
     }
 
@@ -575,25 +1008,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       ADICIONAR
+       ADICIONAR DESPESA
     ====================================================== */
 
     form.addEventListener(
         "submit",
-        function (evento) {
+        async function (evento) {
 
             evento.preventDefault();
 
 
             const novaDespesa = {
 
-                id: criarId(),
+                casal_id:
+                    casalId,
 
                 descricao:
                     descricao.value.trim(),
 
                 valor:
-                    Number(valor.value),
+                    Number(
+                        valor.value
+                    ) || 0,
 
                 data:
                     data.value,
@@ -608,7 +1044,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     pagador.value,
 
                 status:
-                    status.value
+                    status.value ||
+                    "Pendente"
 
             };
 
@@ -631,12 +1068,74 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            despesas.push(
-                novaDespesa
+            const botaoSubmit =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (botaoSubmit) {
+
+                botaoSubmit.disabled =
+                    true;
+
+                botaoSubmit.textContent =
+                    "Salvando...";
+
+            }
+
+
+            const {
+                data: despesaInserida,
+                error
+            } = await supabaseClient
+                .from("despesas")
+                .insert(
+                    novaDespesa
+                )
+                .select()
+                .single();
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao salvar despesa:",
+                    error
+                );
+
+
+                alert(
+                    "Não foi possível salvar a despesa."
+                );
+
+
+                if (botaoSubmit) {
+
+                    botaoSubmit.disabled =
+                        false;
+
+                    botaoSubmit.textContent =
+                        "Adicionar";
+
+                }
+
+
+                return;
+
+            }
+
+
+            console.log(
+                "✅ Despesa salva no Supabase:",
+                despesaInserida
             );
 
 
-            salvarDespesas();
+            despesas.unshift(
+                despesaInserida
+            );
+
 
             atualizarTela();
 
@@ -644,22 +1143,31 @@ document.addEventListener("DOMContentLoaded", function () {
             form.reset();
 
 
-            /* Recoloca o mês atual */
-
             data.value =
                 dataAtual();
+
+
+            if (botaoSubmit) {
+
+                botaoSubmit.disabled =
+                    false;
+
+                botaoSubmit.textContent =
+                    "Adicionar";
+
+            }
 
         }
     );
 
 
     /* =====================================================
-       EXCLUIR
+       EXCLUIR DESPESA
     ====================================================== */
 
     listaDespesas.addEventListener(
         "click",
-        function (evento) {
+        async function (evento) {
 
             const botao =
                 evento.target.closest(
@@ -687,6 +1195,46 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            botao.disabled =
+                true;
+
+
+            const {
+                error
+            } = await supabaseClient
+                .from("despesas")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                )
+                .eq(
+                    "casal_id",
+                    casalId
+                );
+
+
+            if (error) {
+
+                console.error(
+                    "❌ Erro ao excluir despesa:",
+                    error
+                );
+
+
+                alert(
+                    "Não foi possível excluir a despesa."
+                );
+
+
+                botao.disabled =
+                    false;
+
+                return;
+
+            }
+
+
             despesas =
                 despesas.filter(
                     function (despesa) {
@@ -699,9 +1247,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            salvarDespesas();
-
             atualizarTela();
+
+
+            console.log(
+                "✅ Despesa excluída."
+            );
 
         }
     );
@@ -718,37 +1269,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       DATA ATUAL
-    ====================================================== */
-
-    function dataAtual() {
-
-        const agora =
-            new Date();
-
-
-        const ano =
-            agora.getFullYear();
-
-
-        const mes =
-            String(
-                agora.getMonth() + 1
-            ).padStart(2, "0");
-
-
-        const dia =
-            String(
-                agora.getDate()
-            ).padStart(2, "0");
-
-
-        return `${ano}-${mes}-${dia}`;
-
-    }
-
-
-    /* =====================================================
        INICIALIZAÇÃO
     ====================================================== */
 
@@ -757,8 +1277,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     mesFiltro.value =
-        dataAtual().slice(0, 7);
+        dataAtual().slice(
+            0,
+            7
+        );
 
+
+    /* =====================================================
+       CARREGAR CASAL
+    ====================================================== */
+
+    const casalCarregado =
+        await carregarCasal();
+
+
+    if (!casalCarregado) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO
+    ====================================================== */
+
+    await migrarDespesas();
+
+
+    /* =====================================================
+       CARREGAR DADOS DO SUPABASE
+    ====================================================== */
+
+    const carregou =
+        await carregarDespesasSupabase();
+
+
+    if (!carregou) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAR TELA
+    ====================================================== */
 
     atualizarTela();
 
