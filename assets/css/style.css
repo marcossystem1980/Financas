@@ -55,6 +55,40 @@ body {
         Helvetica,
         sans-serif;
 
+    position: relative;
+
+    isolation: isolate;
+
+}
+
+
+/* =========================================================
+   FUNDO FIXO DO SISTEMA
+========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    background:
+        linear-gradient(
+            rgba(246, 241, 232, 0.91),
+            rgba(246, 241, 232, 0.91)
+        ),
+        url("../img/fundo-sistema-desktop.png");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
 }
 
 
@@ -559,6 +593,28 @@ body {
 
 
     /* -----------------------------------------------
+       FUNDO MOBILE
+    ------------------------------------------------ */
+
+    body::before {
+
+        background:
+            linear-gradient(
+                rgba(246, 241, 232, 0.94),
+                rgba(246, 241, 232, 0.94)
+            ),
+            url("../img/fundo-sistema-mobile.png");
+
+        background-size: cover;
+
+        background-position: center;
+
+        background-repeat: no-repeat;
+
+    }
+
+
+    /* -----------------------------------------------
        SIDEBAR
     ------------------------------------------------ */
 
@@ -717,6 +773,7 @@ body {
 
 
 }
+
 
 /* =========================================================
    DESCRIÇÃO DOS CARDS
@@ -1323,6 +1380,7 @@ body {
 
 }
 
+
 /* =========================================================
    DASHBOARD DINÂMICO
 ========================================================= */
@@ -1412,6 +1470,7 @@ body {
     }
 
 }
+
 
 /* =========================================================
    DASHBOARD — SONHOS E MOBÍLIA
