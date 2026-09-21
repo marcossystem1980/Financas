@@ -1,66 +1,6 @@
-document.addEventListener("DOMContentLoaded", async function () {
-
-
-    /* =====================================================
-       CHAVES
-    ====================================================== */
-
-    const DESPESAS_KEY =
-        "financasCasal_despesas";
-
-    const CONTAS_KEY =
-        "financasCasal_contas";
-
-    const INVESTIMENTOS_KEY =
-        "financasCasal_investimentos";
-
-    const METAS_KEY =
-        "financasCasal_metas";
-
-    const COMPRAS_KEY =
-        "financasCasal_compras";
-
-    const SONHOS_KEY =
-        "financasCasal_sonhos";
-
-    const MOBILIA_KEY =
-        "financasCasal_mobilia";
-
-
-    /* =====================================================
-       FUNÇÕES DE LEITURA
-    ====================================================== */
-
-    function carregar(chave) {
-
-        const dados =
-            localStorage.getItem(chave);
-
-
-        if (!dados) {
-
-            return [];
-
-        }
-
-
-        try {
-
-            return JSON.parse(dados);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar:",
-                chave,
-                erro
-            );
-
-            return [];
-
-        }
-
-    }
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
 
     /* =====================================================
@@ -88,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     ) {
 
         if (
-            total <= 0
+            Number(total) <= 0
         ) {
 
             return 0;
@@ -104,7 +44,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    function escaparHTML(valor) {
+    function escaparHTML(
+        valor
+    ) {
 
         return String(
             valor ?? ""
@@ -161,12 +103,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
 
 
-        return `${ano}-${mes}-${dia}`;
+        return (
+            `${ano}-${mes}-${dia}`
+        );
 
     }
 
 
-    function nomeMes(mes) {
+    function nomeMes(
+        mes
+    ) {
 
         const meses = [
 
@@ -195,7 +141,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    function nomeMesCurto(mes) {
+    function nomeMesCurto(
+        mes
+    ) {
 
         const meses = [
 
@@ -219,35 +167,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             meses[
                 Number(mes) - 1
             ] || ""
-        );
-
-    }
-
-
-    function formatarData(data) {
-
-        if (!data) {
-
-            return "—";
-
-        }
-
-
-        const partes =
-            data.split("-");
-
-
-        if (
-            partes.length !== 3
-        ) {
-
-            return data;
-
-        }
-
-
-        return (
-            `${partes[2]}/${partes[1]}/${partes[0]}`
         );
 
     }
@@ -291,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       USUÁRIO AUTENTICADO
+       USUÁRIO
     ====================================================== */
 
     const {
@@ -299,7 +218,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             user
         },
         error: userError
-    } = await supabaseClient.auth.getUser();
+    } = await supabaseClient
+        .auth
+        .getUser();
 
 
     if (
@@ -312,7 +233,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             userError
         );
 
-        window.location.href = "login.html";
+        window.location.href =
+            "login.html";
 
         return;
 
@@ -326,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       LOCALIZAR O CASAL
+       IDENTIFICAR CASAL
     ====================================================== */
 
     const {
@@ -334,8 +256,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         error: membroError
     } = await supabaseClient
         .from("membros")
-        .select("casal_id")
-        .eq("id", user.id)
+        .select(
+            "casal_id"
+        )
+        .eq(
+            "id",
+            user.id
+        )
         .single();
 
 
@@ -365,32 +292,193 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       CARREGAR PERFIL FINANCEIRO DO SUPABASE
+       CARREGAR TODOS OS DADOS DO SUPABASE
     ====================================================== */
 
-    const {
-        data: perfil,
-        error: perfilError
-    } = await supabaseClient
-        .from("perfil_financeiro")
-        .select(
-            "salario1, salario2"
-        )
-        .eq(
-            "casal_id",
-            casalId
-        )
-        .single();
+    const [
 
+        perfilResultado,
+
+        despesasResultado,
+
+        contasResultado,
+
+        comprasResultado,
+
+        investimentosResultado,
+
+        metasResultado,
+
+        sonhosResultado,
+
+        mobiliaResultado
+
+    ] = await Promise.all([
+
+
+        supabaseClient
+            .from("perfil_financeiro")
+            .select(
+                "salario1, salario2"
+            )
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .single(),
+
+
+        supabaseClient
+            .from("despesas")
+            .select(
+                `
+                id,
+                descricao,
+                valor,
+                data,
+                categoria,
+                tipo,
+                pagador,
+                status
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("contas")
+            .select(
+                `
+                id,
+                descricao,
+                valor,
+                vencimento,
+                categoria,
+                tipo,
+                responsavel,
+                status
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("compras_cartao")
+            .select(
+                `
+                id,
+                cartao_id,
+                descricao,
+                valor_total,
+                data_compra,
+                parcelas,
+                categoria,
+                responsavel
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("investimentos")
+            .select(
+                `
+                id,
+                meta_id,
+                valor,
+                data,
+                tipo,
+                responsavel,
+                observacao
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("metas")
+            .select(
+                `
+                id,
+                nome,
+                tipo,
+                responsavel,
+                objetivo,
+                atual,
+                aporte_mensal,
+                prazo,
+                descricao
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("sonhos")
+            .select(
+                `
+                id,
+                nome,
+                tipo,
+                valor,
+                reservado,
+                prioridade,
+                prazo,
+                concluido
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            ),
+
+
+        supabaseClient
+            .from("mobilia")
+            .select(
+                `
+                id,
+                nome,
+                ambiente,
+                valor,
+                prioridade,
+                comprado
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            )
+
+    ]);
+
+
+    /* =====================================================
+       VALIDAR CONSULTAS
+    ====================================================== */
 
     if (
-        perfilError ||
-        !perfil
+        perfilResultado.error
     ) {
 
         console.error(
-            "❌ Não foi possível carregar o perfil financeiro:",
-            perfilError
+            "❌ Erro ao carregar perfil financeiro:",
+            perfilResultado.error
         );
 
         return;
@@ -398,84 +486,207 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    console.log(
-        "✅ Dashboard carregou o perfil do casal."
-    );
+    if (
+        despesasResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar despesas:",
+            despesasResultado.error
+        );
+
+        return;
+
+    }
 
 
-    console.log(
-        "💰 Salário 1:",
-        perfil.salario1
-    );
+    if (
+        contasResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar contas:",
+            contasResultado.error
+        );
+
+        return;
+
+    }
 
 
-    console.log(
-        "💰 Salário 2:",
-        perfil.salario2
-    );
+    if (
+        comprasResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar compras de cartão:",
+            comprasResultado.error
+        );
+
+        return;
+
+    }
+
+
+    if (
+        investimentosResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar investimentos:",
+            investimentosResultado.error
+        );
+
+        return;
+
+    }
+
+
+    if (
+        metasResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar metas:",
+            metasResultado.error
+        );
+
+        return;
+
+    }
+
+
+    if (
+        sonhosResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar sonhos:",
+            sonhosResultado.error
+        );
+
+        return;
+
+    }
+
+
+    if (
+        mobiliaResultado.error
+    ) {
+
+        console.error(
+            "❌ Erro ao carregar mobília:",
+            mobiliaResultado.error
+        );
+
+        return;
+
+    }
 
 
     /* =====================================================
-       CARREGAR DEMAIS DADOS
-       AINDA LOCALSTORAGE
+       ORGANIZAR DADOS
     ====================================================== */
 
+    const perfil =
+        perfilResultado.data;
+
+
     const despesas =
-        carregar(
-            DESPESAS_KEY
-        );
+        despesasResultado.data ||
+        [];
 
 
     const contas =
-        carregar(
-            CONTAS_KEY
-        );
-
-
-    const investimentos =
-        carregar(
-            INVESTIMENTOS_KEY
-        );
-
-
-    const metas =
-        carregar(
-            METAS_KEY
-        );
+        contasResultado.data ||
+        [];
 
 
     const compras =
-        carregar(
-            COMPRAS_KEY
-        );
+        comprasResultado.data ||
+        [];
+
+
+    const investimentos =
+        investimentosResultado.data ||
+        [];
+
+
+    const metas =
+        metasResultado.data ||
+        [];
 
 
     const sonhos =
-        carregar(
-            SONHOS_KEY
-        );
+        sonhosResultado.data ||
+        [];
 
 
     const mobilia =
-        carregar(
-            MOBILIA_KEY
-        );
+        mobiliaResultado.data ||
+        [];
+
+
+    console.log(
+        "✅ Dados do Dashboard carregados do Supabase."
+    );
+
+
+    console.log(
+        "📊 Despesas:",
+        despesas.length
+    );
+
+
+    console.log(
+        "📊 Contas:",
+        contas.length
+    );
+
+
+    console.log(
+        "📊 Compras cartão:",
+        compras.length
+    );
+
+
+    console.log(
+        "📊 Investimentos:",
+        investimentos.length
+    );
+
+
+    console.log(
+        "📊 Metas:",
+        metas.length
+    );
+
+
+    console.log(
+        "📊 Sonhos:",
+        sonhos.length
+    );
+
+
+    console.log(
+        "📊 Mobília:",
+        mobilia.length
+    );
 
 
     /* =====================================================
        RENDA
-       AGORA VEM DO SUPABASE
     ====================================================== */
 
     const salario1 =
         Number(
-            perfil.salario1
+            perfil?.salario1
         ) || 0;
 
 
     const salario2 =
         Number(
-            perfil.salario2
+            perfil?.salario2
         ) || 0;
 
 
@@ -485,7 +696,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       DESPESAS
+       DESPESAS DO MÊS
     ====================================================== */
 
     const despesasMes =
@@ -563,7 +774,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       INVESTIMENTOS
+       INVESTIMENTOS DO MÊS
     ====================================================== */
 
     const investimentosMes =
@@ -601,7 +812,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       CONTAS
+       CONTAS DO MÊS
     ====================================================== */
 
     const contasMes =
@@ -652,7 +863,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
-       FATURA DOS CARTÕES
+       PARCELAS DOS CARTÕES
     ====================================================== */
 
     function gerarParcelas(
@@ -665,11 +876,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         const quantidade =
             Number(
                 compra.parcelas
-            );
+            ) || 1;
+
+
+        const valorTotal =
+            Number(
+                compra.valor_total
+            ) || 0;
+
+
+        const valorParcela =
+            quantidade > 0
+                ? valorTotal /
+                  quantidade
+                : 0;
 
 
         if (
-            !quantidade
+            valorParcela <= 0 ||
+            !compra.data_compra
         ) {
 
             return resultado;
@@ -677,17 +902,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        const valorParcela =
-            Number(
-                compra.valorTotal
-            ) /
-            quantidade;
-
-
         const dataInicial =
             new Date(
-                `${compra.data}T00:00:00`
+                `${compra.data_compra}T00:00:00`
             );
+
+
+        if (
+            Number.isNaN(
+                dataInicial.getTime()
+            )
+        ) {
+
+            return resultado;
+
+        }
 
 
         for (
@@ -703,7 +932,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             data.setMonth(
-                data.getMonth() + i
+                data.getMonth() +
+                i
             );
 
 
@@ -752,7 +982,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             parcelas.forEach(
-                function (parcela) {
+                function (
+                    parcela
+                ) {
 
                     if (
                         parcela.mes ===
@@ -819,7 +1051,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (rendaCard) {
 
         rendaCard.textContent =
-            moeda(rendaTotal);
+            moeda(
+                rendaTotal
+            );
 
     }
 
@@ -827,7 +1061,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (despesasCard) {
 
         despesasCard.textContent =
-            moeda(totalDespesas);
+            moeda(
+                totalDespesas
+            );
 
     }
 
@@ -835,7 +1071,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (investimentosCard) {
 
         investimentosCard.textContent =
-            moeda(totalInvestimentos);
+            moeda(
+                totalInvestimentos
+            );
 
     }
 
@@ -843,7 +1081,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (disponivelCard) {
 
         disponivelCard.textContent =
-            moeda(disponivel);
+            moeda(
+                disponivel
+            );
 
     }
 
@@ -861,7 +1101,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (distribuicaoTotal) {
 
         distribuicaoTotal.textContent =
-            moeda(rendaTotal);
+            moeda(
+                rendaTotal
+            );
 
     }
 
@@ -890,7 +1132,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
 
 
-        const p =
+        const percentualElemento =
             document.getElementById(
                 percentualId
             );
@@ -908,15 +1150,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
 
 
-        if (p) {
+        if (
+            percentualElemento
+        ) {
 
-            p.textContent =
+            percentualElemento.textContent =
                 `${perc.toFixed(1)}%`;
 
         }
 
 
-        if (barra) {
+        if (
+            barra
+        ) {
 
             barra.style.width =
                 `${percBarra}%`;
@@ -924,10 +1170,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        if (valorElemento) {
+        if (
+            valorElemento
+        ) {
 
             valorElemento.textContent =
-                moeda(valor);
+                moeda(
+                    valor
+                );
 
         }
 
@@ -984,13 +1234,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-    if (gastosCategorias) {
+    if (
+        gastosCategorias
+    ) {
 
         const categorias = {};
 
 
         despesasMes.forEach(
-            function (despesa) {
+            function (
+                despesa
+            ) {
 
                 const categoria =
                     despesa.categoria ||
@@ -1020,7 +1274,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             Object.entries(
                 categorias
             ).sort(
-                function (a, b) {
+                function (
+                    a,
+                    b
+                ) {
 
                     return (
                         b[1] -
@@ -1036,7 +1293,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         if (
-            listaCategorias.length === 0
+            listaCategorias.length ===
+            0
         ) {
 
             gastosCategorias.innerHTML = `
@@ -1050,7 +1308,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             `;
 
         } else {
-
 
             const totalCategorias =
                 listaCategorias.reduce(
@@ -1075,7 +1332,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     5
                 )
                 .forEach(
-                    function (item) {
+                    function (
+                        item
+                    ) {
 
                         const nome =
                             item[0];
@@ -1119,7 +1378,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <div class="budget-bar">
 
                                 <span
-                                    style="width: ${Math.min(100, perc)}%;"
+                                    style="width: ${Math.min(
+                                        100,
+                                        perc
+                                    )}%;"
                                 ></span>
 
                             </div>
@@ -1149,12 +1411,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-    if (dashboardContas) {
+    if (
+        dashboardContas
+    ) {
 
         const proximas =
-            contasPendentes
+            [...contasPendentes]
                 .sort(
-                    function (a, b) {
+                    function (
+                        a,
+                        b
+                    ) {
 
                         return (
                             a.vencimento.localeCompare(
@@ -1175,7 +1442,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         if (
-            proximas.length === 0
+            proximas.length ===
+            0
         ) {
 
             dashboardContas.innerHTML = `
@@ -1190,9 +1458,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         } else {
 
-
             proximas.forEach(
-                function (conta) {
+                function (
+                    conta
+                ) {
 
                     const partes =
                         conta.vencimento.split(
@@ -1215,11 +1484,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <div class="bill-date">
 
                             <strong>
-                                ${partes[2]}
+                                ${escaparHTML(
+                                    partes[2]
+                                )}
                             </strong>
 
                             <span>
-                                ${nomeMesCurto(partes[1])}
+                                ${escaparHTML(
+                                    nomeMesCurto(
+                                        partes[1]
+                                    )
+                                )}
                             </span>
 
                         </div>
@@ -1228,18 +1503,24 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <div class="bill-info">
 
                             <strong>
-                                ${escaparHTML(conta.descricao)}
+                                ${escaparHTML(
+                                    conta.descricao
+                                )}
                             </strong>
 
                             <span>
-                                ${escaparHTML(conta.categoria)}
+                                ${escaparHTML(
+                                    conta.categoria
+                                )}
                             </span>
 
                         </div>
 
 
                         <strong class="bill-value">
-                            ${moeda(conta.valor)}
+                            ${moeda(
+                                conta.valor
+                            )}
                         </strong>
 
                     `;
@@ -1267,22 +1548,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-    if (dashboardMetas) {
+    if (
+        dashboardMetas
+    ) {
 
         const metasOrdenadas =
             [...metas]
                 .sort(
-                    function (a, b) {
+                    function (
+                        a,
+                        b
+                    ) {
 
                         const pA =
-                            Number(a.objetivo) > 0
+                            Number(
+                                a.objetivo
+                            ) > 0
                                 ? Number(a.atual) /
                                   Number(a.objetivo)
                                 : 0;
 
 
                         const pB =
-                            Number(b.objetivo) > 0
+                            Number(
+                                b.objetivo
+                            ) > 0
                                 ? Number(b.atual) /
                                   Number(b.objetivo)
                                 : 0;
@@ -1306,7 +1596,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         if (
-            metasOrdenadas.length === 0
+            metasOrdenadas.length ===
+            0
         ) {
 
             dashboardMetas.innerHTML = `
@@ -1321,9 +1612,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         } else {
 
-
             metasOrdenadas.forEach(
-                function (meta) {
+                function (
+                    meta
+                ) {
 
                     const objetivo =
                         Number(
@@ -1366,7 +1658,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <div>
 
                                 <strong>
-                                    ${escaparHTML(meta.nome)}
+                                    ${escaparHTML(
+                                        meta.nome
+                                    )}
                                 </strong>
 
                                 <span>
@@ -1417,13 +1711,52 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
 
 
-    if (dashboardSonhos) {
+    function progressoSonho(
+        sonho
+    ) {
 
+        const objetivo =
+            Number(
+                sonho.valor
+            );
+
+
+        const reservado =
+            Number(
+                sonho.reservado
+            );
+
+
+        if (
+            objetivo <= 0
+        ) {
+
+            return 0;
+
+        }
+
+
+        return Math.min(
+            100,
+            (
+                reservado /
+                objetivo
+            ) * 100
+        );
+
+    }
+
+
+    if (
+        dashboardSonhos
+    ) {
 
         const sonhosAtivos =
-            sonhos
+            [...sonhos]
                 .filter(
-                    function (sonho) {
+                    function (
+                        sonho
+                    ) {
 
                         return (
                             !sonho.concluido
@@ -1432,13 +1765,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                 )
                 .sort(
-                    function (a, b) {
+                    function (
+                        a,
+                        b
+                    ) {
 
                         return (
-                            Number(b.reservado) /
-                            Number(b.valor) -
-                            Number(a.reservado) /
-                            Number(a.valor)
+                            progressoSonho(b) -
+                            progressoSonho(a)
                         );
 
                     }
@@ -1470,9 +1804,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         } else {
 
-
             sonhosAtivos.forEach(
-                function (sonho) {
+                function (
+                    sonho
+                ) {
 
                     const objetivo =
                         Number(
@@ -1487,15 +1822,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                     const p =
-                        objetivo > 0
-                            ? Math.min(
-                                100,
-                                (
-                                    reservado /
-                                    objetivo
-                                ) * 100
-                            )
-                            : 0;
+                        progressoSonho(
+                            sonho
+                        );
 
 
                     const elemento =
@@ -1515,7 +1844,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <div>
 
                                 <strong>
-                                    ${escaparHTML(sonho.nome)}
+                                    ${escaparHTML(
+                                        sonho.nome
+                                    )}
                                 </strong>
 
                                 <span>
@@ -1598,7 +1929,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         mobiliaResumo
     ) {
 
-
         const totalMobilia =
             mobilia.reduce(
                 function (
@@ -1621,7 +1951,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         const compradoMobilia =
             mobilia
                 .filter(
-                    function (item) {
+                    function (
+                        item
+                    ) {
 
                         return (
                             item.comprado
@@ -1677,56 +2009,35 @@ document.addEventListener("DOMContentLoaded", async function () {
             `de ${moeda(totalMobilia)}`;
 
 
+        const quantidadeComprada =
+            mobilia.filter(
+                function (
+                    item
+                ) {
+
+                    return (
+                        item.comprado
+                    );
+
+                }
+            ).length;
+
+
         mobiliaResumo.textContent =
-            mobilia.length === 0
+            mobilia.length ===
+            0
                 ? "Nenhum item cadastrado."
-                : `${mobilia.filter(
-                    item => item.comprado
-                ).length} de ${
-                    mobilia.length
-                } itens comprados`;
+                : `${quantidadeComprada} de ${mobilia.length} itens comprados`;
 
     }
 
 
     /* =====================================================
-       ATUALIZAÇÃO EM OUTRAS ABAS
+       LOG FINAL
     ====================================================== */
 
-    window.addEventListener(
-        "storage",
-        function (evento) {
-
-            const chavesAtualizadas = [
-
-                DESPESAS_KEY,
-
-                CONTAS_KEY,
-
-                INVESTIMENTOS_KEY,
-
-                METAS_KEY,
-
-                COMPRAS_KEY,
-
-                SONHOS_KEY,
-
-                MOBILIA_KEY
-
-            ];
-
-
-            if (
-                chavesAtualizadas.includes(
-                    evento.key
-                )
-            ) {
-
-                window.location.reload();
-
-            }
-
-        }
+    console.log(
+        "✅ Dashboard carregado 100% pelo Supabase."
     );
 
 

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Configurações | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/configuracoes.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <!-- INÍCIO -->
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 FINANÇAS
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PLANEJAMENTO
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SONHOS
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RELATÓRIOS
+            ================================================== -->
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             RODAPÉ
+        ================================================== -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item menu-active"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="main-content configuracoes-page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    SISTEMA
+                </span>
+
+                <h1>
+                    Configurações
+                </h1>
+
+                <p>
+                    Gerencie sua conta e os dados do casal.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             STATUS
+        ================================================== -->
+
+        <div
+            id="configStatus"
+            class="config-status"
+        >
+        </div>
+
+
+
+        <!-- =================================================
+             MINHA CONTA
+        ================================================== -->
+
+        <section class="config-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        👤
+                    </span>
+
+                    <div>
+
+                        <small>
+                            MINHA CONTA
+                        </small>
+
+                        <h2>
+                            Dados de acesso
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="config-card">
+
+
+                <div class="account-header">
+
+                    <div class="account-avatar">
+
+                        <span id="usuarioInicial">
+                            ?
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="account-label">
+                            USUÁRIO CONECTADO
+                        </span>
+
+                        <h3 id="usuarioNome">
+                            Carregando...
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="config-fields">
+
+
+                    <!-- =================================================
+                         E-MAIL ATUAL
+                    ================================================== -->
+
+                    <div class="input-group">
+
+                        <label for="usuarioEmail">
+                            E-mail atual
+                        </label>
+
+                        <input
+                            type="email"
+                            id="usuarioEmail"
+                            readonly
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         NOVO E-MAIL
+                    ================================================== -->
+
+                    <div class="input-group">
+
+                        <label for="novoEmail">
+                            Novo e-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="novoEmail"
+                            placeholder="Digite o novo e-mail"
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     AÇÕES E-MAIL
+                ================================================== -->
+
+                <div class="config-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="btnLimparEmail"
+                    >
+                        Limpar
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="btnAlterarEmail"
+                    >
+                        Alterar e-mail
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     NOVA SENHA
+                ================================================== -->
+
+                <div class="config-fields">
+
+
+                    <div class="input-group">
+
+                        <label for="novaSenha">
+                            Nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="novaSenha"
+                            placeholder="Digite a nova senha"
+                            autocomplete="new-password"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="confirmarSenha">
+                            Confirmar nova senha
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmarSenha"
+                            placeholder="Digite novamente a senha"
+                            autocomplete="new-password"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     AÇÕES SENHA
+                ================================================== -->
+
+                <div class="config-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="btnLimparSenha"
+                    >
+                        Limpar
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="btnAlterarSenha"
+                    >
+                        Alterar senha
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DADOS DO CASAL
+        ================================================== -->
+
+        <section class="config-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        ♡
+                    </span>
+
+                    <div>
+
+                        <small>
+                            DADOS DO CASAL
+                        </small>
+
+                        <h2>
+                            Nossos nomes
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="config-card">
+
+
+                <div class="config-introduction">
+
+                    <strong>
+                        Personalize como o sistema identifica vocês.
+                    </strong>
+
+                    <p>
+                        Esses nomes serão utilizados nas telas
+                        financeiras, relatórios, cartões,
+                        investimentos e demais áreas do sistema.
+                    </p>
+
+                </div>
+
+
+                <div class="config-fields">
+
+
+                    <div class="input-group">
+
+                        <label for="nomeCasal">
+                            Nome do casal
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nomeCasal"
+                            placeholder="Ex.: Marcos & Beatriz"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="config-two-columns">
+
+
+                        <div class="input-group">
+
+                            <label for="nomePessoa1">
+                                Nome da pessoa 1
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomePessoa1"
+                                placeholder="Nome"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="nomePessoa2">
+                                Nome da pessoa 2
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomePessoa2"
+                                placeholder="Nome"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="config-actions">
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="btnSalvarNomes"
+                    >
+                        Salvar nomes
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SEGURANÇA
+        ================================================== -->
+
+        <section class="config-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        🔒
+                    </span>
+
+                    <div>
+
+                        <small>
+                            SEGURANÇA
+                        </small>
+
+                        <h2>
+                            Acesso à conta
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="config-card security-card">
+
+
+                <div class="security-item">
+
+
+                    <div>
+
+                        <strong>
+                            Senha de acesso
+                        </strong>
+
+                        <span>
+                            Mantenha sua senha atualizada
+                            para proteger sua conta.
+                        </span>
+
+                    </div>
+
+
+                    <span class="security-status">
+                        Protegida
+                    </span>
+
+
+                </div>
+
+
+                <div class="security-divider"></div>
+
+
+                <div class="security-item">
+
+
+                    <div>
+
+                        <strong>
+                            Sessão atual
+                        </strong>
+
+                        <span id="sessaoInfo">
+                            Sessão autenticada pelo Supabase.
+                        </span>
+
+                    </div>
+
+
+                    <span class="security-status">
+                        Ativa
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SOBRE
+        ================================================== -->
+
+        <section class="config-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        ℹ
+                    </span>
+
+                    <div>
+
+                        <small>
+                            SOBRE
+                        </small>
+
+                        <h2>
+                            Sistema
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="config-card about-card">
+
+
+                <div>
+
+                    <strong>
+                        Finanças do Casal
+                    </strong>
+
+                    <span>
+                        Controle financeiro pessoal
+                        do casal.
+                    </span>
+
+                </div>
+
+
+                <span class="version-badge">
+                    Versão 1.0
+                </span>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script
+        src="../assets/js/supabase.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/auth.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/casal-nomes.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/configuracoes.js"
+    ></script>
+
+
+</body>
+
+</html>

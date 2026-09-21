@@ -1,0 +1,621 @@
+/* =========================================================
+   PÁGINA CONFIGURAÇÕES
+========================================================= */
+
+.configuracoes-page {
+
+    max-width: 1500px;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.config-status {
+
+    display: none;
+
+}
+
+
+.config-status.visible {
+
+    display: block;
+
+    margin-bottom: 20px;
+
+    padding:
+        12px 15px;
+
+    background: #f0e8df;
+
+    border:
+        1px solid #e2d5c7;
+
+    border-radius: 10px;
+
+    color: var(--text-light);
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.config-section {
+
+    margin-bottom: 22px;
+
+}
+
+
+.section-heading {
+
+    margin-bottom: 14px;
+
+}
+
+
+.section-heading > div {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.section-heading > div > span {
+
+    width: 31px;
+
+    height: 31px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+}
+
+
+.section-heading small {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+
+    color: var(--primary-light);
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+
+}
+
+
+.section-heading h2 {
+
+    font-size: 19px;
+
+    color: var(--text);
+
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.config-card {
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(70, 55, 45, 0.05);
+
+}
+
+
+/* =========================================================
+   CABEÇALHO DA CONTA
+========================================================= */
+
+.account-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 22px;
+
+    margin-bottom: 22px;
+
+    border-bottom:
+        1px solid #eee7df;
+
+}
+
+
+.account-avatar {
+
+    width: 43px;
+
+    height: 43px;
+
+    min-width: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--primary-soft);
+
+    color: var(--primary);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+
+.account-label {
+
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1.2px;
+
+    color: var(--primary-light);
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+
+}
+
+
+.account-header h3 {
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================================
+   CAMPOS
+========================================================= */
+
+.config-fields {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+
+}
+
+
+.input-group {
+
+    margin: 0;
+
+}
+
+
+.input-group label {
+
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color: var(--text);
+
+    margin-bottom: 7px;
+
+}
+
+
+.input-group input {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fffefa;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.input-group input:focus {
+
+    border-color:
+        var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(138, 106, 82, 0.08);
+
+}
+
+
+.input-group input[readonly] {
+
+    background: #f8f3ed;
+
+    color: var(--text-light);
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   DUAS COLUNAS
+========================================================= */
+
+.config-two-columns {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   INTRODUÇÃO
+========================================================= */
+
+.config-introduction {
+
+    margin-bottom: 22px;
+
+}
+
+
+.config-introduction strong {
+
+    display: block;
+
+    font-size: 13px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.config-introduction p {
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    color: var(--text-light);
+
+}
+
+
+/* =========================================================
+   AÇÕES
+========================================================= */
+
+.config-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-top: 22px;
+
+    margin-top: 22px;
+
+    border-top:
+        1px solid #eee7df;
+
+}
+
+
+.config-actions .primary-button,
+.config-actions .secondary-button {
+
+    min-height: 40px;
+
+}
+
+
+/* =========================================================
+   SEGURANÇA
+========================================================= */
+
+.security-card {
+
+    padding:
+        20px 22px;
+
+}
+
+
+.security-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.security-item > div {
+
+    min-width: 0;
+
+}
+
+
+.security-item strong {
+
+    display: block;
+
+    font-size: 13px;
+
+    color: var(--text);
+
+    margin-bottom: 4px;
+
+}
+
+
+.security-item span {
+
+    display: block;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    color: var(--text-light);
+
+}
+
+
+.security-status {
+
+    flex-shrink: 0;
+
+    display: inline-flex !important;
+
+    align-items: center;
+
+    padding:
+        5px 9px;
+
+    border-radius: 20px;
+
+    background: var(--primary-soft);
+
+    color: var(--primary) !important;
+
+    font-size: 9px !important;
+
+    font-weight: 700;
+
+}
+
+
+.security-divider {
+
+    margin:
+        18px 0;
+
+    border-top:
+        1px solid #eee7df;
+
+}
+
+
+/* =========================================================
+   SOBRE
+========================================================= */
+
+.about-card {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.about-card strong {
+
+    display: block;
+
+    font-size: 13px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.about-card span {
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+.version-badge {
+
+    flex-shrink: 0;
+
+    padding:
+        5px 10px;
+
+    border-radius: 20px;
+
+    background: var(--primary-soft);
+
+    color: var(--primary) !important;
+
+    font-size: 9px !important;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .config-card {
+
+        padding: 20px;
+
+    }
+
+
+    .config-two-columns {
+
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+
+    }
+
+
+    .config-actions {
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+
+    }
+
+
+    .config-actions button {
+
+        width: 100%;
+
+    }
+
+
+    .security-item {
+
+        align-items: flex-start;
+
+    }
+
+
+    .security-status {
+
+        margin-top: 2px;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .config-card {
+
+        padding: 17px;
+
+        border-radius: 14px;
+
+    }
+
+
+    .section-heading h2 {
+
+        font-size: 17px;
+
+    }
+
+
+    .about-card {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+}

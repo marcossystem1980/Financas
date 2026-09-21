@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
 
     /* =====================================================
@@ -9,12 +9,21 @@ document.addEventListener("DOMContentLoaded", function () {
         "financasCasal_mobilia";
 
 
-    let itens =
-        carregarItens();
+    const MIGRACAO_KEY =
+        "financasCasal_mobilia_migrado";
 
+
+    const BUCKET_MOBILIA =
+        "mobilia";
+
+
+    let itens = [];
 
     let filtroAtual =
         "todos";
+
+    let casalId =
+        null;
 
 
     /* =====================================================
@@ -135,11 +144,22 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+    if (!form) {
+
+        console.error(
+            "❌ Formulário de mobília não encontrado."
+        );
+
+        return;
+
+    }
+
+
     /* =====================================================
-       STORAGE
+       LOCALSTORAGE — SOMENTE MIGRAÇÃO
     ====================================================== */
 
-    function carregarItens() {
+    function carregarItensLocais() {
 
         const dados =
             localStorage.getItem(
@@ -156,30 +176,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
 
-            return JSON.parse(
-                dados
-            );
+            const resultado =
+                JSON.parse(
+                    dados
+                );
+
+
+            return Array.isArray(
+                resultado
+            )
+                ? resultado
+                : [];
 
         } catch (erro) {
 
             console.error(
-                "Erro ao carregar mobília:",
+                "❌ Erro ao carregar mobília antiga:",
                 erro
             );
 
             return [];
 
         }
-
-    }
-
-
-    function salvarItens() {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(itens)
-        );
 
     }
 
@@ -204,6 +222,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function criarId() {
+
+        if (
+            window.crypto &&
+            typeof window.crypto.randomUUID ===
+            "function"
+        ) {
+
+            return window.crypto.randomUUID();
+
+        }
+
 
         return (
             Date.now().toString() +
@@ -245,11 +274,90 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       COMPACTAR IMAGEM
-       
-       Nesta fase estamos usando localStorage.
-       Para evitar arquivos muito grandes, a imagem
-       é reduzida antes de ser salva.
+       IDENTIFICAR USUÁRIO / CASAL
+    ====================================================== */
+
+    async function carregarCasal() {
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } = await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+            userError ||
+            !user
+        ) {
+
+            console.error(
+                "❌ Usuário não autenticado:",
+                userError
+            );
+
+            window.location.href =
+                "../login.html";
+
+            return false;
+
+        }
+
+
+        console.log(
+            "👤 Usuário:",
+            user.email
+        );
+
+
+        const {
+            data: membro,
+            error: membroError
+        } = await supabaseClient
+            .from("membros")
+            .select("casal_id")
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
+
+
+        if (
+            membroError ||
+            !membro
+        ) {
+
+            console.error(
+                "❌ Não foi possível localizar o casal:",
+                membroError
+            );
+
+            return false;
+
+        }
+
+
+        casalId =
+            membro.casal_id;
+
+
+        console.log(
+            "✅ Casal identificado:",
+            casalId
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       IMAGEM
     ====================================================== */
 
     function processarImagem(
@@ -312,8 +420,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                                     altura =
-                                        altura *
-                                        proporcao;
+                                        Math.round(
+                                            altura *
+                                            proporcao
+                                        );
 
                                 }
 
@@ -336,6 +446,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                     canvas.getContext(
                                         "2d"
                                     );
+
+
+                                if (!contexto) {
+
+                                    reject(
+                                        new Error(
+                                            "Não foi possível preparar a imagem."
+                                        )
+                                    );
+
+                                    return;
+
+                                }
 
 
                                 contexto.drawImage(
@@ -401,64 +524,695 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    async function dataUrlParaBlob(
+        dataUrl
+    ) {
+
+        const resposta =
+            await fetch(
+                dataUrl
+            );
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Não foi possível preparar a imagem."
+            );
+
+        }
+
+
+        return resposta.blob();
+
+    }
+
+
+    async function enviarImagem(
+        dataUrl,
+        itemId
+    ) {
+
+        if (!dataUrl) {
+
+            return null;
+
+        }
+
+
+        const blob =
+            await dataUrlParaBlob(
+                dataUrl
+            );
+
+
+        const caminho =
+            `${casalId}/${itemId}.jpg`;
+
+
+        const {
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_MOBILIA)
+            .upload(
+                caminho,
+                blob,
+                {
+                    contentType:
+                        "image/jpeg",
+
+                    upsert:
+                        false,
+
+                    cacheControl:
+                        "3600"
+                }
+            );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        return caminho;
+
+    }
+
+
+    async function gerarUrlImagem(
+        imagemPath
+    ) {
+
+        if (!imagemPath) {
+
+            return "";
+
+        }
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_MOBILIA)
+            .createSignedUrl(
+                imagemPath,
+                60 * 60 * 24 * 7
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao gerar URL da imagem:",
+                error
+            );
+
+            return "";
+
+        }
+
+
+        return (
+            data?.signedUrl ||
+            ""
+        );
+
+    }
+
+
+    async function excluirImagem(
+        imagemPath
+    ) {
+
+        if (!imagemPath) {
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } = await supabaseClient
+            .storage
+            .from(BUCKET_MOBILIA)
+            .remove([
+                imagemPath
+            ]);
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+    }
+
+
+    async function carregarUrlsImagens() {
+
+        await Promise.all(
+            itens.map(
+                async function (item) {
+
+                    item.imagemUrl =
+                        await gerarUrlImagem(
+                            item.imagemPath
+                        );
+
+                }
+            )
+        );
+
+    }
+
+
     /* =====================================================
-       PREVIEW
+       PREVIEW DA IMAGEM
     ====================================================== */
 
-    imagemItem.addEventListener(
-        "change",
-        async function () {
+    if (imagemItem) {
 
-            const arquivo =
-                imagemItem.files[0];
+        imagemItem.addEventListener(
+            "change",
+            async function () {
+
+                const arquivo =
+                    imagemItem.files[0];
 
 
-            if (!arquivo) {
+                if (!arquivo) {
 
-                imagePreview.innerHTML = `
+                    imagePreview.innerHTML = `
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+                    `;
 
-                    <span>
-                        A imagem escolhida aparecerá aqui.
-                    </span>
+                    return;
 
-                `;
+                }
 
-                return;
+
+                try {
+
+                    const imagem =
+                        await processarImagem(
+                            arquivo
+                        );
+
+
+                    imagePreview.innerHTML = `
+                        <img
+                            src="${imagem}"
+                            alt="Prévia do item"
+                        >
+                    `;
+
+                } catch (erro) {
+
+                    console.error(
+                        "❌ Erro na prévia da imagem:",
+                        erro
+                    );
+
+
+                    imagePreview.innerHTML = `
+                        <span>
+                            Não foi possível visualizar a imagem.
+                        </span>
+                    `;
+
+                }
 
             }
+        );
+
+    }
+
+
+    /* =====================================================
+       CARREGAR MOBÍLIA DO SUPABASE
+    ====================================================== */
+
+    async function carregarItensSupabase() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("mobilia")
+            .select(
+                `
+                id,
+                casal_id,
+                legacy_id,
+                nome,
+                ambiente,
+                valor,
+                prioridade,
+                link,
+                imagem_path,
+                observacao,
+                comprado,
+                created_at,
+                updated_at
+                `
+            )
+            .eq(
+                "casal_id",
+                casalId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "❌ Erro ao carregar mobília:",
+                error
+            );
+
+            return false;
+
+        }
+
+
+        itens =
+            (data || []).map(
+                function (item) {
+
+                    return {
+
+                        id:
+                            item.id,
+
+                        casalId:
+                            item.casal_id,
+
+                        legacyId:
+                            item.legacy_id,
+
+                        nome:
+                            item.nome,
+
+                        ambiente:
+                            item.ambiente,
+
+                        valor:
+                            Number(
+                                item.valor
+                            ) || 0,
+
+                        prioridade:
+                            item.prioridade ||
+                            "Desejável",
+
+                        link:
+                            item.link ||
+                            "",
+
+                        imagemPath:
+                            item.imagem_path ||
+                            "",
+
+                        imagemUrl:
+                            "",
+
+                        observacao:
+                            item.observacao ||
+                            "",
+
+                        comprado:
+                            Boolean(
+                                item.comprado
+                            ),
+
+                        criadoEm:
+                            item.created_at,
+
+                        atualizadoEm:
+                            item.updated_at
+
+                    };
+
+                }
+            );
+
+
+        await carregarUrlsImagens();
+
+
+        console.log(
+            `✅ ${itens.length} item(ns) de mobília carregado(s).`
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       MIGRAÇÃO
+    ====================================================== */
+
+    async function migrarItens() {
+
+        const jaMigrado =
+            localStorage.getItem(
+                MIGRACAO_KEY
+            );
+
+
+        if (
+            jaMigrado ===
+            "true"
+        ) {
+
+            return;
+
+        }
+
+
+        const antigos =
+            carregarItensLocais();
+
+
+        if (
+            antigos.length ===
+            0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                "ℹ️ Nenhum item antigo de mobília encontrado para migrar."
+            );
+
+
+            return;
+
+        }
+
+
+        const {
+            data: existentes,
+            error: erroExistentes
+        } = await supabaseClient
+            .from("mobilia")
+            .select(
+                "id, legacy_id, imagem_path"
+            )
+            .eq(
+                "casal_id",
+                casalId
+            );
+
+
+        if (erroExistentes) {
+
+            console.error(
+                "❌ Erro ao verificar mobília existente:",
+                erroExistentes
+            );
+
+            return;
+
+        }
+
+
+        const porLegacy =
+            new Map();
+
+
+        (existentes || []).forEach(
+            function (item) {
+
+                if (
+                    item.legacy_id
+                ) {
+
+                    porLegacy.set(
+                        String(
+                            item.legacy_id
+                        ),
+                        item
+                    );
+
+                }
+
+            }
+        );
+
+
+        console.log(
+            "📦 Iniciando migração da mobília antiga..."
+        );
+
+
+        let erros =
+            0;
+
+
+        for (
+            let indice = 0;
+            indice < antigos.length;
+            indice++
+        ) {
+
+            const antigo =
+                antigos[indice];
+
+
+            const legacyId =
+                String(
+                    antigo.id ??
+                    `item-${indice}-${antigo.nome || "sem-nome"}`
+                );
+
+
+            let existente =
+                porLegacy.get(
+                    legacyId
+                ) ||
+                null;
 
 
             try {
 
-                const imagem =
-                    await processarImagem(
-                        arquivo
+                if (!existente) {
+
+                    const novoId =
+                        criarId();
+
+
+                    const registro = {
+
+                        id:
+                            novoId,
+
+                        casal_id:
+                            casalId,
+
+                        legacy_id:
+                            legacyId,
+
+                        nome:
+                            String(
+                                antigo.nome ||
+                                "Sem nome"
+                            ).trim(),
+
+                        ambiente:
+                            String(
+                                antigo.ambiente ||
+                                "Outro"
+                            ).trim(),
+
+                        valor:
+                            Number(
+                                antigo.valor
+                            ) || 0,
+
+                        prioridade:
+                            antigo.prioridade ||
+                            "Desejável",
+
+                        link:
+                            antigo.link ||
+                            null,
+
+                        imagem_path:
+                            null,
+
+                        observacao:
+                            String(
+                                antigo.observacao ||
+                                ""
+                            ).trim() ||
+                            null,
+
+                        comprado:
+                            Boolean(
+                                antigo.comprado
+                            ),
+
+                        created_at:
+                            antigo.criadoEm ||
+                            new Date().toISOString()
+
+                    };
+
+
+                    const {
+                        data: inserido,
+                        error: erroInsert
+                    } = await supabaseClient
+                        .from("mobilia")
+                        .insert(
+                            registro
+                        )
+                        .select(
+                            "id, legacy_id, imagem_path"
+                        )
+                        .single();
+
+
+                    if (erroInsert) {
+
+                        throw erroInsert;
+
+                    }
+
+
+                    existente =
+                        inserido;
+
+
+                    porLegacy.set(
+                        legacyId,
+                        existente
                     );
 
+                }
 
-                imagePreview.innerHTML = `
 
-                    <img
-                        src="${imagem}"
-                        alt="Prévia do item"
-                    >
+                /* -----------------------------------------
+                   MIGRAR IMAGEM ANTIGA
+                ------------------------------------------ */
 
-                `;
+                if (
+                    antigo.imagem &&
+                    String(
+                        antigo.imagem
+                    ).startsWith(
+                        "data:image/"
+                    ) &&
+                    !existente.imagem_path
+                ) {
+
+                    const caminho =
+                        await enviarImagem(
+                            antigo.imagem,
+                            existente.id
+                        );
+
+
+                    const {
+                        error:
+                            erroImagem
+                    } = await supabaseClient
+                        .from("mobilia")
+                        .update({
+                            imagem_path:
+                                caminho,
+
+                            updated_at:
+                                new Date().toISOString()
+                        })
+                        .eq(
+                            "id",
+                            existente.id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    if (erroImagem) {
+
+                        await excluirImagem(
+                            caminho
+                        );
+
+                        throw erroImagem;
+
+                    }
+
+
+                    existente.imagem_path =
+                        caminho;
+
+                }
 
             } catch (erro) {
 
-                imagePreview.innerHTML = `
+                erros += 1;
 
-                    <span>
-                        Não foi possível visualizar a imagem.
-                    </span>
 
-                `;
+                console.error(
+                    "❌ Erro ao migrar item de mobília:",
+                    antigo,
+                    erro
+                );
 
             }
 
         }
-    );
+
+
+        if (
+            erros ===
+            0
+        ) {
+
+            localStorage.setItem(
+                MIGRACAO_KEY,
+                "true"
+            );
+
+
+            console.log(
+                `✅ ${antigos.length} item(ns) de mobília migrado(s) para o Supabase.`
+            );
+
+        } else {
+
+            console.warn(
+                `⚠️ ${erros} item(ns) apresentaram erro durante a migração. A migração será tentada novamente.`
+            );
+
+        }
+
+    }
 
 
     /* =====================================================
@@ -545,7 +1299,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         switch (
-            ordenacao.value
+            ordenacao?.value
         ) {
 
 
@@ -555,8 +1309,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (a, b) {
 
                         return (
-                            a.valor -
-                            b.valor
+                            Number(a.valor) -
+                            Number(b.valor)
                         );
 
                     }
@@ -571,8 +1325,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (a, b) {
 
                         return (
-                            b.valor -
-                            a.valor
+                            Number(b.valor) -
+                            Number(a.valor)
                         );
 
                     }
@@ -586,9 +1340,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 copia.sort(
                     function (a, b) {
 
-                        return a.nome.localeCompare(
-                            b.nome,
-                            "pt-BR"
+                        return (
+                            a.nome.localeCompare(
+                                b.nome,
+                                "pt-BR"
+                            )
                         );
 
                     }
@@ -738,35 +1494,63 @@ document.addEventListener("DOMContentLoaded", function () {
                 : 0;
 
 
-        totalItens.textContent =
-            itens.length;
+        if (totalItens) {
+
+            totalItens.textContent =
+                itens.length;
+
+        }
 
 
-        valorTotal.textContent =
-            moeda(total);
+        if (valorTotal) {
+
+            valorTotal.textContent =
+                moeda(total);
+
+        }
 
 
-        valorComprado.textContent =
-            moeda(comprado);
+        if (valorComprado) {
+
+            valorComprado.textContent =
+                moeda(comprado);
+
+        }
 
 
-        valorFaltante.textContent =
-            moeda(faltante);
+        if (valorFaltante) {
+
+            valorFaltante.textContent =
+                moeda(faltante);
+
+        }
 
 
-        percentualCasa.textContent =
-            `${percentual.toFixed(1)}%`;
+        if (percentualCasa) {
+
+            percentualCasa.textContent =
+                `${percentual.toFixed(1)}%`;
+
+        }
 
 
-        barraCasa.style.width =
-            `${Math.min(
-                100,
-                percentual
-            )}%`;
+        if (barraCasa) {
+
+            barraCasa.style.width =
+                `${Math.min(
+                    100,
+                    percentual
+                )}%`;
+
+        }
 
 
-        progressoTexto.textContent =
-            `${moeda(comprado)} de ${moeda(total)}`;
+        if (progressoTexto) {
+
+            progressoTexto.textContent =
+                `${moeda(comprado)} de ${moeda(total)}`;
+
+        }
 
     }
 
@@ -843,7 +1627,6 @@ document.addEventListener("DOMContentLoaded", function () {
         lista.forEach(
             function (item) {
 
-
                 const card =
                     document.createElement(
                         "article"
@@ -859,10 +1642,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const imagem =
-                    item.imagem
+                    item.imagemUrl
                         ? `
                             <img
-                                src="${item.imagem}"
+                                src="${item.imagemUrl}"
                                 alt="${escaparHTML(item.nome)}"
                             >
                         `
@@ -956,7 +1739,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         ? "purchased"
                                         : ""
                                 }"
-                                data-id="${item.id}"
+                                data-id="${escaparHTML(item.id)}"
                                 data-action="comprar"
                             >
 
@@ -991,7 +1774,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <button
                             class="delete-furniture"
-                            data-id="${item.id}"
+                            data-id="${escaparHTML(item.id)}"
                             data-action="excluir"
                         >
                             Excluir item
@@ -1014,7 +1797,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       FORMULÁRIO
+       ATUALIZAR TELA
+    ====================================================== */
+
+    function atualizarTela() {
+
+        atualizarResumo();
+
+        renderizar();
+
+    }
+
+
+    /* =====================================================
+       CRIAR ITEM
     ====================================================== */
 
     form.addEventListener(
@@ -1024,80 +1820,36 @@ document.addEventListener("DOMContentLoaded", function () {
             evento.preventDefault();
 
 
-            const arquivo =
-                imagemItem.files[0];
+            const nome =
+                nomeItem.value.trim();
 
 
-            let imagem =
-                "";
+            const ambienteValor =
+                ambiente.value;
 
 
-            if (arquivo) {
-
-                try {
-
-                    imagem =
-                        await processarImagem(
-                            arquivo
-                        );
-
-                } catch (erro) {
-
-                    alert(
-                        "Não foi possível processar a imagem."
-                    );
-
-                    return;
-
-                }
-
-            }
+            const valor =
+                Number(
+                    valorItem.value
+                );
 
 
-            const novoItem = {
-
-                id:
-                    criarId(),
-
-                nome:
-                    nomeItem.value.trim(),
-
-                ambiente:
-                    ambiente.value,
-
-                valor:
-                    Number(
-                        valorItem.value
-                    ),
-
-                prioridade:
-                    prioridade.value,
-
-                link:
-                    linkLoja.value.trim(),
-
-                imagem:
-                    imagem,
-
-                observacao:
-                    observacaoItem.value.trim(),
-
-                comprado:
-                    false,
-
-                criadoEm:
-                    new Date().toISOString()
-
-            };
+            const prioridadeValor =
+                prioridade.value;
 
 
-            if (
-                !novoItem.nome ||
-                novoItem.valor <= 0
-            ) {
+            const link =
+                linkLoja.value.trim();
+
+
+            const observacao =
+                observacaoItem.value.trim();
+
+
+            if (!nome) {
 
                 alert(
-                    "Informe o nome e um valor válido."
+                    "Informe o nome do item."
                 );
 
                 return;
@@ -1105,40 +1857,337 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            itens.push(
-                novoItem
-            );
+            if (
+                valor <= 0
+            ) {
+
+                alert(
+                    "Informe um valor válido."
+                );
+
+                return;
+
+            }
 
 
-            salvarItens();
-
-            renderizar();
-
-            atualizarResumo();
-
-
-            form.reset();
+            const botao =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
 
 
-            imagePreview.innerHTML = `
+            if (botao) {
 
-                <span>
-                    A imagem escolhida aparecerá aqui.
-                </span>
+                botao.disabled =
+                    true;
 
-            `;
+                botao.textContent =
+                    "Salvando...";
+
+            }
+
+
+            try {
+
+                let dataUrlImagem =
+                    "";
+
+
+                if (
+                    imagemItem &&
+                    imagemItem.files[0]
+                ) {
+
+                    dataUrlImagem =
+                        await processarImagem(
+                            imagemItem.files[0]
+                        );
+
+                }
+
+
+                const novoId =
+                    criarId();
+
+
+                const registro = {
+
+                    id:
+                        novoId,
+
+                    casal_id:
+                        casalId,
+
+                    legacy_id:
+                        null,
+
+                    nome:
+                        nome,
+
+                    ambiente:
+                        ambienteValor ||
+                        "Outro",
+
+                    valor:
+                        valor,
+
+                    prioridade:
+                        prioridadeValor ||
+                        "Desejável",
+
+                    link:
+                        link ||
+                        null,
+
+                    imagem_path:
+                        null,
+
+                    observacao:
+                        observacao ||
+                        null,
+
+                    comprado:
+                        false
+
+                };
+
+
+                const {
+                    data: itemInserido,
+                    error: erroInsert
+                } = await supabaseClient
+                    .from("mobilia")
+                    .insert(
+                        registro
+                    )
+                    .select()
+                    .single();
+
+
+                if (erroInsert) {
+
+                    throw erroInsert;
+
+                }
+
+
+                let imagemPath =
+                    null;
+
+
+                try {
+
+                    if (
+                        dataUrlImagem
+                    ) {
+
+                        imagemPath =
+                            await enviarImagem(
+                                dataUrlImagem,
+                                novoId
+                            );
+
+
+                        const {
+                            error:
+                                erroImagem
+                        } = await supabaseClient
+                            .from("mobilia")
+                            .update({
+                                imagem_path:
+                                    imagemPath,
+
+                                updated_at:
+                                    new Date().toISOString()
+                            })
+                            .eq(
+                                "id",
+                                novoId
+                            )
+                            .eq(
+                                "casal_id",
+                                casalId
+                            );
+
+
+                        if (erroImagem) {
+
+                            await excluirImagem(
+                                imagemPath
+                            );
+
+                            throw erroImagem;
+
+                        }
+
+                    }
+
+                } catch (
+                    erroUpload
+                ) {
+
+                    console.error(
+                        "❌ Erro ao enviar a imagem:",
+                        erroUpload
+                    );
+
+
+                    await supabaseClient
+                        .from("mobilia")
+                        .delete()
+                        .eq(
+                            "id",
+                            novoId
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    throw new Error(
+                        "Não foi possível enviar a imagem. O item não foi salvo."
+                    );
+
+                }
+
+
+                const novoItemLocal = {
+
+                    id:
+                        itemInserido.id,
+
+                    casalId:
+                        itemInserido.casal_id,
+
+                    legacyId:
+                        itemInserido.legacy_id,
+
+                    nome:
+                        itemInserido.nome,
+
+                    ambiente:
+                        itemInserido.ambiente,
+
+                    valor:
+                        Number(
+                            itemInserido.valor
+                        ) || 0,
+
+                    prioridade:
+                        itemInserido.prioridade,
+
+                    link:
+                        itemInserido.link ||
+                        "",
+
+                    imagemPath:
+                        imagemPath ||
+                        itemInserido.imagem_path ||
+                        "",
+
+                    imagemUrl:
+                        "",
+
+                    observacao:
+                        itemInserido.observacao ||
+                        "",
+
+                    comprado:
+                        Boolean(
+                            itemInserido.comprado
+                        ),
+
+                    criadoEm:
+                        itemInserido.created_at,
+
+                    atualizadoEm:
+                        itemInserido.updated_at
+
+                };
+
+
+                if (
+                    novoItemLocal.imagemPath
+                ) {
+
+                    novoItemLocal.imagemUrl =
+                        await gerarUrlImagem(
+                            novoItemLocal.imagemPath
+                        );
+
+                }
+
+
+                itens.unshift(
+                    novoItemLocal
+                );
+
+
+                atualizarTela();
+
+
+                form.reset();
+
+
+                if (imagePreview) {
+
+                    imagePreview.innerHTML = `
+
+                        <span>
+                            A imagem escolhida aparecerá aqui.
+                        </span>
+
+                    `;
+
+                }
+
+
+                console.log(
+                    "✅ Item de mobília salvo no Supabase:",
+                    itemInserido
+                );
+
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro ao salvar item:",
+                    erro
+                );
+
+
+                alert(
+                    erro?.message ===
+                    "Não foi possível enviar a imagem. O item não foi salvo."
+                        ? erro.message
+                        : "Não foi possível salvar o item."
+                );
+
+            } finally {
+
+                if (botao) {
+
+                    botao.disabled =
+                        false;
+
+                    botao.textContent =
+                        "Adicionar item";
+
+                }
+
+            }
 
         }
     );
 
 
     /* =====================================================
-       AÇÕES DOS CARDS
+       AÇÕES
     ====================================================== */
 
     furnitureGrid.addEventListener(
         "click",
-        function (evento) {
+        async function (evento) {
 
             const botao =
                 evento.target.closest(
@@ -1147,7 +2196,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (!botao) {
+
                 return;
+
             }
 
 
@@ -1159,44 +2210,115 @@ document.addEventListener("DOMContentLoaded", function () {
                 botao.dataset.action;
 
 
-            if (
-                acao === "comprar"
-            ) {
+            const item =
+                itens.find(
+                    function (registro) {
 
-                itens =
-                    itens.map(
-                        function (item) {
+                        return (
+                            registro.id ===
+                            id
+                        );
 
-                            if (
-                                item.id ===
-                                id
-                            ) {
-
-                                item.comprado =
-                                    !item.comprado;
-
-                            }
+                    }
+                );
 
 
-                            return item;
-
-                        }
-                    );
-
-
-                salvarItens();
-
-                renderizar();
-
-                atualizarResumo();
+            if (!item) {
 
                 return;
 
             }
 
 
+            /* -----------------------------------------
+               COMPRAR / DESFAZER COMPRA
+            ------------------------------------------ */
+
             if (
-                acao === "excluir"
+                acao ===
+                "comprar"
+            ) {
+
+                botao.disabled =
+                    true;
+
+
+                const novoStatus =
+                    !item.comprado;
+
+
+                const {
+                    data:
+                        itemAtualizado,
+                    error
+                } = await supabaseClient
+                    .from("mobilia")
+                    .update({
+                        comprado:
+                            novoStatus,
+
+                        updated_at:
+                            new Date().toISOString()
+                    })
+                    .eq(
+                        "id",
+                        id
+                    )
+                    .eq(
+                        "casal_id",
+                        casalId
+                    )
+                    .select()
+                    .single();
+
+
+                if (error) {
+
+                    console.error(
+                        "❌ Erro ao atualizar status:",
+                        error
+                    );
+
+
+                    alert(
+                        "Não foi possível atualizar o status do item."
+                    );
+
+
+                    botao.disabled =
+                        false;
+
+                    return;
+
+                }
+
+
+                item.comprado =
+                    Boolean(
+                        itemAtualizado.comprado
+                    );
+
+
+                atualizarTela();
+
+
+                console.log(
+                    "✅ Status de compra atualizado."
+                );
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               EXCLUIR
+            ------------------------------------------ */
+
+            if (
+                acao ===
+                "excluir"
             ) {
 
                 const confirmar =
@@ -1206,28 +2328,111 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 if (!confirmar) {
+
                     return;
+
                 }
 
 
-                itens =
-                    itens.filter(
-                        function (item) {
+                botao.disabled =
+                    true;
 
-                            return (
-                                item.id !==
-                                id
+
+                try {
+
+                    /* ---------------------------------
+                       EXCLUIR PRIMEIRO DO BANCO
+                    ---------------------------------- */
+
+                    const {
+                        error
+                    } = await supabaseClient
+                        .from("mobilia")
+                        .delete()
+                        .eq(
+                            "id",
+                            id
+                        )
+                        .eq(
+                            "casal_id",
+                            casalId
+                        );
+
+
+                    if (error) {
+
+                        throw error;
+
+                    }
+
+
+                    /* ---------------------------------
+                       EXCLUIR IMAGEM
+                    ---------------------------------- */
+
+                    if (
+                        item.imagemPath
+                    ) {
+
+                        try {
+
+                            await excluirImagem(
+                                item.imagemPath
+                            );
+
+                        } catch (
+                            erroImagem
+                        ) {
+
+                            console.warn(
+                                "⚠️ Item excluído, mas não foi possível excluir a imagem do Storage:",
+                                erroImagem
                             );
 
                         }
+
+                    }
+
+
+                    itens =
+                        itens.filter(
+                            function (
+                                registro
+                            ) {
+
+                                return (
+                                    registro.id !==
+                                    id
+                                );
+
+                            }
+                        );
+
+
+                    atualizarTela();
+
+
+                    console.log(
+                        "✅ Item de mobília excluído."
+                    );
+
+                } catch (erro) {
+
+                    console.error(
+                        "❌ Erro ao excluir item:",
+                        erro
                     );
 
 
-                salvarItens();
+                    alert(
+                        "Não foi possível excluir o item."
+                    );
 
-                renderizar();
 
-                atualizarResumo();
+                    botao.disabled =
+                        false;
+
+                }
 
             }
 
@@ -1289,38 +2494,82 @@ document.addEventListener("DOMContentLoaded", function () {
        ORDENAÇÃO
     ====================================================== */
 
-    ordenacao.addEventListener(
-        "change",
-        renderizar
-    );
+    if (ordenacao) {
+
+        ordenacao.addEventListener(
+            "change",
+            renderizar
+        );
+
+    }
 
 
     /* =====================================================
        NOVO ITEM
     ====================================================== */
 
-    scrollNovoItem.addEventListener(
-        "click",
-        function () {
+    if (scrollNovoItem) {
 
-            document
-                .getElementById(
-                    "novoItem"
-                )
-                .scrollIntoView({
+        scrollNovoItem.addEventListener(
+            "click",
+            function () {
+
+                const alvo =
+                    document.getElementById(
+                        "novoItem"
+                    );
+
+
+                if (!alvo) {
+
+                    return;
+
+                }
+
+
+                alvo.scrollIntoView({
                     behavior: "smooth"
                 });
 
-        }
-    );
+            }
+        );
+
+    }
 
 
     /* =====================================================
        INICIALIZAÇÃO
     ====================================================== */
 
-    renderizar();
+    const casalCarregado =
+        await carregarCasal();
 
-    atualizarResumo();
+
+    if (
+        !casalCarregado
+    ) {
+
+        return;
+
+    }
+
+
+    await migrarItens();
+
+
+    const carregouItens =
+        await carregarItensSupabase();
+
+
+    if (
+        !carregouItens
+    ) {
+
+        return;
+
+    }
+
+
+    atualizarTela();
 
 });

@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Relatórios | Finanças do Casal</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/relatorios.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MOBILE
+    ====================================================== -->
+
+    <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        aria-label="Abrir menu"
+    >
+        ☰
+    </button>
+
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <button
+                class="mobile-close-button"
+                id="mobileCloseButton"
+                aria-label="Fechar menu"
+            >
+                ×
+            </button>
+
+
+            <div class="logo-area">
+
+                <img
+                    src="../assets/img/logo.png"
+                    alt="Logo"
+                    class="logo"
+                >
+
+            </div>
+
+
+            <div class="system-name">
+
+                <h2>
+                    Finanças do Casal
+                </h2>
+
+                <span>
+                    Controle Financeiro
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MENU
+        ================================================== -->
+
+        <nav class="menu">
+
+
+            <!-- INÍCIO -->
+
+            <a
+                href="../index.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span class="menu-text">
+                    Início
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 FINANÇAS
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="financas"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            💰
+                        </span>
+
+                        <span class="menu-text">
+                            Finanças
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="financas"
+                >
+
+                    <a
+                        href="financeiro.html"
+                        class="submenu-item"
+                    >
+                        Financeiro
+                    </a>
+
+                    <a
+                        href="despesas.html"
+                        class="submenu-item"
+                    >
+                        Despesas
+                    </a>
+
+                    <a
+                        href="contas.html"
+                        class="submenu-item"
+                    >
+                        Contas
+                    </a>
+
+                    <a
+                        href="cartoes.html"
+                        class="submenu-item"
+                    >
+                        Cartões
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PLANEJAMENTO
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="planejamento"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            🎯
+                        </span>
+
+                        <span class="menu-text">
+                            Planejamento
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="planejamento"
+                >
+
+                    <a
+                        href="metas.html"
+                        class="submenu-item"
+                    >
+                        Metas
+                    </a>
+
+                    <a
+                        href="investimentos.html"
+                        class="submenu-item"
+                    >
+                        Investimentos
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SONHOS
+            ================================================== -->
+
+            <div class="menu-group">
+
+                <button
+                    class="menu-group-button"
+                    data-menu="sonhos"
+                >
+
+                    <span class="menu-left">
+
+                        <span class="menu-icon">
+                            ♡
+                        </span>
+
+                        <span class="menu-text">
+                            Sonhos
+                        </span>
+
+                    </span>
+
+                    <span class="menu-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="submenu"
+                    id="sonhos"
+                >
+
+                    <a
+                        href="sonhos.html"
+                        class="submenu-item"
+                    >
+                        Sonhos
+                    </a>
+
+                    <a
+                        href="mobilia.html"
+                        class="submenu-item"
+                    >
+                        Mobília
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RELATÓRIOS
+            ================================================== -->
+
+            <a
+                href="relatorios.html"
+                class="menu-item menu-active"
+            >
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span class="menu-text">
+                    Relatórios
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             RODAPÉ
+        ================================================== -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="configuracoes.html"
+                class="menu-item"
+            >
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span class="menu-text">
+                    Configurações
+                </span>
+
+            </a>
+
+
+            <a
+                href="../login.html"
+                class="menu-item logout"
+            >
+
+                <span class="menu-icon">
+                    ↪
+                </span>
+
+                <span class="menu-text">
+                    Sair
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="main-content relatorios-page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+            <div>
+
+                <span class="page-overline">
+                    ANÁLISE FINANCEIRA
+                </span>
+
+                <h1>
+                    Relatórios
+                </h1>
+
+                <p>
+                    Acompanhe a movimentação financeira do casal
+                    por período e categoria.
+                </p>
+
+            </div>
+
+
+            <div class="relatorio-periodo">
+
+                <label for="relatorioMes">
+                    Período
+                </label>
+
+                <div class="periodo-controls">
+
+                    <input
+                        type="month"
+                        id="relatorioMes"
+                    >
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="btnAtualizarRelatorio"
+                    >
+                        Atualizar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             STATUS
+        ================================================== -->
+
+        <div
+            id="relatorioStatus"
+            class="relatorio-status"
+        >
+            Carregando relatório...
+        </div>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="report-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        RESUMO
+                    </small>
+
+                    <h2>
+                        Visão geral do mês
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-summary-grid">
+
+
+                <!-- RENDA -->
+
+                <article class="report-summary-card">
+
+                    <span>
+                        RENDA
+                    </span>
+
+                    <strong
+                        id="relRenda"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small>
+                        Renda mensal configurada
+                    </small>
+
+                </article>
+
+
+                <!-- DESPESAS -->
+
+                <article class="report-summary-card">
+
+                    <span>
+                        DESPESAS
+                    </span>
+
+                    <strong
+                        id="relDespesas"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small
+                        id="relDespesasPercentual"
+                    >
+                        0,0% da renda
+                    </small>
+
+                </article>
+
+
+                <!-- INVESTIMENTOS -->
+
+                <article class="report-summary-card">
+
+                    <span>
+                        INVESTIMENTOS
+                    </span>
+
+                    <strong
+                        id="relInvestimentos"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small
+                        id="relInvestimentosPercentual"
+                    >
+                        0,0% da renda
+                    </small>
+
+                </article>
+
+
+                <!-- CONTAS -->
+
+                <article class="report-summary-card">
+
+                    <span>
+                        CONTAS PENDENTES
+                    </span>
+
+                    <strong
+                        id="relContasPendentes"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small
+                        id="relContasQuantidade"
+                    >
+                        0 contas
+                    </small>
+
+                </article>
+
+
+                <!-- FATURA -->
+
+                <article class="report-summary-card">
+
+                    <span>
+                        FATURA ESTIMADA
+                    </span>
+
+                    <strong
+                        id="relFatura"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small>
+                        Parcelamentos do período
+                    </small>
+
+                </article>
+
+
+                <!-- DISPONÍVEL -->
+
+                <article
+                    class="report-summary-card highlight"
+                >
+
+                    <span>
+                        DISPONÍVEL PROJETADO
+                    </span>
+
+                    <strong
+                        id="relDisponivel"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                    <small>
+                        Após compromissos do mês
+                    </small>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DESTINO DO DINHEIRO
+        ================================================== -->
+
+        <section class="report-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        DISTRIBUIÇÃO
+                    </small>
+
+                    <h2>
+                        Destino do dinheiro
+                    </h2>
+
+                </div>
+
+
+                <strong
+                    id="relDistribuicaoTotal"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="distribution-list">
+
+
+                <!-- CASA -->
+
+                <div class="distribution-item">
+
+                    <div class="distribution-header">
+
+                        <div>
+
+                            <strong>
+                                Despesas da casa
+                            </strong>
+
+                            <span>
+                                Gastos compartilhados
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="relCasaValor"
+                        >
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-progress">
+
+                        <span
+                            id="relCasaBar"
+                            style="width: 0%;"
+                        ></span>
+
+                    </div>
+
+
+                    <div class="distribution-footer">
+
+                        <span>
+                            Casa
+                        </span>
+
+                        <strong
+                            id="relCasaPercentual"
+                        >
+                            0,0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PESSOAL -->
+
+                <div class="distribution-item">
+
+                    <div class="distribution-header">
+
+                        <div>
+
+                            <strong>
+                                Gastos pessoais
+                            </strong>
+
+                            <span>
+                                Despesas classificadas como pessoal
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="relPessoalValor"
+                        >
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-progress">
+
+                        <span
+                            id="relPessoalBar"
+                            style="width: 0%;"
+                        ></span>
+
+                    </div>
+
+
+                    <div class="distribution-footer">
+
+                        <span>
+                            Pessoal
+                        </span>
+
+                        <strong
+                            id="relPessoalPercentual"
+                        >
+                            0,0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- INVESTIMENTOS -->
+
+                <div class="distribution-item">
+
+                    <div class="distribution-header">
+
+                        <div>
+
+                            <strong>
+                                Investimentos
+                            </strong>
+
+                            <span>
+                                Aportes realizados no período
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="relInvestValor"
+                        >
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-progress">
+
+                        <span
+                            id="relInvestBar"
+                            style="width: 0%;"
+                        ></span>
+
+                    </div>
+
+
+                    <div class="distribution-footer">
+
+                        <span>
+                            Investimentos
+                        </span>
+
+                        <strong
+                            id="relInvestPercentual"
+                        >
+                            0,0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONTAS -->
+
+                <div class="distribution-item">
+
+                    <div class="distribution-header">
+
+                        <div>
+
+                            <strong>
+                                Contas pendentes
+                            </strong>
+
+                            <span>
+                                Compromissos ainda não pagos
+                            </span>
+
+                        </div>
+
+                        <strong
+                            id="relContasValor"
+                        >
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-progress">
+
+                        <span
+                            id="relContasBar"
+                            style="width: 0%;"
+                        ></span>
+
+                    </div>
+
+
+                    <div class="distribution-footer">
+
+                        <span>
+                            Contas
+                        </span>
+
+                        <strong
+                            id="relContasPercentual"
+                        >
+                            0,0%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CATEGORIAS + PESSOAS
+        ================================================== -->
+
+        <div class="report-columns">
+
+
+            <!-- =================================================
+                 GASTOS POR CATEGORIA
+            ================================================== -->
+
+            <section class="report-section">
+
+
+                <div class="section-top">
+
+                    <div>
+
+                        <small>
+                            DESPESAS
+                        </small>
+
+                        <h2>
+                            Gastos por categoria
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="relCategorias"
+                    class="report-list"
+                >
+
+                    <div class="empty-report-state">
+                        Carregando...
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 GASTOS POR PESSOA
+            ================================================== -->
+
+            <section class="report-section">
+
+
+                <div class="section-top">
+
+                    <div>
+
+                        <small>
+                            PARTICIPAÇÃO
+                        </small>
+
+                        <h2>
+                            Gastos por pessoa
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="relPessoas"
+                    class="report-list"
+                >
+
+                    <div class="empty-report-state">
+                        Carregando...
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             INVESTIMENTOS + CONTAS
+        ================================================== -->
+
+        <div class="report-columns">
+
+
+            <!-- =================================================
+                 INVESTIMENTOS
+            ================================================== -->
+
+            <section class="report-section">
+
+
+                <div class="section-top">
+
+                    <div>
+
+                        <small>
+                            PLANEJAMENTO
+                        </small>
+
+                        <h2>
+                            Investimentos do mês
+                        </h2>
+
+                    </div>
+
+
+                    <strong
+                        id="relInvestimentosTotal"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="relInvestimentosLista"
+                    class="report-list"
+                >
+
+                    <div class="empty-report-state">
+                        Carregando...
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CONTAS PENDENTES
+            ================================================== -->
+
+            <section class="report-section">
+
+
+                <div class="section-top">
+
+                    <div>
+
+                        <small>
+                            COMPROMISSOS
+                        </small>
+
+                        <h2>
+                            Contas pendentes
+                        </h2>
+
+                    </div>
+
+
+                    <strong
+                        id="relContasTotal"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="relContasLista"
+                    class="report-list"
+                >
+
+                    <div class="empty-report-state">
+                        Carregando...
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             CARTÕES
+        ================================================== -->
+
+        <section class="report-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        CARTÕES
+                    </small>
+
+                    <h2>
+                        Compras e fatura estimada
+                    </h2>
+
+                </div>
+
+
+                <strong
+                    id="relCartoesTotal"
+                >
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+
+            <div class="report-table-wrapper">
+
+                <table class="report-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Compra
+                            </th>
+
+                            <th>
+                                Data
+                            </th>
+
+                            <th>
+                                Parcelas
+                            </th>
+
+                            <th>
+                                Categoria
+                            </th>
+
+                            <th>
+                                Responsável
+                            </th>
+
+                            <th>
+                                Parcela no mês
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="relCartoesTabela"
+                    >
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="empty-report-table"
+                            >
+                                Carregando...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             METAS
+        ================================================== -->
+
+        <section class="report-section">
+
+
+            <div class="section-top">
+
+                <div>
+
+                    <small>
+                        OBJETIVOS
+                    </small>
+
+                    <h2>
+                        Acompanhamento das metas
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="relMetas"
+                class="report-goals"
+            >
+
+                <div class="empty-report-state">
+                    Carregando...
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script
+        src="../assets/js/supabase.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/auth.js"
+    ></script>
+
+
+    <script
+        src="../assets/js/menu.js"
+    ></script>
+
+    <script src="../assets/js/casal-nomes.js"></script>
+
+    <script
+        src="../assets/js/relatorios.js"
+    ></script>
+
+
+</body>
+
+</html>
